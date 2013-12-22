@@ -26,6 +26,20 @@ else()
     set(SYNFIG_PROFILE_LAYERS 0)
 endif()
 
+# libz
+set(WITH_ZLIB 1 CACHE BOOL "Use zlib")
+set(ZLIB_PATH "" CACHE PATH "Path to zlib")
+if(WITH_ZLIB)
+    find_library(ZLIB_LIBRARY NAMES z
+        HINTS ${ZLIB_PATH})
+    if(NOT ZLIB_LIBRARY)
+        message( SEND_ERROR "Cannot find zlib. Set WITH_ZLIB to 0 to disable it." )
+    endif()
+    find_path(ZLIB_INCLUDE zlib.h
+        HINTS ${ZLIB_PATH}/include)
+    include_directories(${ZLIB_INCLUDE})
+endif()
+
 # imagemagick
 set(WITH_IMAGEMAGICK 1 CACHE BOOL "Use ImageMagick")
 set(IMAGEMAGICK_PATH "" CACHE PATH "Path to ImageMagick")
@@ -249,6 +263,15 @@ find_path(CAIRO_INCLUDE cairo.h
     )
 include_directories(${PC_CAIRO_INCLUDE_DIRS})
 
+# cairomm
+pkg_check_modules(PC_CAIROMM REQUIRED cairomm>=1.10.0)
+find_library(CAIROMM_LIBRARY NAMES cairomm
+    HINTS ${PC_CAIROMM_LIBDIR} ${PC_CAIROMM_LIBRARY_DIRS})
+find_path(CAIROMM_INCLUDE cairomm-1.0/cairomm.h
+    HINTS ${PC_CAIROMM_INCLUDEDIR} ${PC_CAIROMM_INCLUDE_DIRS}
+    PATH_SUFFIXES cairomm-1.0)
+include_directories(${PC_CAIROMM_INCLUDE_DIRS})
+
 # Pango
 pkg_check_modules(PC_PANGO REQUIRED pango)
 find_library(PANGO_LIBRARY NAMES pango-1.0
@@ -267,7 +290,8 @@ set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME OFF)
 
 set(BOOST_ROOT "" CACHE PATH "Path to Boost installation")
-find_package(Boost 1.54 REQUIRED COMPONENTS program_options)
+set(BOOST_VERSION "1.54" CACHE STRING "Which version of Boost to use")
+find_package(Boost ${BOOST_VERSION} REQUIRED COMPONENTS program_options)
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
 endif()
@@ -313,6 +337,19 @@ if(MNG_LIBRARY)
 endif()
 set(WITH_MNG 0 CACHE BOOL "Use libmng")
 
+# Poco
+set(POCO_PATH "" CACHE PATH "Path to Poco")
+find_library(POCO_FOUNDATION_LIBRARY NAMES PocoFoundation
+    HINTS ${POCO_PATH}/lib)
+if(POCO_FOUNDATION_LIBRARY)
+    find_path(POCO_INCLUDE Poco/SharedLibrary.h
+        HINTS ${POCO_PATH}/include
+        PATH_SUFFIXES Poco)
+    include_directories(${POCO_INCLUDE})
+else()
+    message( SEND_ERROR "Failed to find Poco" );
+endif()
+
 add_subdirectory(ETL)
 add_subdirectory(synfig-core)
 
@@ -350,9 +387,15 @@ Synfig Configuration Summary
       OpenEXR Half Type         ${ENABLE_OPENEXR_HALF}
       Layer profiling           ${ENABLE_LAYER_PROFILING}
       
-    Dependencies:"
+    Dependencies (packages marked with *NOT FOUND are required):"
 )
 
+if(WITH_ZLIB)
+    message( "    * zlib                        ${ZLIB_LIBRARY}")
+    message( "    * zlib includes               ${ZLIB_INCLUDE}")
+else()
+    message( "    * zlib                        *NOT FOUND")
+endif()
 message( "    * ImageMagick                 ${MAGICK_CONVERT}")
 if(WITH_MAGICKPP)
     message( "    * ImageMagick++               ${MAGICKPP_LIBRARY}")
@@ -409,13 +452,16 @@ message( "    * libxml++-2.6                ${LIBXMLPP_LIBRARY}")
 message( "    * libxml++ includes           ${PC_LIBXMLPP_INCLUDE_DIRS}")
 message( "    * cairo                       ${CAIRO_LIBRARY}")
 message( "    * cairo includes              ${PC_CAIRO_INCLUDE_DIRS}")
+message( "    * cairo mm                    ${CAIROMM_LIBRARY}")
+message( "    * cairo mm includes           ${PC_CAIROMM_INCLUDE_DIRS}")
 message( "    * pango-1.0                   ${PANGO_LIBRARY}")
 message( "    * pango includes              ${PC_PANGO_INCLUDE_DIRS}")
+message( "    * pangocairo                  ${PANGOCAIRO_LIBRARY}")
 if(Boost_FOUND)
     message( "    * Boost Libraries             ${Boost_LIBRARIES}")
     message( "    * Boost Includes              ${Boost_INCLUDE_DIRS}")
 else()
-    message( "    * Boost                       NOT FOUND")
+    message( "    * Boost                       *NOT FOUND")
 endif()
 if(WITH_PNG)
     message( "    * libpng                      ${PNG_LIBRARY}")
@@ -428,4 +474,10 @@ if(WITH_MNG)
     message( "    * libmng includes             ${MNG_INCLUDE}")
 else()
     message( "    * libmng                      DISABLED")
+endif()
+if(POCO_FOUNDATION_LIBRARY)
+    message( "    * Poco Libraries              ${POCO_FOUNDATION_LIBRARY}")
+    message( "    * Poco Includes               ${POCO_INCLUDE}")
+else()
+    message( "    * Poco                        *NOT FOUND")
 endif()

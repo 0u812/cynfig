@@ -298,3 +298,45 @@ set(SYNFIGSOURCES
     filecontainerzip.cpp
     filecontainertemporary.cpp
     zstreambuf.cpp)
+
+set(SYNFIG_CORE_SOURCES
+    ${VALUEHEADERS}
+    ${VALUESOURCES}
+    ${LAYERSOURCES}
+    ${LAYERHEADERS}
+    ${TARGETHEADERS}
+    ${TARGETSOURCES}
+    ${VALUENODEHEADERS}
+    ${VALUENODESOURCES}
+    ${SYNFIGHEADERS}
+    ${SYNFIGSOURCES}
+    ${IMPORTERHEADERS}
+    ${IMPORTERSOURCES})
+
+
+add_library(synfig SHARED ${SYNFIG_CORE_SOURCES})
+
+if(WITH_ZLIB)
+    target_link_libraries(synfig ${LIBZ_LIBRARY})
+endif()
+if(WITH_MAGICKPP)
+    target_link_libraries(synfig ${MAGICKPP_LIBRARY})
+endif()
+
+target_link_libraries(synfig ${GOBJECT_LIBRARY})
+target_link_libraries(synfig ${SIGC_LIBRARY})
+target_link_libraries(synfig ${GLIB_LIBRARY})
+target_link_libraries(synfig ${GIOMM_LIBRARY})
+target_link_libraries(synfig ${LIBXMLPP_LIBRARY})
+target_link_libraries(synfig ${CAIRO_LIBRARY})
+target_link_libraries(synfig ${CAIROMM_LIBRARY})
+target_link_libraries(synfig ${PANGO_LIBRARY})
+target_link_libraries(synfig ${PANGOCAIRO_LIBRARY})
+
+set(SYNFIG_HEADERS_DIST
+    ${SYNFIGHEADERS}
+    ${LAYERHEADERS}
+    ${TARGETHEADERS}
+    ${VALUENODEHEADERS}
+    ${IMPORTERHEADERS}
+    ${VALUEHEADERS})

@@ -33,9 +33,7 @@
 #include "general.h"
 #include <ETL/stringf>
 
-#ifndef USE_CF_BUNDLES
-#include <ltdl.h>
-#endif
+#include <Poco/SharedLibrary.h>
 
 #endif
 
@@ -51,33 +49,28 @@ Module::Book *synfig::Module::book_;
 
 /* === P R O C E D U R E S ================================================= */
 
+void
+Module::addSearchDir(const std::string& dir) {
+    modpaths_.push_back(dir);
+}
+
 bool
 Module::subsys_init(const String &prefix)
+    : prefix_(prefix)
 {
-#ifndef USE_CF_BUNDLES
-	#ifndef SYNFIG_LTDL_NO_STATIC
-	//LTDL_SET_PRELOADED_SYMBOLS();
-	#endif
-
-	if(lt_dlinit())
-	{
-		error(_("Errors on lt_dlinit()"));
-		error(lt_dlerror());
-		return false;
-	}
-
-	lt_dladdsearchdir(".");
+    // TODO: Boost filesystem paths
+	addSearchDir(".");
 	if(getenv("HOME"))
-		lt_dladdsearchdir(strprintf("%s/.synfig/modules", getenv("HOME")).c_str());
-	lt_dladdsearchdir((prefix+"/lib/synfig/modules").c_str());
+		addSearchDir(std::string(getenv("HOME")) + "/.synfig/modules");
+	addSearchDir(prefix+"/lib/synfig/modules");
 #ifdef SYNFIG_CORE_LIB_PATH
-	lt_dladdsearchdir(SYNFIG_CORE_LIB_PATH"/synfig/modules");
+	addSearchDir(SYNFIG_CORE_LIB_PATH"/synfig/modules");
 #endif
 #ifdef __APPLE__
-	lt_dladdsearchdir("/Library/Frameworks/synfig.framework/Resources/modules");
+	addSearchDir("/Library/Frameworks/synfig.framework/Resources/modules");
 #endif
-	lt_dladdsearchdir("/usr/local/lib/synfig/modules");
-	lt_dladdsearchdir(".");
+	addSearchDir("/usr/local/lib/synfig/modules");
+	addSearchDir(".");
 #endif
 	book_=new Book;
 	return true;
@@ -88,9 +81,9 @@ Module::subsys_stop()
 {
 	delete book_;
 
-#ifndef USE_CF_BUNDLES
-	lt_dlexit();
-#endif
+    if(module_.isLoaded())
+        module_.unload();
+    
 	return true;
 }
 
@@ -98,7 +91,7 @@ void
 Module::register_default_modules(ProgressCallback *callback)
 {
 	#define REGISTER_MODULE(module) if (!Register(module, callback)) \
-										throw std::runtime_error(strprintf(_("Unable to load module '%s'"), module))
+										throw std::runtime_error(std::string("Unable to load module '") + module + "'")
 	REGISTER_MODULE("lyr_freetype");
 	REGISTER_MODULE("mod_geometry");
 	REGISTER_MODULE("mod_gradient");
@@ -117,66 +110,93 @@ synfig::Module::Register(Module::Handle mod)
 	book()[mod->Name()]=mod;
 }
 
+void
+synfig::Module::loadModule(const std::string& module_name) {
+    ModulePaths paths = generatePaths(module_name);
+    
+    for(const ModulePath& p : paths) {
+        try {
+            module_.load(p);
+            return;
+        } catch(Poco::LibraryLoadException) {}
+    }
+    
+    throw std::runtime_error("Failed to load " + module_name)
+}
+
+void
+synfig::Module::generatePaths(const std::string& module_name) {
+    ModulePaths paths;
+    for(const ModulePath& p : modpaths_) {
+        paths.emplace_back(p+module_name);
+        paths.emplace_back(p+"lib"+module_name);
+    }
+    return paths;
+}
+
 bool
 synfig::Module::Register(const String &module_name, ProgressCallback *callback)
 {
-#ifndef USE_CF_BUNDLES
-	lt_dlhandle module;
+	if(callback)callback->task(strprintf(_("Attempting to register \"%s\""),module_name);
+    
+    try {
+        loadModule(module_name);
+    } catch(std::runtime_error) {
+        if(callback)callback->warning(strprintf(_("Unable to find module \"%s\" (%s)"),module_name.c_str(),lt_dlerror()));
+        return false;
+    }
 
-	if(callback)callback->task(strprintf(_("Attempting to register \"%s\""),module_name.c_str()));
+	if(callback)callback->task(strprintf(_("Found module \"%s\""),module_name);
 
-	module=lt_dlopenext((string("lib")+module_name).c_str());
-	if(!module)module=lt_dlopenext(module_name.c_str());
-
-	if(!module)
-	{
-		if(callback)callback->warning(strprintf(_("Unable to find module \"%s\" (%s)"),module_name.c_str(),lt_dlerror()));
-		return false;
-	}
-
-	if(callback)callback->task(strprintf(_("Found module \"%s\""),module_name.c_str()));
-
-	Module::constructor_type constructor=NULL;
+	Module::constructor_type constructor=nullptr;
 	Handle mod;
 
 	if(!constructor)
 	{
 //		if(callback)callback->task(string("looking for -> ")+module_name+"_LTX_new_instance()");
-		constructor=(Module::constructor_type )lt_dlsym(module,(module_name+"_LTX_new_instance").c_str());
+        try {
+            constructor=(Module::constructor_type )module_.getSymbol(module_name+"_LTX_new_instance");
+        } catch(Poco::NotFoundException) {constructor = nullptr;}
 	}
 
 	if(!constructor)
 	{
 //		if(callback)callback->task(string("looking for -> lib")+module_name+"_LTX_new_instance()");
-		constructor=(Module::constructor_type )lt_dlsym(module,(string("lib")+module_name+"_LTX_new_instance").c_str());
+        try {
+            constructor=(Module::constructor_type )module_.getSymbol(std::string("lib")+module_name+"_LTX_new_instance");
+        } catch(Poco::NotFoundException) {constructor = nullptr;}
 	}
 	if(!constructor)
 	{
-//		if(callback)callback->task(string("looking for -> lib")+module_name+"_LTX_new_instance()");
-		constructor=(Module::constructor_type )lt_dlsym(module,(string("_lib")+module_name+"_LTX_new_instance").c_str());
+//		if(callback)callback->task(string("looking for -> _lib")+module_name+"_LTX_new_instance()");
+        try {
+            constructor=(Module::constructor_type )module_.getSymbol(std::string("_lib")+module_name+"_LTX_new_instance");
+        } catch(Poco::NotFoundException) {constructor = nullptr;}
 	}
 	if(!constructor)
 	{
-//		if(callback)callback->task(string("looking for -> lib")+module_name+"_LTX_new_instance()");
-		constructor=(Module::constructor_type )lt_dlsym(module,(string("_")+module_name+"_LTX_new_instance").c_str());
+//		if(callback)callback->task(string("looking for -> _")+module_name+"_LTX_new_instance()");
+        try {
+            constructor=(Module::constructor_type )module_.getSymbol(std::string("_")+module_name+"_LTX_new_instance");
+        } catch(Poco::NotFoundException) {constructor = nullptr;}
 	}
 
 	if(constructor)
 	{
-//		if(callback)callback->task(strprintf("Executing callback for \"%s\"",module_name.c_str()));
+//		if(callback)callback->task(strprintf("Executing callback for \"%s\"",module_name);
 		mod=handle<Module>((*constructor)(callback));
 	}
 	else
 	{
-		if(callback)callback->error(strprintf(_("Unable to find entrypoint in module \"%s\" (%s)"),module_name.c_str(),lt_dlerror()));
+		if(callback)callback->error(strprintf(_("Unable to find entrypoint in module \"%s\""),module_name);
 		return false;
 	}
 
-//	if(callback)callback->task(strprintf("Done executing callback for \"%s\"",module_name.c_str()));
+//	if(callback)callback->task(strprintf("Done executing callback for \"%s\"",module_name);
 
 	if(mod)
 	{
-//		if(callback)callback->task(strprintf("Registering \"%s\"",module_name.c_str()));
+//		if(callback)callback->task(strprintf("Registering \"%s\"",module_name);
 		Register(mod);
 	}
 	else
@@ -185,8 +205,7 @@ synfig::Module::Register(const String &module_name, ProgressCallback *callback)
 		return false;
     }
 
-	if(callback)callback->task(strprintf(_("Success for \"%s\""),module_name.c_str()));
-
-#endif
+	if(callback)callback->task(strprintf(_("Success for \"%s\""),module_name);
+    
 	return true;
 }

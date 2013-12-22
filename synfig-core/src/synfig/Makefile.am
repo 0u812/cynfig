@@ -342,6 +342,8 @@ libsynfig_la_LIBADD = \
 	@SYNFIG_LIBS@ \
 	@LIBADD_DL@
 
+# LIBDIR -> SYNFIG_CORE_LIB_PATH
+# SYSCONFDIR -> SYNFIG_MODULES_DIR
 libsynfig_la_CXXFLAGS = \
 	@SYNFIG_CFLAGS@ \
 	-DLIBDIR="\"@libdir@\"" \
