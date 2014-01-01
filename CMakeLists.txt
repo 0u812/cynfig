@@ -360,7 +360,7 @@ foreach (_variableName ${_variableNames})
 endforeach()
 
 message(STATUS "
-This summary is based on libSBML's (http://sbml.org/Software/libSBML)
+The style of this summary is based on libSBML's (http://sbml.org/Software/libSBML)
 
 -------------------------------------------------------------------------------
 Synfig Configuration Summary
