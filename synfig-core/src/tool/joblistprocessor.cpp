@@ -40,7 +40,7 @@
 
 #include <ETL/stringf>
 #include <ETL/clock>
-#include <autorevision.h>
+// #include <autorevision.h>
 #include <synfig/general.h>
 #include <synfig/canvas.h>
 #include <synfig/target.h>

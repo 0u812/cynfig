@@ -35,7 +35,7 @@
 #include <boost/program_options/variables_map.hpp>
 
 #include <ETL/stringf>
-#include <autorevision.h>
+// #include <autorevision.h>
 #include <synfig/general.h>
 #include <synfig/canvas.h>
 #include <synfig/context.h>

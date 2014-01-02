@@ -54,7 +54,7 @@
 #include <synfig/string.h>
 #include <synfig/paramdesc.h>
 #include <synfig/main.h>
-#include <autorevision.h>
+// #include <autorevision.h>
 #include "definitions.h"
 #include "progress.h"
 #include "job.h"

@@ -363,7 +363,8 @@ set(SYNFIG_CORE_REQUIRED_LIBRARIES
     ${CAIRO_LIBRARY}
     ${CAIROMM_LIBRARY}
     ${PANGO_LIBRARY}
-    ${PANGOCAIRO_LIBRARY})
+    ${PANGOCAIRO_LIBRARY}
+    ${POCO_FOUNDATION_LIBRARY})
 
 add_subdirectory(ETL)
 add_subdirectory(synfig-core)

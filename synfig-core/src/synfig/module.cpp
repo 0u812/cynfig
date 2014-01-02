@@ -46,6 +46,8 @@ using namespace etl;
 using namespace synfig;
 
 Module::Book *synfig::Module::book_;
+Module::ModulePaths synfig::Module::modpaths_;
+Poco::SharedLibrary synfig::Module::module_;
 
 /* === P R O C E D U R E S ================================================= */
 

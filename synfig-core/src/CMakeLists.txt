@@ -10,4 +10,4 @@ include_directories(${ETL_INCLUDE_PATH})
 
 add_subdirectory(synfig)
 add_subdirectory(modules)
-# add_subdirectory(tool)
+add_subdirectory(tool)

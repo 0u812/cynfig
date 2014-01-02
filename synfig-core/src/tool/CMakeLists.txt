@@ -15,6 +15,6 @@ set(SYF_TOOL_SOURCES
     joblistprocessor.cpp
     main.cpp)
 
-add_executable(synfig ${SYF_TOOL_SOURCES})
+add_executable(synfigctl ${SYF_TOOL_SOURCES})
 
-target_link_libraries(synfig synfig ${SYNFIG_CORE_REQUIRED_LIBRARIES})
+target_link_libraries(synfigctl synfig ${SYNFIG_CORE_REQUIRED_LIBRARIES} ${Boost_LIBRARIES})
