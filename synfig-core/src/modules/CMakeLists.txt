@@ -15,27 +15,27 @@ add_subdirectory(mod_noise)
 if(WITH_OPENEXR)
     add_subdirectory(mod_openexr)
 endif()
-# add_subdirectory(mod_bmp)
-# # add_subdirectory(mod_ppm)
-# if(WITH_PNG)
-#     add_subdirectory(mod_png)
-# endif()
-# if(WITH_LIBDV)
-#     add_subdirectory(mod_dv)
-# endif()
-# 
-# if(MAGICK_CONVERT)
-#     add_subdirectory(mod_imagemagick)
-# endif()
-# 
-# if(WITH_FFMPEG)
-#     add_subdirectory(mod_ffmpeg)
-# endif()
-# 
-# if(WITH_FREETYPE2)
-#     add_subdirectory(lyr_freetype)
-# endif()
-# 
+add_subdirectory(mod_bmp)
+add_subdirectory(mod_ppm)
+if(WITH_PNG)
+    add_subdirectory(mod_png)
+endif()
+if(WITH_LIBDV)
+    add_subdirectory(mod_dv)
+endif()
+
+if(MAGICK_CONVERT)
+    add_subdirectory(mod_imagemagick)
+endif()
+
+if(WITH_FFMPEG)
+    add_subdirectory(mod_ffmpeg)
+endif()
+
+if(WITH_FREETYPE2)
+    add_subdirectory(lyr_freetype)
+endif()
+
 # add_subdirectory(lyr_std)
 # 
 # if(WITH_MNG)

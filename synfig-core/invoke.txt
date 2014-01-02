@@ -1,0 +1,1 @@
+CLANGP=/home/nine/Downloads/source/clang/install-release/bin && export CC=$CLANGP/clang && export CXX=$CLANGP/clang++ && cmake -DCMAKE_INSTALL_PREFIX=/tmp/synfig/cmake/install -DCMAKE_BUILD_TYPE=Release -DBOOST_ROOT=/home/nine/Downloads/source/boost/09132013/install -DCMAKE_CXX_FLAGS="-std=c++11" /home/nine/life/stuff/downloads/source/synfig/synfig-12072013/

@@ -30,16 +30,18 @@
 #define SYNFIG_LAYER
 
 #ifdef USING_PCH
-#	include "pch.h"
+    #include "pch.h"
 #else
-#ifdef HAVE_CONFIG_H
-#	include <config.h>
-#endif
-#ifdef WITH_FONTCONFIG
-#include <fontconfig/fontconfig.h>
-#endif
+    
+    #ifdef HAVE_CONFIG_H
+        #include <config.h>
+    #endif
 
-#include "lyr_freetype.h"
+    #if WITH_FONTCONFIG
+        #include <fontconfig/fontconfig.h>
+    #endif
+
+    #include "lyr_freetype.h"
 #endif
 #include <synfig/cairo_renddesc.h>
 #include <pango/pangocairo.h>
@@ -388,7 +390,7 @@ Layer_Freetype::new_face(const String &newfont)
 	}
 #endif
 
-#ifdef WITH_FONTCONFIG
+#if WITH_FONTCONFIG
 	if(error)
 	{
 		FcFontSet *fs;

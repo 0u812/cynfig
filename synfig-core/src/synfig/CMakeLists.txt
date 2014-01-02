@@ -313,7 +313,6 @@ set(SYNFIG_CORE_SOURCES
     ${IMPORTERHEADERS}
     ${IMPORTERSOURCES})
 
-
 add_library(synfig SHARED ${SYNFIG_CORE_SOURCES})
 
 set_target_properties(synfig
