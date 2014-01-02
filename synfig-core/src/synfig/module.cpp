@@ -56,7 +56,6 @@ Module::addSearchDir(const std::string& dir) {
 
 bool
 Module::subsys_init(const String &prefix)
-    : prefix_(prefix)
 {
     // TODO: Boost filesystem paths
 	addSearchDir(".");
@@ -64,11 +63,11 @@ Module::subsys_init(const String &prefix)
 		addSearchDir(std::string(getenv("HOME")) + "/.synfig/modules");
 	addSearchDir(prefix+"/lib/synfig/modules");
 #ifdef SYNFIG_CORE_LIB_PATH
-	addSearchDir(SYNFIG_CORE_LIB_PATH"/synfig/modules");
+	addSearchDir(SYNFIG_CORE_LIB_PATH "/synfig/modules");
 #endif
 #ifdef __APPLE__
 	addSearchDir("/Library/Frameworks/synfig.framework/Resources/modules");
-#endif
+#else
 	addSearchDir("/usr/local/lib/synfig/modules");
 	addSearchDir(".");
 #endif
@@ -121,10 +120,10 @@ synfig::Module::loadModule(const std::string& module_name) {
         } catch(Poco::LibraryLoadException) {}
     }
     
-    throw std::runtime_error("Failed to load " + module_name)
+    throw std::runtime_error("Failed to load " + module_name);
 }
 
-void
+synfig::Module::ModulePaths
 synfig::Module::generatePaths(const std::string& module_name) {
     ModulePaths paths;
     for(const ModulePath& p : modpaths_) {
@@ -137,16 +136,16 @@ synfig::Module::generatePaths(const std::string& module_name) {
 bool
 synfig::Module::Register(const String &module_name, ProgressCallback *callback)
 {
-	if(callback)callback->task(strprintf(_("Attempting to register \"%s\""),module_name);
+	if(callback)callback->task(std::string("Attempting to register \"") + module_name + "\"");
     
     try {
         loadModule(module_name);
     } catch(std::runtime_error) {
-        if(callback)callback->warning(strprintf(_("Unable to find module \"%s\" (%s)"),module_name.c_str(),lt_dlerror()));
+        if(callback)callback->warning(std::string("Unable to find module \"") + module_name + "\"");
         return false;
     }
 
-	if(callback)callback->task(strprintf(_("Found module \"%s\""),module_name);
+	if(callback)callback->task(std::string("Found module \"") + module_name + "\"");
 
 	Module::constructor_type constructor=nullptr;
 	Handle mod;
@@ -188,7 +187,7 @@ synfig::Module::Register(const String &module_name, ProgressCallback *callback)
 	}
 	else
 	{
-		if(callback)callback->error(strprintf(_("Unable to find entrypoint in module \"%s\""),module_name);
+		if(callback)callback->error(std::string("Unable to find entrypoint in module \"") + module_name + "\"");
 		return false;
 	}
 
@@ -205,7 +204,7 @@ synfig::Module::Register(const String &module_name, ProgressCallback *callback)
 		return false;
     }
 
-	if(callback)callback->task(strprintf(_("Success for \"%s\""),module_name);
+	if(callback)callback->task(std::string("Success for \"") + module_name + "\"");
     
 	return true;
 }

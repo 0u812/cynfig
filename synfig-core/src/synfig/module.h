@@ -38,6 +38,7 @@
 #include "color.h"
 #include "layer.h"
 #include "canvas.h"
+#include <Poco/SharedLibrary.h>
 
 //#include "value.h"
 
@@ -204,13 +205,13 @@ private:
     typedef std::string ModulePath;
     typedef std::vector<ModulePath> ModulePaths;
     // Module search paths
-    ModulePaths modpaths_;
-    Poco::SharedLibrary module_;
+    static ModulePaths modpaths_;
+    static Poco::SharedLibrary module_;
     
     //! Loads the given module if successful, throws std::runtime_error if not
-    void loadModule(const std::string& module_name);
+    static void loadModule(const std::string& module_name);
     //! Generates all possible paths for the module: (modpath)/[lib]module_name
-    ModulePaths generatePaths(const std::string& module_name);
+    static ModulePaths generatePaths(const std::string& module_name);
 public:
 	static Book& book();
 
@@ -219,7 +220,7 @@ public:
      * you have to give it a full absolute path, so searching
      * is now implemented in Module
      */
-    void addSearchDir(const std::string& dir);
+    static void addSearchDir(const std::string& dir);
 
 	//! Inits the book of importers and add the paths to search for the
 	//! ltdl library utilities.

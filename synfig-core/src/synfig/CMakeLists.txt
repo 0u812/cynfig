@@ -316,6 +316,9 @@ set(SYNFIG_CORE_SOURCES
 
 add_library(synfig SHARED ${SYNFIG_CORE_SOURCES})
 
+set_target_properties(synfig
+    PROPERTIES VERSION ${SYNFIG_CORE_VER} SOVERSION ${SYNFIG_CORE_MAJOR})
+
 if(WITH_ZLIB)
     target_link_libraries(synfig ${LIBZ_LIBRARY})
 endif()
@@ -323,15 +326,18 @@ if(WITH_MAGICKPP)
     target_link_libraries(synfig ${MAGICKPP_LIBRARY})
 endif()
 
-target_link_libraries(synfig ${GOBJECT_LIBRARY})
-target_link_libraries(synfig ${SIGC_LIBRARY})
-target_link_libraries(synfig ${GLIB_LIBRARY})
-target_link_libraries(synfig ${GIOMM_LIBRARY})
-target_link_libraries(synfig ${LIBXMLPP_LIBRARY})
-target_link_libraries(synfig ${CAIRO_LIBRARY})
-target_link_libraries(synfig ${CAIROMM_LIBRARY})
-target_link_libraries(synfig ${PANGO_LIBRARY})
-target_link_libraries(synfig ${PANGOCAIRO_LIBRARY})
+target_link_libraries(synfig ${SYNFIG_CORE_REQUIRED_LIBRARIES})
+# target_link_libraries(synfig ${GOBJECT_LIBRARY})
+# target_link_libraries(synfig ${SIGC_LIBRARY})
+# target_link_libraries(synfig ${GLIB_LIBRARY})
+# target_link_libraries(synfig ${GIOMM_LIBRARY})
+# target_link_libraries(synfig ${LIBXMLPP_LIBRARY})
+# target_link_libraries(synfig ${CAIRO_LIBRARY})
+# target_link_libraries(synfig ${CAIROMM_LIBRARY})
+# target_link_libraries(synfig ${PANGO_LIBRARY})
+# target_link_libraries(synfig ${PANGOCAIRO_LIBRARY})
+
+install(TARGETS synfig DESTINATION lib)
 
 set(SYNFIG_HEADERS_DIST
     ${SYNFIGHEADERS}
@@ -340,3 +346,5 @@ set(SYNFIG_HEADERS_DIST
     ${VALUENODEHEADERS}
     ${IMPORTERHEADERS}
     ${VALUEHEADERS})
+
+install(FILES ${SYNFIG_HEADERS_DIST} DESTINATION include/synfig)

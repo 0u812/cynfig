@@ -327,5 +327,5 @@ Time::c_str()const
 bool
 Time::is_valid()const
 {
-	return !isnan(value_);
+	return !std::isnan(value_);
 }

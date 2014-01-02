@@ -34,6 +34,8 @@
 #define _GNU_SOURCE
 #endif
 
+#include "config.h"
+#include <string>
 #include <string>
 #include <cstdarg>
 #include <cstdlib>
@@ -66,7 +68,7 @@ _ETL_BEGIN_CDECLS
 // Prefer prototypes from glibc headers, since defining them ourselves
 // works around glibc security mechanisms
 
-#ifdef HAVE_VASPRINTF	// This is the preferred method
+#if HAVE_VASPRINTF	// This is the preferred method
  #ifndef __GLIBC__
   extern int vasprintf(char **,const char *,va_list)ETL_NO_THROW;
  #endif
@@ -104,7 +106,7 @@ _ETL_BEGIN_NAMESPACE
 inline std::string
 vstrprintf(const char *format, va_list args)
 {
-#ifdef HAVE_VASPRINTF	// This is the preferred method (and safest)
+#if HAVE_VASPRINTF	// This is the preferred method (and safest)
 	char *buffer;
 	std::string ret;
 	int i=vasprintf(&buffer,format,args);

@@ -239,10 +239,12 @@ include_directories(${PC_GLIBMM_INCLUDE_DIRS})
 # find_package_handle_standard_args(glibmm DEFAULT_MSG GLIBMM_LIBRARY)
 
 # giomm
-# in glibmm
-# pkg_check_modules(PC_GLIBMM REQUIRED giomm-2.4)
+pkg_check_modules(PC_GIOMM REQUIRED giomm-2.4)
 find_library(GIOMM_LIBRARY NAMES giomm-2.4
     HINTS ${PC_GLIBMM_LIBDIR} ${PC_GLIBMM_LIBRARY_DIRS})
+find_path(GIOMM_INCLUDE giomm.h
+    HINTS ${PC_GIOMM_INCLUDEDIR} ${PC_GIOMM_INCLUDE_DIRS})
+include_directories(${GIOMM_INCLUDE})
 
 # libxml++
 pkg_check_modules(PC_LIBXMLPP REQUIRED libxml++-2.6)
@@ -264,8 +266,8 @@ find_path(CAIRO_INCLUDE cairo.h
 include_directories(${PC_CAIRO_INCLUDE_DIRS})
 
 # cairomm
-pkg_check_modules(PC_CAIROMM REQUIRED cairomm>=1.10.0)
-find_library(CAIROMM_LIBRARY NAMES cairomm
+pkg_check_modules(PC_CAIROMM REQUIRED cairomm-1.0)
+find_library(CAIROMM_LIBRARY NAMES cairomm-1.0
     HINTS ${PC_CAIROMM_LIBDIR} ${PC_CAIROMM_LIBRARY_DIRS})
 find_path(CAIROMM_INCLUDE cairomm-1.0/cairomm.h
     HINTS ${PC_CAIROMM_INCLUDEDIR} ${PC_CAIROMM_INCLUDE_DIRS}
@@ -347,8 +349,21 @@ if(POCO_FOUNDATION_LIBRARY)
         PATH_SUFFIXES Poco)
     include_directories(${POCO_INCLUDE})
 else()
-    message( SEND_ERROR "Failed to find Poco" );
+    message( SEND_ERROR "Failed to find Poco" )
 endif()
+
+set(ETL_INCLUDE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/ETL)
+
+set(SYNFIG_CORE_REQUIRED_LIBRARIES
+    ${GOBJECT_LIBRARY}
+    ${SIGC_LIBRARY}
+    ${GLIB_LIBRARY}
+    ${GIOMM_LIBRARY}
+    ${LIBXMLPP_LIBRARY}
+    ${CAIRO_LIBRARY}
+    ${CAIROMM_LIBRARY}
+    ${PANGO_LIBRARY}
+    ${PANGOCAIRO_LIBRARY})
 
 add_subdirectory(ETL)
 add_subdirectory(synfig-core)
@@ -387,14 +402,14 @@ Synfig Configuration Summary
       OpenEXR Half Type         ${ENABLE_OPENEXR_HALF}
       Layer profiling           ${ENABLE_LAYER_PROFILING}
       
-    Dependencies (packages marked with *NOT FOUND are required):"
+    Dependencies (packages marked with *** are required):"
 )
 
 if(WITH_ZLIB)
     message( "    * zlib                        ${ZLIB_LIBRARY}")
     message( "    * zlib includes               ${ZLIB_INCLUDE}")
 else()
-    message( "    * zlib                        *NOT FOUND")
+    message( "  *** zlib                        *NOT FOUND")
 endif()
 message( "    * ImageMagick                 ${MAGICK_CONVERT}")
 if(WITH_MAGICKPP)
@@ -443,25 +458,25 @@ if(WITH_OPENEXR)
 else()
     message( "    * OpenEXR                     DISABLED")
 endif()
-message( "    * glibmm-2.4 includes         ${PC_GLIBMM_INCLUDE_DIRS}")
-message( "    * gobject-2.0                 ${GOBJECT_LIBRARY}")
-message( "    * sigc-2.0                    ${SIGC_LIBRARY}")
-message( "    * glib-2.0                    ${GLIB_LIBRARY}")
-message( "    * giomm-2.4                   ${GIOMM_LIBRARY}")
-message( "    * libxml++-2.6                ${LIBXMLPP_LIBRARY}")
-message( "    * libxml++ includes           ${PC_LIBXMLPP_INCLUDE_DIRS}")
-message( "    * cairo                       ${CAIRO_LIBRARY}")
-message( "    * cairo includes              ${PC_CAIRO_INCLUDE_DIRS}")
-message( "    * cairo mm                    ${CAIROMM_LIBRARY}")
-message( "    * cairo mm includes           ${PC_CAIROMM_INCLUDE_DIRS}")
-message( "    * pango-1.0                   ${PANGO_LIBRARY}")
-message( "    * pango includes              ${PC_PANGO_INCLUDE_DIRS}")
-message( "    * pangocairo                  ${PANGOCAIRO_LIBRARY}")
+message( "  *** glibmm-2.4 includes         ${PC_GLIBMM_INCLUDE_DIRS}")
+message( "  *** gobject-2.0                 ${GOBJECT_LIBRARY}")
+message( "  *** sigc-2.0                    ${SIGC_LIBRARY}")
+message( "  *** glib-2.0                    ${GLIB_LIBRARY}")
+message( "  *** giomm-2.4                   ${GIOMM_LIBRARY}")
+message( "  *** libxml++-2.6                ${LIBXMLPP_LIBRARY}")
+message( "  *** libxml++ includes           ${PC_LIBXMLPP_INCLUDE_DIRS}")
+message( "  *** cairo                       ${CAIRO_LIBRARY}")
+message( "  *** cairo includes              ${PC_CAIRO_INCLUDE_DIRS}")
+message( "  *** cairo mm                    ${CAIROMM_LIBRARY}")
+message( "  *** cairo mm includes           ${PC_CAIROMM_INCLUDE_DIRS}")
+message( "  *** pango-1.0                   ${PANGO_LIBRARY}")
+message( "  *** pango includes              ${PC_PANGO_INCLUDE_DIRS}")
+message( "  *** pangocairo                  ${PANGOCAIRO_LIBRARY}")
 if(Boost_FOUND)
     message( "    * Boost Libraries             ${Boost_LIBRARIES}")
     message( "    * Boost Includes              ${Boost_INCLUDE_DIRS}")
 else()
-    message( "    * Boost                       *NOT FOUND")
+    message( "  *** Boost                       *NOT FOUND")
 endif()
 if(WITH_PNG)
     message( "    * libpng                      ${PNG_LIBRARY}")
@@ -479,5 +494,5 @@ if(POCO_FOUNDATION_LIBRARY)
     message( "    * Poco Libraries              ${POCO_FOUNDATION_LIBRARY}")
     message( "    * Poco Includes               ${POCO_INCLUDE}")
 else()
-    message( "    * Poco                        *NOT FOUND")
+    message( "  *** Poco                        *NOT FOUND")
 endif()

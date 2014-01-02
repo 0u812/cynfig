@@ -265,22 +265,22 @@ synfig::Main::Main(const synfig::String& basepath,ProgressCallback *cb):
 		locations.push_back(getenv("SYNFIG_MODULE_LIST"));
 	else
 	{
-		locations.push_back("./"MODULE_LIST_FILENAME);
+		locations.push_back("./" MODULE_LIST_FILENAME);
 		if(getenv("HOME"))
 			locations.push_back(strprintf("%s/.synfig/%s", getenv("HOME"), MODULE_LIST_FILENAME));
 	#ifdef SYNFIG_MODULES_DIR
-		locations.push_back(SYNFIG_MODULES_DIR+ETL_DIRECTORY_SEPARATOR+MODULE_LIST_FILENAME);
+		locations.push_back(SYNFIG_MODULES_DIR+std::to_string(ETL_DIRECTORY_SEPARATOR)+MODULE_LIST_FILENAME);
 	#endif
 		locations.push_back(prefix+ETL_DIRECTORY_SEPARATOR+"etc"+ETL_DIRECTORY_SEPARATOR+MODULE_LIST_FILENAME);
-		locations.push_back("/usr/local/etc/"MODULE_LIST_FILENAME);
+		locations.push_back("/usr/local/etc/" MODULE_LIST_FILENAME);
 	#ifdef __APPLE__
-		locations.push_back("/Library/Frameworks/synfig.framework/Resources/"MODULE_LIST_FILENAME);
-		locations.push_back("/Library/Synfig/"MODULE_LIST_FILENAME);
+		locations.push_back("/Library/Frameworks/synfig.framework/Resources/" MODULE_LIST_FILENAME);
+		locations.push_back("/Library/Synfig/" MODULE_LIST_FILENAME);
 		if(getenv("HOME"))
 			locations.push_back(strprintf("%s/Library/Synfig/%s", getenv("HOME"), MODULE_LIST_FILENAME));
 	#endif
 	#ifdef WIN32
-		locations.push_back("C:\\Program Files\\Synfig\\etc\\"MODULE_LIST_FILENAME);
+		locations.push_back("C:\\Program Files\\Synfig\\etc\\" MODULE_LIST_FILENAME);
 	#endif
 	}
 

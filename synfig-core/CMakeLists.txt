@@ -13,11 +13,6 @@ set(SYNFIG_CORE_INCLUDE_PATH ${SYNFIG_CORE_PREFIX}/include)
 set(SYNFIG_MODULES_DIR ${SYNFIG_CORE_PREFIX}/etc)
 
 configure_file(synfig.pc.in synfig.pc @ONLY)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/synfig.pc DESTINATION ${ETL_PREFIX}/lib/pkgconfig)
-
-# generated header
-configure_file(synfig.pc.in synfig.pc @ONLY)
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/config.h DESTINATION ${SYNFIG_CORE_INCLUDE_PATH}/pkgconfig)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/synfig.pc DESTINATION lib/pkgconfig)
 
 add_subdirectory(src)
