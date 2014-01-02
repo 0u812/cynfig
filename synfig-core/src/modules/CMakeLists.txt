@@ -36,18 +36,18 @@ if(WITH_FREETYPE2)
     add_subdirectory(lyr_freetype)
 endif()
 
-# add_subdirectory(lyr_std)
-# 
-# if(WITH_MNG)
-#     add_subdirectory(mod_mng)
-# endif()
-# 
-# # add_subdirectory(mod_svg)
-# 
-# if(WITH_MAGICKPP)
-#     add_subdirectory(mod_magickpp)
-# endif()
-# 
-# add_subdirectory(mod_example)
+add_subdirectory(lyr_std)
+
+if(WITH_MNG)
+    add_subdirectory(mod_mng)
+endif()
+
+add_subdirectory(mod_svg)
+
+if(WITH_MAGICKPP)
+    add_subdirectory(mod_magickpp)
+endif()
+
+add_subdirectory(mod_example)
 
 install(FILES synfig_modules.cfg DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
