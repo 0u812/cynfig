@@ -8,5 +8,5 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${ETL_INCLUDE_PATH})
 
 add_subdirectory(synfig)
-# add_subdirectory(modules)
+add_subdirectory(modules)
 # add_subdirectory(tool)

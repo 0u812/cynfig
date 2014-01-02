@@ -593,7 +593,7 @@ Plant::draw_particles(Surface *dest_surface, const RendDesc &renddesc)const
 	const Real pw = (br[0] - tl[0]) / w;
 	const Real ph = (br[1] - tl[1]) / h;
 	
-	if (isinf(pw) || isinf(ph))
+	if (std::isinf(pw) || std::isinf(ph))
 		return;
 	
 	if (particle_list.begin() != particle_list.end())
