@@ -32,6 +32,7 @@
 #include "module.h"
 #include "general.h"
 #include <ETL/stringf>
+#include <boost/filesystem.hpp>
 
 #include <Poco/SharedLibrary.h>
 
@@ -44,6 +45,8 @@
 using namespace std;
 using namespace etl;
 using namespace synfig;
+
+namespace fs = boost::filesystem;
 
 Module::Book *synfig::Module::book_;
 Module::ModulePaths synfig::Module::modpaths_;
@@ -114,17 +117,20 @@ synfig::Module::Register(Module::Handle mod)
 }
 
 Poco::SharedLibrary&
-synfig::Module::loadModule(const std::string& module_name) {
+synfig::Module::loadModule(const std::string& module_name, ProgressCallback *callback) {
     ModulePaths paths = generatePaths(module_name);
     Poco::SharedLibrary* module = new Poco::SharedLibrary();
     
     for(const ModulePath& p : paths) {
         try {
-            std::cerr << "Trying " << p << "\n";
+//             std::cerr << "Trying " << p << "\n";
             module->load(p);
             modules_.push_back(module);
             return *module;
-        } catch(Poco::LibraryLoadException) {}
+        } catch(Poco::LibraryLoadException e) {
+            if(fs::exists(fs::path(p)) && !fs::is_directory(p))
+                if(callback)callback->warning(std::string("module \"") + module_name + "\" exists but cannot be loaded, message: " + e.message());
+        }
     }
     
 //     throw std::runtime_error("Failed to load " + module_name);
@@ -148,7 +154,7 @@ synfig::Module::Register(const String &module_name, ProgressCallback *callback)
 	if(callback)callback->task(std::string("Attempting to register \"") + module_name + "\"");
     
     try {
-        Poco::SharedLibrary& module = loadModule(module_name);
+        Poco::SharedLibrary& module = loadModule(module_name, callback);
         
         if(callback)callback->task(std::string("Found module \"") + module_name + "\"");
 

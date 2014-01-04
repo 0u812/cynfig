@@ -214,7 +214,7 @@ private:
     static std::vector<Poco::SharedLibrary*> modules_;
     
     //! Loads the given module if successful, throws std::runtime_error if not
-    static Poco::SharedLibrary& loadModule(const std::string& module_name);
+    static Poco::SharedLibrary& loadModule(const std::string& module_name, ProgressCallback *callback);
     //! Generates all possible paths for the module: (modpath)/[lib]module_name
     static ModulePaths generatePaths(const std::string& module_name);
 public:

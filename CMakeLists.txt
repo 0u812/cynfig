@@ -293,7 +293,7 @@ set(Boost_USE_STATIC_RUNTIME OFF)
 
 set(BOOST_ROOT "" CACHE PATH "Path to Boost installation")
 set(BOOST_VERSION "1.54" CACHE STRING "Which version of Boost to use")
-find_package(Boost ${BOOST_VERSION} REQUIRED COMPONENTS program_options)
+find_package(Boost ${BOOST_VERSION} REQUIRED COMPONENTS program_options filesystem)
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
 endif()
