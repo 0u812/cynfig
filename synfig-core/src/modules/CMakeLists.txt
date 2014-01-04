@@ -50,4 +50,4 @@ endif()
 
 add_subdirectory(mod_example)
 
-install(FILES synfig_modules.cfg DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+install(FILES synfig_modules.cfg DESTINATION ${SYNFIG_MODULES_DIR})

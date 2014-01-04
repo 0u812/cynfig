@@ -16,5 +16,5 @@ set(SYF_TOOL_SOURCES
     main.cpp)
 
 add_executable(synfigctl ${SYF_TOOL_SOURCES})
-
 target_link_libraries(synfigctl synfig ${SYNFIG_CORE_REQUIRED_LIBRARIES} ${Boost_LIBRARIES})
+install(TARGETS synfigctl DESTINATION bin)

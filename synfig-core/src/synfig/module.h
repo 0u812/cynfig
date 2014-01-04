@@ -181,6 +181,11 @@ namespace synfig {
 
 class ProgressCallback;
 
+class moduleLoadException : public std::exception {
+    public:
+        
+};
+
 /*!	\class Module
 **	\todo writeme
 */
@@ -206,10 +211,10 @@ private:
     typedef std::vector<ModulePath> ModulePaths;
     // Module search paths
     static ModulePaths modpaths_;
-    static Poco::SharedLibrary module_;
+    static std::vector<Poco::SharedLibrary*> modules_;
     
     //! Loads the given module if successful, throws std::runtime_error if not
-    static void loadModule(const std::string& module_name);
+    static Poco::SharedLibrary& loadModule(const std::string& module_name);
     //! Generates all possible paths for the module: (modpath)/[lib]module_name
     static ModulePaths generatePaths(const std::string& module_name);
 public:

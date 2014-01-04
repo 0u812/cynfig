@@ -47,7 +47,7 @@ using namespace synfig;
 
 Module::Book *synfig::Module::book_;
 Module::ModulePaths synfig::Module::modpaths_;
-Poco::SharedLibrary synfig::Module::module_;
+std::vector<Poco::SharedLibrary*> synfig::Module::modules_;
 
 /* === P R O C E D U R E S ================================================= */
 
@@ -82,8 +82,10 @@ Module::subsys_stop()
 {
 	delete book_;
 
-    if(module_.isLoaded())
-        module_.unload();
+    for(Poco::SharedLibrary* module : modules_) {
+        module->unload();
+        delete module;
+    }
     
 	return true;
 }
@@ -111,26 +113,30 @@ synfig::Module::Register(Module::Handle mod)
 	book()[mod->Name()]=mod;
 }
 
-void
+Poco::SharedLibrary&
 synfig::Module::loadModule(const std::string& module_name) {
     ModulePaths paths = generatePaths(module_name);
+    Poco::SharedLibrary* module = new Poco::SharedLibrary();
     
     for(const ModulePath& p : paths) {
         try {
-            module_.load(p);
-            return;
+            std::cerr << "Trying " << p << "\n";
+            module->load(p);
+            modules_.push_back(module);
+            return *module;
         } catch(Poco::LibraryLoadException) {}
     }
     
-    throw std::runtime_error("Failed to load " + module_name);
+//     throw std::runtime_error("Failed to load " + module_name);
+    throw moduleLoadException();
 }
 
 synfig::Module::ModulePaths
 synfig::Module::generatePaths(const std::string& module_name) {
     ModulePaths paths;
     for(const ModulePath& p : modpaths_) {
-        paths.emplace_back(p+module_name);
-        paths.emplace_back(p+"lib"+module_name);
+        paths.emplace_back(p+ETL_DIRECTORY_SEPARATOR+module_name+".so");
+        paths.emplace_back(p+ETL_DIRECTORY_SEPARATOR+"lib"+module_name+".so");
     }
     return paths;
 }
@@ -138,75 +144,77 @@ synfig::Module::generatePaths(const std::string& module_name) {
 bool
 synfig::Module::Register(const String &module_name, ProgressCallback *callback)
 {
+//     std::cout << std::string("Attempting to register \"") + module_name + "\"\n";
 	if(callback)callback->task(std::string("Attempting to register \"") + module_name + "\"");
     
     try {
-        loadModule(module_name);
-    } catch(std::runtime_error) {
+        Poco::SharedLibrary& module = loadModule(module_name);
+        
+        if(callback)callback->task(std::string("Found module \"") + module_name + "\"");
+
+        Module::constructor_type constructor=nullptr;
+        Handle mod;
+
+        if(!constructor)
+        {
+    //		if(callback)callback->task(string("looking for -> ")+module_name+"_LTX_new_instance()");
+            try {
+                constructor=(Module::constructor_type )module.getSymbol(module_name+"_LTX_new_instance");
+            } catch(Poco::NotFoundException) {constructor = nullptr;}
+        }
+        
+        if(!constructor)
+        {
+    //		if(callback)callback->task(string("looking for -> lib")+module_name+"_LTX_new_instance()");
+            try {
+                constructor=(Module::constructor_type )module.getSymbol(std::string("lib")+module_name+"_LTX_new_instance");
+            } catch(Poco::NotFoundException) {constructor = nullptr;}
+        }
+        if(!constructor)
+        {
+//             if(callback)callback->task(string("looking for -> _lib")+module_name+"_LTX_new_instance()");
+            try {
+                constructor=(Module::constructor_type )module.getSymbol(std::string("_lib")+module_name+"_LTX_new_instance");
+            } catch(Poco::NotFoundException) {constructor = nullptr;}
+        }
+        if(!constructor)
+        {
+    //		if(callback)callback->task(string("looking for -> _")+module_name+"_LTX_new_instance()");
+            try {
+                constructor=(Module::constructor_type )module.getSymbol(std::string("_")+module_name+"_LTX_new_instance");
+            } catch(Poco::NotFoundException) {constructor = nullptr;}
+        }
+        
+        if(constructor)
+        {
+    //		if(callback)callback->task(strprintf("Executing callback for \"%s\"",module_name);
+            mod=handle<Module>((*constructor)(callback));
+        }
+        else
+        {
+            if(callback)callback->error(std::string("Unable to find entrypoint in module \"") + module_name + "\"");
+            return false;
+        }
+        
+    //	if(callback)callback->task(strprintf("Done executing callback for \"%s\"",module_name);
+
+        if(mod)
+        {
+    //		if(callback)callback->task(strprintf("Registering \"%s\"",module_name);
+            Register(mod);
+        }
+        else
+        {
+            if(callback)callback->error(_("Entrypoint did not return a module."));
+            return false;
+        }
+        
+        if(callback)callback->task(std::string("Success for \"") + module_name + "\"");
+        
+        return true;
+        
+    } catch(moduleLoadException) {
         if(callback)callback->warning(std::string("Unable to find module \"") + module_name + "\"");
         return false;
     }
-
-	if(callback)callback->task(std::string("Found module \"") + module_name + "\"");
-
-	Module::constructor_type constructor=nullptr;
-	Handle mod;
-
-	if(!constructor)
-	{
-//		if(callback)callback->task(string("looking for -> ")+module_name+"_LTX_new_instance()");
-        try {
-            constructor=(Module::constructor_type )module_.getSymbol(module_name+"_LTX_new_instance");
-        } catch(Poco::NotFoundException) {constructor = nullptr;}
-	}
-
-	if(!constructor)
-	{
-//		if(callback)callback->task(string("looking for -> lib")+module_name+"_LTX_new_instance()");
-        try {
-            constructor=(Module::constructor_type )module_.getSymbol(std::string("lib")+module_name+"_LTX_new_instance");
-        } catch(Poco::NotFoundException) {constructor = nullptr;}
-	}
-	if(!constructor)
-	{
-//		if(callback)callback->task(string("looking for -> _lib")+module_name+"_LTX_new_instance()");
-        try {
-            constructor=(Module::constructor_type )module_.getSymbol(std::string("_lib")+module_name+"_LTX_new_instance");
-        } catch(Poco::NotFoundException) {constructor = nullptr;}
-	}
-	if(!constructor)
-	{
-//		if(callback)callback->task(string("looking for -> _")+module_name+"_LTX_new_instance()");
-        try {
-            constructor=(Module::constructor_type )module_.getSymbol(std::string("_")+module_name+"_LTX_new_instance");
-        } catch(Poco::NotFoundException) {constructor = nullptr;}
-	}
-
-	if(constructor)
-	{
-//		if(callback)callback->task(strprintf("Executing callback for \"%s\"",module_name);
-		mod=handle<Module>((*constructor)(callback));
-	}
-	else
-	{
-		if(callback)callback->error(std::string("Unable to find entrypoint in module \"") + module_name + "\"");
-		return false;
-	}
-
-//	if(callback)callback->task(strprintf("Done executing callback for \"%s\"",module_name);
-
-	if(mod)
-	{
-//		if(callback)callback->task(strprintf("Registering \"%s\"",module_name);
-		Register(mod);
-	}
-	else
-	{
-		if(callback)callback->error(_("Entrypoint did not return a module."));
-		return false;
-    }
-
-	if(callback)callback->task(std::string("Success for \"") + module_name + "\"");
-    
-	return true;
 }
