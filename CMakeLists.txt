@@ -1,6 +1,12 @@
 cmake_minimum_required (VERSION 2.8.9)
 project(Synfig)
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
+
+set(SYNFIG_MAJOR "0")
+set(SYNFIG_MINOR "65")
+set(SYNFIG_PATCH "0")
+
 find_package(PkgConfig)
 
 set(SKIP_PLATFORM_TESTS 0 CACHE BOOL "Skip all tests that require compiling code (useful for cross-compiling)")
@@ -26,8 +32,28 @@ else()
     set(SYNFIG_PROFILE_LAYERS 0)
 endif()
 
+set(ENABLE_FULL_RPATH 1 CACHE BOOL "Adds installation RPATH to executables so setting LD_LIBRARY_PATH is not required")
+if(ENABLE_FULL_RPATH) #http://www.cmake.org/Wiki/CMake_RPATH_handling
+    SET(CMAKE_SKIP_BUILD_RPATH  FALSE)
+    
+    SET(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE) 
+    
+    SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+    
+    SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+    
+    LIST(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${CMAKE_INSTALL_PREFIX}/lib" isSystemDir)
+    IF("${isSystemDir}" STREQUAL "-1")
+        SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+    ENDIF("${isSystemDir}" STREQUAL "-1")
+endif()
+
+set(ETL_INCLUDE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/ETL)
+
 set(ENABLE_SYNFIG_CORE 1 CACHE BOOL "Enable Synfig Core")
 if(ENABLE_SYNFIG_CORE)
+    set(SYNFIG_CORE_INCLUDE_PATHS "")
+    
     # libz
     set(WITH_ZLIB 1 CACHE BOOL "Use zlib")
     set(ZLIB_PATH "" CACHE PATH "Path to zlib")
@@ -39,7 +65,7 @@ if(ENABLE_SYNFIG_CORE)
         endif()
         find_path(ZLIB_INCLUDE zlib.h
             HINTS ${ZLIB_PATH}/include)
-        include_directories(${ZLIB_INCLUDE})
+        list(APPEND SYNFIG_CORE_INCLUDE_PATHS ${ZLIB_INCLUDE})
     endif()
 
     # imagemagick
@@ -68,7 +94,7 @@ if(ENABLE_SYNFIG_CORE)
         find_path(MAGICKPP_INCLUDE Magick++.h
             HINTS ${PC_MAGICKPP_INCLUDEDIR} ${PC_MAGICKPP_INCLUDE_DIRS}
             )
-        include_directories(${MAGICKPP_INCLUDE})
+        list(APPEND SYNFIG_CORE_INCLUDE_PATHS ${MAGICKPP_INCLUDE})
     endif()
 
     # ffmpeg
@@ -94,7 +120,7 @@ if(ENABLE_SYNFIG_CORE)
         find_path(LIBDV_INCLUDE libdv/dv.h
             HINTS ${PC_LIBDV_INCLUDEDIR} ${PC_LIBDV_INCLUDE_DIRS}
             PATH_SUFFIXES libdv)
-        include_directories(${LIBDV_INCLUDE})
+        list(APPEND SYNFIG_CORE_INCLUDE_PATHS ${LIBDV_INCLUDE})
     endif()
 
     include(CheckIncludeFiles)
@@ -129,15 +155,15 @@ if(ENABLE_SYNFIG_CORE)
         find_path(LIBAVCODEC_INCLUDE libavcodec/avcodec.h
             HINTS ${PC_LIBAVCODEC_INCLUDEDIR} ${PC_LIBAVCODEC_INCLUDE_DIRS}
             PATH_SUFFIXES libavcodec)
-        include_directories(${LIBAVCODEC_INCLUDE})
+        list(APPEND SYNFIG_CORE_INCLUDE_PATHS ${LIBAVCODEC_INCLUDE})
         find_path(LIBAVFORMAT_INCLUDE libavformat/avformat.h
             HINTS ${PC_LIBAVFORMAT_INCLUDEDIR} ${PC_LIBAVFORMAT_INCLUDE_DIRS}
             PATH_SUFFIXES libavformat)
-        include_directories(${LIBAVFORMAT_INCLUDE})
+        list(APPEND SYNFIG_CORE_INCLUDE_PATHS ${LIBAVFORMAT_INCLUDE})
         find_path(LIBSWSCALE_INCLUDE libswscale/swscale.h
             HINTS ${PC_LIBSWSCALE_INCLUDEDIR} ${PC_LIBSWSCALE_INCLUDE_DIRS}
             PATH_SUFFIXES libswscale)
-        include_directories(${LIBSWSCALE_INCLUDE})
+        list(APPEND SYNFIG_CORE_INCLUDE_PATHS ${LIBSWSCALE_INCLUDE})
         
         # header checks - try to compile test code using the respective headers
         if(NOT SKIP_PLATFORM_TESTS)
@@ -168,7 +194,7 @@ if(ENABLE_SYNFIG_CORE)
         find_path(FREETYPE2_INCLUDE freetype/freetype.h
             HINTS ${PC_FREETYPE2_INCLUDEDIR} ${PC_FREETYPE2_INCLUDE_DIRS}
             PATH_SUFFIXES freetype)
-        include_directories(${FREETYPE2_INCLUDE})
+        list(APPEND SYNFIG_CORE_INCLUDE_PATHS ${FREETYPE2_INCLUDE})
     endif()
 
     # fontconfig
@@ -184,7 +210,7 @@ if(ENABLE_SYNFIG_CORE)
         find_path(FONTCONFIG_INCLUDE fontconfig/fontconfig.h
             HINTS ${PC_FONTCONFIG_INCLUDEDIR} ${PC_FONTCONFIG_INCLUDE_DIRS}
             PATH_SUFFIXES fontconfig)
-        include_directories(${FONTCONFIG_INCLUDE})
+        list(APPEND SYNFIG_CORE_INCLUDE_PATHS ${FONTCONFIG_INCLUDE})
         
         # add WITH_FONTCONFIG define to header
     endif()
@@ -214,10 +240,10 @@ if(ENABLE_SYNFIG_CORE)
         endif()
         find_path(OPENEXR_INCLUDE OpenEXRConfig.h
             HINTS ${PC_OPENEXR_INCLUDEDIR} ${PC_OPENEXR_INCLUDE_DIRS})
-        include_directories(${OPENEXR_INCLUDE})
+        list(APPEND SYNFIG_CORE_INCLUDE_PATHS ${OPENEXR_INCLUDE})
         find_path(OPENEXR_DRM_INCLUDE drm.h
             HINTS ${PC_OPENEXR_INCLUDEDIR} ${PC_OPENEXR_INCLUDE_DIRS})
-        include_directories(${OPENEXR_DRM_INCLUDE})
+        list(APPEND SYNFIG_CORE_INCLUDE_PATHS ${OPENEXR_DRM_INCLUDE})
         
         # add HAVE_OPENEXR define to header
     endif()
@@ -235,7 +261,7 @@ if(ENABLE_SYNFIG_CORE)
         HINTS ${PC_GLIBMM_LIBDIR} ${PC_GLIBMM_LIBRARY_DIRS})
     # need to use pkg-config's results for include dir directly
     # due to significant variability of paths
-    include_directories(${PC_GLIBMM_INCLUDE_DIRS})
+    list(APPEND SYNFIG_CORE_INCLUDE_PATHS ${PC_GLIBMM_INCLUDE_DIRS})
 
     # include(FindPackageHandleStandardArgs)
     # find_package_handle_standard_args(glibmm DEFAULT_MSG GLIBMM_LIBRARY)
@@ -246,7 +272,7 @@ if(ENABLE_SYNFIG_CORE)
         HINTS ${PC_GLIBMM_LIBDIR} ${PC_GLIBMM_LIBRARY_DIRS})
     find_path(GIOMM_INCLUDE giomm.h
         HINTS ${PC_GIOMM_INCLUDEDIR} ${PC_GIOMM_INCLUDE_DIRS})
-    include_directories(${GIOMM_INCLUDE})
+    list(APPEND SYNFIG_CORE_INCLUDE_PATHS ${GIOMM_INCLUDE})
 
     # libxml++
     pkg_check_modules(PC_LIBXMLPP REQUIRED libxml++-2.6)
@@ -256,7 +282,7 @@ if(ENABLE_SYNFIG_CORE)
         HINTS ${PC_LIBXMLPP_INCLUDEDIR} ${PC_LIBXMLPP_INCLUDE_DIRS}
         PATH_SUFFIXES libxml++)
     # too many dirs
-    include_directories(${PC_LIBXMLPP_INCLUDE_DIRS})
+    list(APPEND SYNFIG_CORE_INCLUDE_PATHS ${PC_LIBXMLPP_INCLUDE_DIRS})
 
     # Cairo
     pkg_check_modules(PC_CAIRO REQUIRED cairo>=1.12.0)
@@ -265,7 +291,7 @@ if(ENABLE_SYNFIG_CORE)
     find_path(CAIRO_INCLUDE cairo.h
         HINTS ${PC_CAIRO_INCLUDEDIR} ${PC_CAIRO_INCLUDE_DIRS}
         )
-    include_directories(${PC_CAIRO_INCLUDE_DIRS})
+    list(APPEND SYNFIG_CORE_INCLUDE_PATHS ${PC_CAIRO_INCLUDE_DIRS})
 
     # cairomm
     pkg_check_modules(PC_CAIROMM REQUIRED cairomm-1.0)
@@ -274,7 +300,7 @@ if(ENABLE_SYNFIG_CORE)
     find_path(CAIROMM_INCLUDE cairomm-1.0/cairomm.h
         HINTS ${PC_CAIROMM_INCLUDEDIR} ${PC_CAIROMM_INCLUDE_DIRS}
         PATH_SUFFIXES cairomm-1.0)
-    include_directories(${PC_CAIROMM_INCLUDE_DIRS})
+    list(APPEND SYNFIG_CORE_INCLUDE_PATHS ${PC_CAIROMM_INCLUDE_DIRS})
 
     # Pango
     pkg_check_modules(PC_PANGO REQUIRED pango)
@@ -285,7 +311,7 @@ if(ENABLE_SYNFIG_CORE)
     find_path(PANGO_INCLUDE pango/pango.h
         HINTS ${PC_PANGO_INCLUDEDIR} ${PC_PANGO_INCLUDE_DIRS}
         )
-    include_directories(${PC_PANGO_INCLUDE_DIRS})
+    list(APPEND SYNFIG_CORE_INCLUDE_PATHS ${PC_PANGO_INCLUDE_DIRS})
 
     # Boost
     # http://stackoverflow.com/questions/6646405/how-do-you-add-boost-libraries-in-cmakelists-txt
@@ -297,7 +323,7 @@ if(ENABLE_SYNFIG_CORE)
     set(BOOST_VERSION "1.54" CACHE STRING "Which version of Boost to use")
     find_package(Boost ${BOOST_VERSION} REQUIRED COMPONENTS program_options filesystem)
     if(Boost_FOUND)
-        include_directories(${Boost_INCLUDE_DIRS})
+        list(APPEND SYNFIG_CORE_INCLUDE_PATHS ${Boost_INCLUDE_DIRS})
     endif()
 
     # PNG
@@ -305,7 +331,7 @@ if(ENABLE_SYNFIG_CORE)
     set(PNG_PATH "" CACHE PATH "Path to libpng")
     if(WITH_PNG)
         pkg_check_modules(PC_PNG REQUIRED libpng>=1.4)
-        find_library(PNG_LIBRARY NAMES png14
+        find_library(PNG_LIBRARY NAMES png16
             HINTS ${PC_PNG_LIBDIR} ${PC_PNG_LIBRARY_DIRS})
             
         if(NOT PNG_LIBRARY)
@@ -313,7 +339,7 @@ if(ENABLE_SYNFIG_CORE)
                 HINTS ${PC_PNG_LIBDIR} ${PC_PNG_LIBRARY_DIRS})
         endif()
         if(NOT PNG_LIBRARY)
-            find_library(PNG_LIBRARY NAMES png16
+            find_library(PNG_LIBRARY NAMES png14
                 HINTS ${PC_PNG_LIBDIR} ${PC_PNG_LIBRARY_DIRS})
         endif()
         if(NOT PNG_LIBRARY)
@@ -321,7 +347,7 @@ if(ENABLE_SYNFIG_CORE)
         endif()
         find_path(PNG_INCLUDE png.h
             HINTS ${PC_PNG_INCLUDEDIR} ${PC_PNG_INCLUDE_DIRS})
-        include_directories(${PNG_INCLUDE})
+        list(APPEND SYNFIG_CORE_INCLUDE_PATHS ${PNG_INCLUDE})
         
         # add HAVE_LIBPNG14, HAVE_LIBPNG define to header
     endif()
@@ -334,7 +360,7 @@ if(ENABLE_SYNFIG_CORE)
         find_path(MNG_INCLUDE libmng.h
             HINTS ${MNG_PATH}/include)
         if(MNG_INCLUDE)
-            include_directories(${MNG_INCLUDE})
+            list(APPEND SYNFIG_CORE_INCLUDE_PATHS ${MNG_INCLUDE})
             set(WITH_MNG 1 CACHE BOOL "Use libmng")
         endif()
         # add HAVE_LIBMNG define to header
@@ -349,27 +375,9 @@ if(ENABLE_SYNFIG_CORE)
         find_path(POCO_INCLUDE Poco/SharedLibrary.h
             HINTS ${POCO_PATH}/include
             PATH_SUFFIXES Poco)
-        include_directories(${POCO_INCLUDE})
+        list(APPEND SYNFIG_CORE_INCLUDE_PATHS ${POCO_INCLUDE})
     else()
         message( SEND_ERROR "Failed to find Poco" )
-    endif()
-
-    set(ETL_INCLUDE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/ETL)
-
-    set(ENABLE_FULL_RPATH 1 CACHE BOOL "Adds installation RPATH to executables so setting LD_LIBRARY_PATH is not required")
-    if(ENABLE_FULL_RPATH) #http://www.cmake.org/Wiki/CMake_RPATH_handling
-        SET(CMAKE_SKIP_BUILD_RPATH  FALSE)
-        
-        SET(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE) 
-        
-        SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
-        
-        SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-        
-        LIST(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${CMAKE_INSTALL_PREFIX}/lib" isSystemDir)
-        IF("${isSystemDir}" STREQUAL "-1")
-            SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
-        ENDIF("${isSystemDir}" STREQUAL "-1")
     endif()
 
     set(SYNFIG_CORE_REQUIRED_LIBRARIES
@@ -386,6 +394,14 @@ if(ENABLE_SYNFIG_CORE)
 endif(ENABLE_SYNFIG_CORE)
 
 set(ENABLE_SYNFIG_STUDIO 1 CACHE BOOL "Enable Synfig Studio")
+if(ENABLE_SYNFIG_STUDIO)
+    # gtkmm
+#     set(GTKMM_PATH "" CACHE PATH "Path to gtkmm")
+#     pkg_check_modules(PC_GTKMM gtkmm-2.4)
+    # no prayer of a non-pkg-config solution
+    find_package(GTKmm REQUIRED)
+    # link with GTKmm_LIBRARIES
+    # include GTKmm_INCLUDE_DIRS
 endif(ENABLE_SYNFIG_STUDIO)
 
 add_subdirectory(ETL)
@@ -397,10 +413,10 @@ if(ENABLE_SYNFIG_STUDIO)
 endif()
 
 # http://stackoverflow.com/questions/9298278/cmake-print-out-all-accessible-variables-in-a-script
-# get_cmake_property(_variableNames VARIABLES)
-# foreach (_variableName ${_variableNames})
-#     message(STATUS "${_variableName}=${${_variableName}}")
-# endforeach()
+get_cmake_property(_variableNames VARIABLES)
+foreach (_variableName ${_variableNames})
+    message(STATUS "${_variableName}=${${_variableName}}")
+endforeach()
 
 message(STATUS "
 -------------------------------------------------------------------------------
@@ -521,4 +537,10 @@ if(POCO_FOUNDATION_LIBRARY)
     message( "    * Poco Includes               ${POCO_INCLUDE}")
 else()
     message( "  *** Poco                        *NOT FOUND")
+endif()
+if(Glibmm_FOUND)
+    message( "    * gtkmm                       ${GTKmm_LIBRARY}")
+    message( "    * gtkmm includes              ${GTKmm_INCLUDE_DIR}")
+else()
+    message( "  *** gtkmm                       *NOT FOUND")
 endif()
