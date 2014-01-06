@@ -11,7 +11,6 @@ set(ACTION_MANAGERS_CC
     actionmanagers/layeractionmanager.cpp)
 
 list( APPEND SYNFIG_STUDIO_REQUIRED_SRC
-    ${ACTION_MANAGERS_HH}
     ${ACTION_MANAGERS_CC})
 
 set(CELLRENDERER_HH
@@ -27,7 +26,6 @@ set(CELLRENDERER_CC
     cellrenderer/cellrenderer_value.cpp)
 
 list( APPEND SYNFIG_STUDIO_REQUIRED_SRC
-    ${CELLRENDERER_HH}
     ${CELLRENDERER_CC})
 
 set(DIALOGS_HH
@@ -57,7 +55,6 @@ set(DIALOGS_CC
     dialogs/dialog_waypoint.cpp)
 
 list( APPEND SYNFIG_STUDIO_REQUIRED_SRC
-    ${DIALOGS_HH}
     ${DIALOGS_CC})
 
 set(DIALS_HH
@@ -75,7 +72,6 @@ set(DIALS_CC
     dials/resolutiondial.cpp)
 
 list( APPEND SYNFIG_STUDIO_REQUIRED_SRC
-    ${DIALS_HH}
     ${DIALS_CC})
 
 set(DOCKS_HH
@@ -123,7 +119,6 @@ set(DOCKS_CC
     docks/dockmanager.cpp)
 
 list( APPEND SYNFIG_STUDIO_REQUIRED_SRC
-    ${DOCKS_HH}
     ${DOCKS_CC})
 
 set(PALETTE_HH
@@ -137,7 +132,6 @@ set(PALETTE_CC
     modules/mod_palette/mod_palette.cpp)
 
 list( APPEND SYNFIG_STUDIO_REQUIRED_SRC
-    ${PALETTE_HH}
     ${PALETTE_CC})
 
 list( APPEND SYNFIG_STUDIO_REQUIRED_SRC
@@ -187,7 +181,6 @@ set(STATES_CC
     states/state_zoom.cpp)
 
 list( APPEND SYNFIG_STUDIO_REQUIRED_SRC
-    ${STATES_HH}
     ${STATES_CC})
 
 set(TREEVIEW_HH
@@ -225,9 +218,7 @@ set(TREESTORE_CC
     trees/metadatatreestore.cpp)
 
 list( APPEND SYNFIG_STUDIO_REQUIRED_SRC
-    ${TREEVIEW_HH}
     ${TREEVIEW_CC}
-    ${TREESTORE_HH}
     ${TREESTORE_CC})
 
 set(WIDGETS_HH
@@ -273,7 +264,6 @@ set(WIDGETS_CC
     widgets/widget_bonechooser.cpp)
 
 list( APPEND SYNFIG_STUDIO_REQUIRED_SRC
-    ${WIDGETS_HH}
     ${WIDGETS_CC})
 
 set(WORKAREARENDERER_HH
@@ -301,8 +291,7 @@ set(WORKAREARENDERER_CC
     workarearenderer/workarearenderer.cpp)
 
 list( APPEND SYNFIG_STUDIO_REQUIRED_SRC
-    ${WORKAREARENDERER_CC}
-    ${WORKAREARENDERER_HH})
+    ${WORKAREARENDERER_CC})
 
     
 set(DUCKTRANSFORM_HH
@@ -374,6 +363,20 @@ set(OTHER_CC
     mainwindow.cpp)
     
 set(SYNFIG_STUDIO_SOURCES
-    ${}
+    ${SYNFIG_STUDIO_REQUIRED_SRC}
     ${DUCKTRANSFORM_CC}
     ${OTHER_CC})
+    
+# need the following flags:
+#     -DIMAGE_DIR=\"$(imagedir)\" \
+#     -DIMAGE_EXT=\"$(imageext)\" \
+#     -DPLUGIN_DIR=\"$(plugindir)\" \
+#     -DLOCALEDIR=\"${LOCALEDIR}\"
+    
+add_definitions(-DIMAGE_DIR=${SYNFIG_STUDIO_IMAGE_PATH})
+add_definitions(-DIMAGE_EXT=${SYNFIG_STUDIO_IMAGE_EXT})
+add_definitions(-DPLUGIN_DIR=${SYNFIG_STUDIO_PLUGIN_PATH})
+add_definitions(-DLOCALEDIR=${SYNFIG_STUDIO_LOCALE_PATH})
+    
+add_executable(synfigstudio ${SYNFIG_STUDIO_SOURCES})
+target_link_libraries(synfigstudio synfigapp)
