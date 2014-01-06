@@ -11,6 +11,6 @@ set(SYNFIG_STUDIO_BIN_PATH ${SYNFIG_STUDIO_PREFIX}/bin)
 set(SYNFIG_STUDIO_LIB_PATH ${SYNFIG_STUDIO_PREFIX}/lib)
 set(SYNFIG_STUDIO_INCLUDE_PATH ${SYNFIG_STUDIO_PREFIX}/include)
 
-include_directories(${GTKmm_INCLUDE_DIRS})
+include_directories(${SYNFIG_STUDIO_INCLUDE_PATHS})
 
-# add_subdirectory(src)
+add_subdirectory(src)

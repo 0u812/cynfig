@@ -391,10 +391,17 @@ if(ENABLE_SYNFIG_CORE)
         ${PANGO_LIBRARY}
         ${PANGOCAIRO_LIBRARY}
         ${POCO_FOUNDATION_LIBRARY})
+else()
+    set(ENABLE_SYNFIG_STUDIO 0 CACHE BOOL "Enable Synfig Studio")
 endif(ENABLE_SYNFIG_CORE)
 
 set(ENABLE_SYNFIG_STUDIO 1 CACHE BOOL "Enable Synfig Studio")
 if(ENABLE_SYNFIG_STUDIO)
+    if(NOT ENABLE_SYNFIG_CORE)
+        message( FATAL_ERROR "Must enable Synfig Core in order to enable Synfig Studio")
+    endif()
+    set(SYNFIG_STUDIO_INCLUDE_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/synfig-core/src)
+    list(APPEND SYNFIG_STUDIO_INCLUDE_PATHS ${PC_LIBXMLPP_INCLUDE_DIRS})
     # gtkmm
 #     set(GTKMM_PATH "" CACHE PATH "Path to gtkmm")
 #     pkg_check_modules(PC_GTKMM gtkmm-2.4)
@@ -402,6 +409,7 @@ if(ENABLE_SYNFIG_STUDIO)
     find_package(GTKmm REQUIRED)
     # link with GTKmm_LIBRARIES
     # include GTKmm_INCLUDE_DIRS
+    list(APPEND SYNFIG_STUDIO_INCLUDE_PATHS ${GTKmm_INCLUDE_DIRS})
 endif(ENABLE_SYNFIG_STUDIO)
 
 add_subdirectory(ETL)
