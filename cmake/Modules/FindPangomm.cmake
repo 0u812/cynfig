@@ -22,6 +22,14 @@ find_path(Pangomm_INCLUDE_DIR
   PATH_SUFFIXES pangomm-1.4
 )
 
+# Separate config header, which is in lib dir
+find_path(PangommConfig_INCLUDE_DIR
+  NAMES pangommconfig.h
+  PATHS ${Pangomm_PKGCONF_INCLUDE_DIRS} /usr
+  PATH_SUFFIXES lib/pangomm-1.4/include lib64/pangomm-1.4/include # RH systems use lib64
+)
+
+
 # Finally the library itself
 find_library(Pangomm_LIBRARY
   NAMES pangomm-1.4
@@ -30,7 +38,7 @@ find_library(Pangomm_LIBRARY
 
 # Set the include dir variables and the libraries and let libfind_process do the rest.
 # NOTE: Singular variables for this library, plural for libraries this this lib depends on.
-set(Pangomm_PROCESS_INCLUDES Pangomm_INCLUDE_DIR Pango_INCLUDE_DIRS Cairomm_INCLUDE_DIRS Glibmm_INCLUDE_DIRS)
+set(Pangomm_PROCESS_INCLUDES Pangomm_INCLUDE_DIR PangommConfig_INCLUDE_DIR Pango_INCLUDE_DIRS Cairomm_INCLUDE_DIRS Glibmm_INCLUDE_DIRS)
 set(Pangomm_PROCESS_LIBS Pangomm_LIBRARY Pango_LIBRARIES Cairomm_LIBRARIES Glibmm_LIBRARIES)
 libfind_process(Pangomm)
 

@@ -533,7 +533,7 @@ Widget_Curves::redraw(GdkEventExpose */*bleh*/)
 			min_channels=channels;
 	}
 	// and use it when sizing the points
-	vector<Gdk::Point> points[min_channels];
+	vector<Gdk::Point>* points = new vector<Gdk::Point>[min_channels]; // FIXME: remove unmanaged heap alloc
 
 	gc->set_function(Gdk::COPY);
 	gc->set_line_attributes(1,Gdk::LINE_SOLID,Gdk::CAP_BUTT,Gdk::JOIN_MITER);
@@ -618,6 +618,8 @@ Widget_Curves::redraw(GdkEventExpose */*bleh*/)
 			window->draw_layout(gc, 1, points[chan][0].get_y()+1, layout);
 		}
 	}
+	
+	delete points;
 
 	if(!curve_list_.empty())
 	{

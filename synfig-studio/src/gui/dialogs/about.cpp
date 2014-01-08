@@ -40,7 +40,7 @@
 #include <synfig/general.h>
 
 // This is generated at make time from .svn or .git/svn or autorevision.conf
-#include <autorevision.h>
+// #include <autorevision.h>
 
 #include "about.h"
 #include "app.h"
@@ -213,7 +213,7 @@ About::About()
 	imagepath+=ETL_DIRECTORY_SEPARATOR;
 
 	Gtk::Image *Logo = manage(new class Gtk::Image());
-	Logo->set(imagepath+"synfig_icon."IMAGE_EXT);
+	Logo->set(imagepath + "synfig_icon." IMAGE_EXT);
 	set_logo(Logo->get_pixbuf());
 
 #ifdef SHOW_EXTRA_INFO

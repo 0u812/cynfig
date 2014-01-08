@@ -9,4 +9,4 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${ETL_INCLUDE_PATH})
 
 add_subdirectory(synfigapp)
-# add_subdirectory(gui)
+add_subdirectory(gui)

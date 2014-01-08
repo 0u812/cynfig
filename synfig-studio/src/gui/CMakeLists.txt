@@ -1,3 +1,5 @@
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
 set(SYNFIG_STUDIO_REQUIRED_SRC main.cpp)
 
 set(ACTION_MANAGERS_HH
@@ -373,10 +375,12 @@ set(SYNFIG_STUDIO_SOURCES
 #     -DPLUGIN_DIR=\"$(plugindir)\" \
 #     -DLOCALEDIR=\"${LOCALEDIR}\"
     
-add_definitions(-DIMAGE_DIR=${SYNFIG_STUDIO_IMAGE_PATH})
-add_definitions(-DIMAGE_EXT=${SYNFIG_STUDIO_IMAGE_EXT})
-add_definitions(-DPLUGIN_DIR=${SYNFIG_STUDIO_PLUGIN_PATH})
-add_definitions(-DLOCALEDIR=${SYNFIG_STUDIO_LOCALE_PATH})
+add_definitions(-DIMAGE_DIR="${SYNFIG_STUDIO_IMAGE_PATH}")
+add_definitions(-DIMAGE_EXT="${SYNFIG_STUDIO_IMAGE_EXT}")
+add_definitions(-DPLUGIN_DIR="${SYNFIG_STUDIO_PLUGIN_PATH}")
+add_definitions(-DLOCALEDIR="${SYNFIG_STUDIO_LOCALE_PATH}")
     
 add_executable(synfigstudio ${SYNFIG_STUDIO_SOURCES})
 target_link_libraries(synfigstudio synfigapp)
+
+install(TARGETS synfigstudio DESTINATION bin)

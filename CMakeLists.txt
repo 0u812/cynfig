@@ -390,7 +390,8 @@ if(ENABLE_SYNFIG_CORE)
         ${CAIROMM_LIBRARY}
         ${PANGO_LIBRARY}
         ${PANGOCAIRO_LIBRARY}
-        ${POCO_FOUNDATION_LIBRARY})
+        ${POCO_FOUNDATION_LIBRARY}
+        ${Boost_LIBRARIES})
 else()
     set(ENABLE_SYNFIG_STUDIO 0 CACHE BOOL "Enable Synfig Studio")
 endif(ENABLE_SYNFIG_CORE)
