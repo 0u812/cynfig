@@ -50,7 +50,7 @@
 #define SYNFIG_LIBRARY_VERSION	47
 
 /*! \writeme */
-#define SYNFIG_CHECK_VERSION()	synfig::check_version_(SYNFIG_LIBRARY_VERSION,sizeof(synfig::Vector),sizeof(synfig::Color),sizeof(synfig::Canvas),sizeof(synfig::Layer))
+#define SYNFIG_CHECK_VERSION()	synfig::check_version_(SYNFIG_LIBRARY_VERSION,sizeof(synfig::Vector),sizeof(synfig::Color),sizeof(synfig::Node),sizeof(synfig::Canvas),sizeof(synfig::Layer))
 
 /* === C L A S S E S & S T R U C T S ======================================= */
 
@@ -62,7 +62,7 @@ namespace synfig {
 **	was compiled against.
 **	\see SYNFIG_CHECK_VERSION()
 */
-extern bool check_version_(int v,int vec_size, int color_size,int canvas_size,int layer_size);
+extern bool check_version_(int v,int vec_size, int color_size,int node_size,int canvas_size,int layer_size);
 
 extern const char *get_version();
 

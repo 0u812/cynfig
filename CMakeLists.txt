@@ -380,6 +380,7 @@ if(ENABLE_SYNFIG_CORE)
         message( SEND_ERROR "Failed to find Poco" )
     endif()
 
+    # FIXME: add pthread to synfig-core & synfig-studio
     set(SYNFIG_CORE_REQUIRED_LIBRARIES
         ${GOBJECT_LIBRARY}
         ${SIGC_LIBRARY}

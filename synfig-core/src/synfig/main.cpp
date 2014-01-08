@@ -109,7 +109,7 @@ synfig::get_build_date()
 }
 
 bool
-synfig::check_version_(int version,int vec_size, int color_size,int canvas_size,int layer_size)
+synfig::check_version_(int version,int vec_size, int color_size, int node_size, int canvas_size,int layer_size)
 {
 	bool ret=true;
 
@@ -128,6 +128,11 @@ synfig::check_version_(int version,int vec_size, int color_size,int canvas_size,
 		synfig::error(_("Size of Color mismatch (app:%d, lib:%d)"),color_size,sizeof(Color));
 		ret=false;
 	}
+    if(node_size!=sizeof(Node))
+    {
+        synfig::error(_("Size of Node mismatch (app:%d, lib:%d, sigc::signal<void>: %d, RWLock: %d, etl::rshared_object: %d)"),node_size,sizeof(Node),sizeof(sigc::signal<void>), sizeof(RWLock), sizeof(etl::rshared_object));
+        ret=false;
+    }
 	if(canvas_size!=sizeof(Canvas))
 	{
 		synfig::error(_("Size of Canvas mismatch (app:%d, lib:%d)"),canvas_size,sizeof(Canvas));

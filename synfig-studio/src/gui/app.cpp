@@ -1296,6 +1296,9 @@ App::App(const synfig::String& basepath, int *argc, char ***argv):
 
 	if(!SYNFIG_CHECK_VERSION())
 	{
+        cerr<< "sigc::signal<void>: " << sizeof(sigc::signal<void>) << "\n";
+        cerr<< "RWLock: " << sizeof(RWLock) << "\n";
+        cerr<< "etl::rshared_object: " << sizeof(etl::rshared_object) << "\n";
 		cerr<<"FATAL: Synfig Version Mismatch"<<endl;
 		dialog_error_blocking("Synfig Studio",
 			"This copy of Synfig Studio was compiled against a\n"
