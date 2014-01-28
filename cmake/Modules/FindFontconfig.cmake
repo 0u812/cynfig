@@ -10,11 +10,12 @@
 
 include(LibFindMacros)
 
-libfind_pkg_check_modules(Fontconfig_PKGCONF Fontconfig)
+libfind_pkg_check_modules(Fontconfig_PKGCONF fontconfig)
 
 find_path(Fontconfig_INCLUDE_DIR
   NAMES fontconfig/fontconfig.h
   PATHS ${Fontconfig_PKGCONF_INCLUDE_DIRS}
+  PATH_SUFFIXES fontconfig
 )
 
 find_library(Fontconfig_LIBRARY

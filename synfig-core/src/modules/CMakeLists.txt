@@ -50,4 +50,7 @@ endif()
 
 add_subdirectory(mod_example)
 
+# So the tool can generate the images/icons online
+configure_file(synfig_modules.cfg ${CMAKE_CURRENT_BINARY_DIR}/../tool/synfig_modules.cfg COPYONLY)
+# Actually install the modules config
 install(FILES synfig_modules.cfg DESTINATION ${SYNFIG_MODULES_DIR})

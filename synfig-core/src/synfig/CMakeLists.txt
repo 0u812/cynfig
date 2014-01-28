@@ -322,7 +322,7 @@ if(WITH_ZLIB)
     target_link_libraries(synfig ${LIBZ_LIBRARY})
 endif()
 if(WITH_MAGICKPP)
-    target_link_libraries(synfig ${MAGICKPP_LIBRARY})
+    target_link_libraries(synfig ${ImageMagickpp_LIBRARY})
 endif()
 
 target_link_libraries(synfig ${SYNFIG_CORE_REQUIRED_LIBRARIES})
