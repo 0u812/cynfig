@@ -17,15 +17,26 @@ find_path(Freetype_INCLUDE_DIR
   PATH_SUFFIXES freetype2
 )
 
+if(SYNFIG_WINDOWS_TARGET)
+    # Need ft2build.h
+    # message(STATUS "Searching ${Freetype_PKGCONF_INCLUDE_DIRS} for ft2build.h")
+    find_path(FreetypeBuild_INCLUDE_DIR
+      NAMES ft2build.h
+      PATHS ${Freetype_PKGCONF_INCLUDE_DIRS}
+    )
+endif()
+
 # Finally the library itself
-find_library(Freetype_LIBRARY
-  NAMES freetype
-  PATHS ${Freetype_PKGCONF_LIBRARY_DIRS}
-)
+if(NOT SYNFIG_WINDOWS_TARGET)
+    find_library(Freetype_LIBRARY
+      NAMES freetype
+      PATHS ${Freetype_PKGCONF_LIBRARY_DIRS}
+    )
+endif()
 
 # Set the include dir variables and the libraries and let libfind_process do the rest.
 # NOTE: Singular variables for this library, plural for libraries this this lib depends on.
-set(Freetype_PROCESS_INCLUDES Freetype_INCLUDE_DIR)
-set(Freetype_PROCESS_LIBS Freetype_LIBRARY)
+set(Freetype_PROCESS_INCLUDES Freetype_INCLUDE_DIR FreetypeBuild_INCLUDE_DIR)
+# set(Freetype_PROCESS_LIBS Freetype_LIBRARY)
 libfind_process(Freetype)
 

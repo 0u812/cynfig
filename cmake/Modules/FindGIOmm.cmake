@@ -23,7 +23,7 @@ find_path(GIOmm_INCLUDE_DIR
 
 # Finally the library itself
 find_library(GIOmm_LIBRARY
-  NAMES giomm-2.4
+  NAMES giomm-2.4 giomm${SYNFIG_MSVS_STAMP}-2_4
   PATHS ${GIOmm_PKGCONF_LIBRARY_DIRS}
 )
 

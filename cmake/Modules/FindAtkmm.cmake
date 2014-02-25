@@ -23,7 +23,7 @@ find_path(Atkmm_INCLUDE_DIR
 
 # Finally the library itself
 find_library(Atkmm_LIBRARY
-  NAMES atkmm-1.6
+  NAMES atkmm-1.6 atkmm${SYNFIG_MSVS_STAMP}-1_6
   PATHS ${Atkmm_PKGCONF_LIBRARY_DIRS}
 )
 

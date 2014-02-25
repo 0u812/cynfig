@@ -32,7 +32,7 @@ find_path(PangommConfig_INCLUDE_DIR
 
 # Finally the library itself
 find_library(Pangomm_LIBRARY
-  NAMES pangomm-1.4
+  NAMES pangomm-1.4 pangomm${SYNFIG_MSVS_STAMP}-1_4
   PATHS ${Pangomm_PKGCONF_LIBRARY_DIRS}
 )
 

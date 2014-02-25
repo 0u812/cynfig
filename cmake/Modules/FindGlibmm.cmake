@@ -30,7 +30,7 @@ find_path(GlibmmConfig_INCLUDE_DIR
 
 # Finally the library itself
 find_library(Glibmm_LIBRARY
-  NAMES glibmm-2.4
+  NAMES glibmm-2.4 glibmm${SYNFIG_MSVS_STAMP}-2_4
   PATHS ${Glibmm_PKGCONF_LIBRARY_DIRS}
 )
 

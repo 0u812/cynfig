@@ -32,7 +32,7 @@ find_path(GDKmmConfig_INCLUDE_DIR
 
 # Finally the library itself
 find_library(GDKmm_LIBRARY
-  NAMES gdkmm-2.4
+  NAMES gdkmm-2.4 gdkmm${SYNFIG_MSVS_STAMP}-2_4
   PATHS ${GDKmm_PKGCONF_LIBRARY_DIRS}
 )
 

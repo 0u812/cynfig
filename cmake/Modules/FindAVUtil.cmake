@@ -15,9 +15,11 @@ libfind_pkg_check_modules(AVUtil_PKGCONF libavutil)
 
 find_path(AVUtil_INCLUDE_DIR
   NAMES libavutil/avutil.h ffmpeg/avutil.h avutil.h
-  PATHS ${AVUtil_PKGCONF_INCLUDE_DIRS}
-  PATH_SUFFIXES ffmpeg
+  PATHS ${AVUtil_PKGCONF_INCLUDE_DIRS} ${AVUTIL_PATH}/include
+  PATH_SUFFIXES ffmpeg libavutil
 )
+
+message(STATUS "AVUtil_INCLUDE_DIR: ${AVUtil_INCLUDE_DIR}")
 
 if(AVUtil_INCLUDE_DIR)
   foreach(suffix libavutil/ ffmpeg/ "")
@@ -35,8 +37,10 @@ endif(AVUtil_INCLUDE_DIR)
 
 find_library(AVUtil_LIBRARY
   NAMES libavutil.dll.a avutil
-  PATHS ${AVUtil_PKGCONF_LIBRARY_DIRS}
+  PATHS ${AVUtil_PKGCONF_LIBRARY_DIRS} ${AVUTIL_PATH}/lib
 )
+
+# message(STATUS "AVUtil_LIBRARY: ${AVUtil_INCLUDE_DIR}")
 
 set(AVUtil_PROCESS_INCLUDES AVUtil_INCLUDE_DIR)
 set(AVUtil_PROCESS_LIBS AVUtil_LIBRARY)

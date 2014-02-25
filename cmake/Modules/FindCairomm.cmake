@@ -22,7 +22,7 @@ find_path(Cairomm_INCLUDE_DIR
 
 # Finally the library itself
 find_library(Cairomm_LIBRARY
-  NAMES cairomm-1.0
+  NAMES cairomm-1.0 cairomm${SYNFIG_MSVS_STAMP}-1_0
   PATHS ${Cairomm_PKGCONF_LIBRARY_DIRS}
 )
 

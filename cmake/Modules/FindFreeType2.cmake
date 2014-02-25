@@ -10,14 +10,14 @@
 
 include(LibFindMacros)
 
-pkg_check_modules(PC_FREETYPE2 REQUIRED freetype2)
-pkg_check_modules(PC_FREETYPE2 REQUIRED xft)
+# pkg_check_modules(PC_FREETYPE2 REQUIRED freetype2)
+# pkg_check_modules(PC_FREETYPE2 REQUIRED xft)
 
-find_library(FreeType2_LIBRARY NAMES freetype
-    HINTS ${PC_FREETYPE2_LIBDIR} ${PC_FREETYPE2_LIBRARY_DIRS})
+find_library(FreeType2_LIBRARY NAMES freetype libfreetype
+    HINTS ${PC_FREETYPE2_LIBDIR} ${PC_FREETYPE2_LIBRARY_DIRS} ${FREETYPE2_PATH}/lib)
 
 find_path(FreeType2_INCLUDE_DIR freetype/freetype.h
-    HINTS ${PC_FREETYPE2_INCLUDEDIR} ${PC_FREETYPE2_INCLUDE_DIRS}
+    HINTS ${PC_FREETYPE2_INCLUDEDIR} ${PC_FREETYPE2_INCLUDE_DIRS} ${FREETYPE2_PATH}/include/freetype2
     PATH_SUFFIXES freetype)
 
 set(FreeType2_PROCESS_INCLUDES FreeType2_INCLUDE_DIR)

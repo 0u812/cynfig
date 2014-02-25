@@ -27,7 +27,7 @@ set(SYNFIG_IMAGES "")
 macro (add_image sif time output)
     add_custom_command(OUTPUT ${output}.png COMMAND synfig -q ${SYNFIG_SOURCE_IMAGES_DIR}/${sif}.sif -o ${output}.png --time ${time} DEPENDS siftool)
     list(APPEND SYNFIG_IMAGES ${output}.png)
-    install( FILES ${CMAKE_CURRENT_BINARY_DIR}/${output}.png DESTINATION data/pixmaps/synfigstudio)
+    install( FILES ${CMAKE_CURRENT_BINARY_DIR}/${output}.png DESTINATION ${SYNFIG_DATA_PATH}/pixmaps/synfigstudio)
 endmacro (add_image)
 
 set(IMAGES

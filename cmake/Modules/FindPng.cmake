@@ -10,16 +10,23 @@
 
 include(LibFindMacros)
 
-libfind_pkg_check_modules(Png_PKGCONF Png)
+libfind_pkg_check_modules(Png_PKGCONF libpng>=1.4)
+
+find_library(Png_LIBRARY NAMES png16
+    HINTS ${PC_PNG_LIBDIR} ${Png_PKGCONF_LIBRARY_DIRS})
+    
+if(NOT Png_LIBRARY)
+    find_library(Png_LIBRARY NAMES png15
+        HINTS ${PC_PNG_LIBDIR} ${Png_PKGCONF_LIBRARY_DIRS})
+endif()
+if(NOT Png_LIBRARY)
+    find_library(Png_LIBRARY NAMES png14
+        HINTS ${PC_PNG_LIBDIR} ${Png_PKGCONF_LIBRARY_DIRS})
+endif()
 
 find_path(Png_INCLUDE_DIR
   NAMES pngconf.h
   PATHS ${Png_PKGCONF_INCLUDE_DIRS}
-)
-
-find_library(Png_LIBRARY
-  NAMES png png12 png14
-  PATHS ${Png_PKGCONF_LIBRARY_DIRS}
 )
 
 set(Png_PROCESS_INCLUDES Png_INCLUDE_DIR)

@@ -26,7 +26,7 @@ find_path(SigC++Config_INCLUDE_DIR
 
 # Finally the library itself
 find_library(SigC++_LIBRARY
-  NAMES sigc-2.0
+  NAMES sigc-2.0 sigc${SYNFIG_MSVS_STAMP}-2_0
   PATHS ${SigC++_PKGCONF_LIBRARY_DIRS}
 )
 

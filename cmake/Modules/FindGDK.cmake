@@ -31,7 +31,7 @@ find_path(GDKConfig_INCLUDE_DIR
 
 # Finally the library itself
 find_library(GDK_LIBRARY
-  NAMES gdk-x11-2.0
+  NAMES gdk-x11-2.0 gdk-win32-2.0
   PATHS ${GDK_PKGCONF_LIBRARY_DIRS}
 )
 

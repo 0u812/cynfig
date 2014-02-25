@@ -34,7 +34,7 @@ find_path(GTKmmConfig_INCLUDE_DIR
 
 # Finally the library itself
 find_library(GTKmm_LIBRARY
-  NAMES gtkmm-2.4
+  NAMES gtkmm-2.4 gtkmm${SYNFIG_MSVS_STAMP}-2_4
   PATHS ${GTKmm_PKGCONF_LIBRARY_DIRS}
 )
 
