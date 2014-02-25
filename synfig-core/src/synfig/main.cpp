@@ -42,8 +42,8 @@
 #include <process.h>
 
 // Includes used by get_binary_path():
-#ifdef WIN32
-#include <Windows.h>
+#if SYNFIG_WINDOWS_TARGET
+#include <windows.h>
 #elif defined(__APPLE__)
 #include <mach-o/dyld.h>
 #include <sys/param.h>
@@ -428,11 +428,12 @@ synfig::get_binary_path(const String &fallback_path)
 	
 	String result;
 
-#ifdef WIN32
+#if SYNFIG_WINDOWS_TARGET
 	
 	size_t buf_size = PATH_MAX - 1;
 	char* path = (char*)malloc(buf_size);
 	
+	// excluded by WIN32_LEAN_AND_MEAN
 	GetModuleFileName(NULL, path, PATH_MAX);
 
 	result = String(path);
