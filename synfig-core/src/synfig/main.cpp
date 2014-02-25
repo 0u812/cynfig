@@ -31,6 +31,11 @@
 #	include <config.h>
 #endif
 
+#if SYNFIG_WINDOWS_TARGET
+#define NOMINMAX
+#include <windows.h>
+#endif
+
 #include <iostream>
 #include "version.h"
 #include "general.h"
@@ -43,7 +48,7 @@
 
 // Includes used by get_binary_path():
 #if SYNFIG_WINDOWS_TARGET
-#include <windows.h>
+//#include <windows.h>
 #elif defined(__APPLE__)
 #include <mach-o/dyld.h>
 #include <sys/param.h>
@@ -433,8 +438,9 @@ synfig::get_binary_path(const String &fallback_path)
 	size_t buf_size = PATH_MAX - 1;
 	char* path = (char*)malloc(buf_size);
 	
-	// excluded by WIN32_LEAN_AND_MEAN
-	GetModuleFileName(NULL, path, PATH_MAX);
+	// GetModuleFileName is a macro, excluded by WIN32_LEAN_AND_MEAN
+	// unicode verson: GetModuleFileNameW
+	GetModuleFileNameA(NULL, path, PATH_MAX);
 
 	result = String(path);
 	

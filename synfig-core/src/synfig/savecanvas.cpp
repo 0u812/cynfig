@@ -31,6 +31,11 @@
 #	include <config.h>
 #endif
 
+#if SYNFIG_WINDOWS_TARGET
+#define NOMINMAX
+#include <windows.h>
+#endif
+
 #ifdef HAVE_SYS_ERRNO_H
 #	include <sys/errno.h>
 #endif

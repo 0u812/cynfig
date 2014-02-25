@@ -35,6 +35,16 @@
 #endif
 
 #include "config.h"
+
+#ifdef HAVE_UNISTD_H
+#if HAVE_UNISTD_H
+#error "UNISTD"
+#include <unistd.h>
+#endif
+#else
+#include <direct.h>
+#endif
+
 #include <string>
 #include <string>
 #include <cstdarg>
@@ -93,14 +103,6 @@ _ETL_BEGIN_CDECLS
   extern int sscanf(const char *buf, const char *format, ...)ETL_NO_THROW;
  #endif
 #endif
-#endif
-
-#ifdef HAVE_UNISTD_H
-#if HAVE_UNISTD_H
-	#include <unistd.h>
-#endif
-#else
-#include <direct.h>
 #endif
 
 _ETL_END_CDECLS

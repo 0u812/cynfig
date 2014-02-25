@@ -189,13 +189,13 @@ Time::get_string(float fps, Time::Format format)const
 		time.value_=ceil(time.value_);
 
 	int hour = 0, minute = 0;
-	if(!(format<=FORMAT_FRAMES))
+	if (!((int)format <= FORMAT_FRAMES))
 	{
 		hour=time/3600;time-=hour*3600;
 		minute=time/60;time-=minute*60;
 	}
 	// <= is redefined, so this means "is the FORMAT_VIDEO bit set in the format?"
-	if(format<=FORMAT_VIDEO)
+	if ((int)format <= FORMAT_VIDEO)
 	{
 		int second;
 		second=time;time-=second;
@@ -211,7 +211,7 @@ Time::get_string(float fps, Time::Format format)const
 			return strprintf("%02d:%02d:%02d",hour,minute,second);
 	}
 
-	if (format <= FORMAT_FRAMES)
+	if ((int)format <= FORMAT_FRAMES)
 	{
 		if (fps && fps>0)
 			return strprintf("%df", round_to_int(time * fps));
@@ -222,15 +222,15 @@ Time::get_string(float fps, Time::Format format)const
 	String ret;
 	bool started = false;
 
-	if(format<=FORMAT_FULL || hour)
+	if ((int)format <= FORMAT_FULL || hour)
 	{
 		ret+=strprintf("%dh",hour);
 		started = true;
 	}
 
-	if(format<=FORMAT_FULL || minute)
+	if ((int)format <= FORMAT_FULL || minute)
 	{
-		if (!(format<=FORMAT_NOSPACES) && started)
+		if (!((int)format <= FORMAT_NOSPACES) && started)
 			ret += " ";
 
 		ret += strprintf("%dm", minute);
@@ -244,18 +244,18 @@ Time::get_string(float fps, Time::Format format)const
 		second=time;time-=second;
 		frame=time*fps;
 
-		if(format<=FORMAT_FULL || second)
+		if ((int)format <= FORMAT_FULL || second)
 		{
-			if (!(format<=FORMAT_NOSPACES) && started)
+			if (!((int)format <= FORMAT_NOSPACES) && started)
 				ret += " ";
 
 			ret += strprintf("%ds", (int)second);
 			started = true;
 		}
 
-		if(format<=FORMAT_FULL || abs(frame) > epsilon_() || !started)
+		if ((int)format <= FORMAT_FULL || abs(frame) > epsilon_() || !started)
 		{
-			if (!(format<=FORMAT_NOSPACES) && started)
+			if (!((int)format <= FORMAT_NOSPACES) && started)
 				ret += " ";
 
 			if(abs(frame-floor(frame) >= epsilon_()))
@@ -268,9 +268,9 @@ Time::get_string(float fps, Time::Format format)const
 	{
 		float second;
 		second=time;
-		if(format<=FORMAT_FULL || second || !started)
+		if ((int)format <= FORMAT_FULL || second || !started)
 		{
-			if (!(format<=FORMAT_NOSPACES) && started)
+			if (!((int)format <= FORMAT_NOSPACES) && started)
 				ret += " ";
 
 			if(abs(second-floor(second))>=epsilon_())
