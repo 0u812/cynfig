@@ -12,16 +12,21 @@ include(LibFindMacros)
 
 libfind_pkg_check_modules(LibXML2_PKGCONF libxml-2.0)
 
-find_path(LibXML2_INCLUDE_DIR
-  NAMES libxml/xpath.h
-  PATHS ${LibXML2_PKGCONF_INCLUDE_DIRS}
-  PATHS ${LibXML2_PKGCONF_INCLUDE_DIRS}/libxml2
-  PATH_SUFFIXES libxml2
-)
+message(STATUS "Searching ${LibXML2_PATH} for libxml/xpath.h")
+
+if(NOT LibXML2_SKIP_HEADERS)
+  find_path(LibXML2_INCLUDE_DIR
+    NAMES libxml/xpath.h
+    PATHS ${LibXML2_PKGCONF_INCLUDE_DIRS}
+    PATHS ${LibXML2_PKGCONF_INCLUDE_DIRS}/libxml2
+    PATHS ${LibXML2_PATH}
+    PATH_SUFFIXES libxml2
+  )
+endif()
 
 find_library(LibXML2_LIBRARY
-  NAMES xml2
-  PATHS ${LibXML2_PKGCONF_LIBRARY_DIRS}
+  NAMES xml2 libxml2
+  PATHS ${LibXML2_PKGCONF_LIBRARY_DIRS} ${LibXML2_PATH}
 )
 
 set(LibXML2_PROCESS_INCLUDES LibXML2_INCLUDE_DIR)

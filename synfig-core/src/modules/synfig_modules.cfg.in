@@ -11,7 +11,7 @@ mod_bmp
 mod_dv
 mod_png
 mod_ppm
-mod_openexr
+@MOD_OPENEXR_CFG@
 mod_jpeg
 mod_libavcodec
 mod_yuv420p

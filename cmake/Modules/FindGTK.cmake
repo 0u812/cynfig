@@ -26,7 +26,7 @@ find_path(GTK_INCLUDE_DIR
 
 # Finally the library itself
 find_library(GTK_LIBRARY
-  NAMES gtk-x11-2.0
+  NAMES gtk-x11-2.0 gtk-win32-2.0
   PATHS ${GTK_PKGCONF_LIBRARY_DIRS}
 )
 

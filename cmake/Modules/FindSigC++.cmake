@@ -24,6 +24,8 @@ find_path(SigC++Config_INCLUDE_DIR
   PATH_SUFFIXES lib/sigc++-2.0/include ../lib/sigc++-2.0/include
 )
 
+message(STATUS "Searching ${SigC++_PKGCONF_LIBRARY_DIRS} for sigc++: sigc${SYNFIG_MSVS_STAMP}-2_0")
+
 # Finally the library itself
 find_library(SigC++_LIBRARY
   NAMES sigc-2.0 sigc${SYNFIG_MSVS_STAMP}-2_0

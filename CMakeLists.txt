@@ -15,6 +15,7 @@ else()
 endif()
 
 if(SYNFIG_WINDOWS_TARGET)
+    set(SYNFIG_MSVS_STAMP "-vc100")
     if(NOT SYNFIG_DEPENDENCY_PATH)
         message( FATAL_ERROR "Set SYNFIG_WINDOWS_TARGET to point to the dependencies")
     endif()
@@ -202,36 +203,39 @@ if(ENABLE_SYNFIG_CORE)
         endif()
         list(APPEND SYNFIG_CORE_INCLUDE_PATHS ${FreeType2_INCLUDE_DIR})
     endif()
-    
-    message(FATAL_ERROR "Stop here")
 
     # fontconfig
-    set(WITH_FONTCONFIG 1 CACHE BOOL "Use fontconfig")
-    set(FONTCONFIG_PATH "" CACHE PATH "Path to fontconfig")
-    if(WITH_FONTCONFIG)
-        find_package(Fontconfig REQUIRED)
-        if(NOT Fontconfig_FOUND)
-            message( SEND_ERROR "Cannot find fontconfig. Set WITH_FONTCONFIG to 0 to disable it." )
+    if(NOT SYNFIG_WINDOWS_TARGET)
+        set(WITH_FONTCONFIG 1 CACHE BOOL "Use fontconfig")
+        set(FONTCONFIG_PATH "" CACHE PATH "Path to fontconfig")
+        if(WITH_FONTCONFIG)
+            find_package(Fontconfig REQUIRED)
+            if(NOT Fontconfig_FOUND)
+                message( SEND_ERROR "Cannot find fontconfig. Set WITH_FONTCONFIG to 0 to disable it." )
+            endif()
+            list(APPEND SYNFIG_CORE_INCLUDE_PATHS ${Fontconfig_INCLUDE_DIR})
+            
+            # add WITH_FONTCONFIG define to header
         endif()
-        list(APPEND SYNFIG_CORE_INCLUDE_PATHS ${Fontconfig_INCLUDE_DIR})
-        
-        # add WITH_FONTCONFIG define to header
+    else()
+        set(WITH_FONTCONFIG 0 CACHE BOOL "Use fontconfig")
     endif()
 
     # openexr
-    set(WITH_OPENEXR 1 CACHE BOOL "Use OpenEXR")
     set(OPENEXR_PATH "" CACHE PATH "Path to OpenEXR")
-    if(WITH_OPENEXR)
-        find_package(OpenEXR REQUIRED)
-        if(NOT OPENEXR_IMF_LIBRARY OR NOT OPENEXR_IMATH_LIBRARY OR NOT OPENEXR_HALF_LIBRARY OR 
-        NOT OPENEXR_EX_LIBRARY OR NOT OPENEXR_EXMATH_LIBRARY OR NOT OPENEXR_THREAD_LIBRARY )
-            message( SEND_ERROR "Cannot find OpenEXR. Set WITH_OPENEXR to 0 to disable it." )
-        endif()
+    find_package(OpenEXR)
+    if(NOT OPENEXR_IMF_LIBRARY OR NOT OPENEXR_IMATH_LIBRARY OR NOT OPENEXR_HALF_LIBRARY OR 
+    NOT OPENEXR_EX_LIBRARY OR NOT OPENEXR_EXMATH_LIBRARY OR NOT OPENEXR_THREAD_LIBRARY )
+        message( STATUS "Cannot find OpenEXR. Some features will be disabled." )
+        set(WITH_OPENEXR 0 CACHE BOOL "Use OpenEXR")
+    else()
+        set(WITH_OPENEXR 1 CACHE BOOL "Use OpenEXR")
+        set(MOD_OPENEXR_CFG "mod_openexr")
         list(APPEND SYNFIG_CORE_INCLUDE_PATHS ${OPENEXR_INCLUDE})
         list(APPEND SYNFIG_CORE_INCLUDE_PATHS ${OPENEXR_DRM_INCLUDE})
-        
-        # add HAVE_OPENEXR define to header
     endif()
+    
+    # add HAVE_OPENEXR define to header\
     
     find_package(Glibmm REQUIRED)
     # need to use pkg-config's results for include dir directly
@@ -243,6 +247,10 @@ if(ENABLE_SYNFIG_CORE)
     list(APPEND SYNFIG_CORE_INCLUDE_PATHS ${GIOmm_INCLUDE_DIRS})
 
     # libxml++
+    if(SYNFIG_WINDOWS_TARGET)
+        set(LibXML++_PATH ${SYNFIG_DEPENDENCY_PATH}/gtkmm)
+        set(LibXML2_SKIP_HEADERS 1)
+    endif()
     find_package(LibXML++ REQUIRED)
     list(APPEND SYNFIG_CORE_INCLUDE_PATHS ${LibXML++_INCLUDE_DIRS})
 
@@ -264,8 +272,11 @@ if(ENABLE_SYNFIG_CORE)
     set(Boost_USE_MULTITHREADED ON)
     set(Boost_USE_STATIC_RUNTIME OFF)
 
-    set(BOOST_ROOT "" CACHE PATH "Path to Boost installation")
-    set(BOOST_VERSION "1.54" CACHE STRING "Which version of Boost to use")
+    if(SYNFIG_WINDOWS_TARGET)
+        set(BOOST_ROOT ${SYNFIG_DEPENDENCY_PATH}/boost CACHE PATH "Path to Boost installation")
+    endif()
+    message(STATUS "BOOST_ROOT = ${BOOST_ROOT}")
+    set(BOOST_VERSION "1.55" CACHE STRING "Which version of Boost to use")
     find_package(Boost ${BOOST_VERSION} REQUIRED COMPONENTS program_options filesystem)
     if(Boost_FOUND)
         list(APPEND SYNFIG_CORE_INCLUDE_PATHS ${Boost_INCLUDE_DIRS})
@@ -273,7 +284,11 @@ if(ENABLE_SYNFIG_CORE)
 
     # PNG
     set(WITH_PNG 1 CACHE BOOL "Use libpng")
-    set(PNG_PATH "" CACHE PATH "Path to libpng")
+    if(SYNFIG_WINDOWS_TARGET)
+        set(PNG_PATH ${SYNFIG_DEPENDENCY_PATH}/png CACHE PATH "Path to libpng")
+    else()
+        set(PNG_PATH "" CACHE PATH "Path to libpng")
+    endif()
     if(WITH_PNG)
         find_package(Png REQUIRED)
         if(NOT Png_FOUND)
@@ -300,7 +315,11 @@ if(ENABLE_SYNFIG_CORE)
     set(WITH_MNG 0 CACHE BOOL "Use libmng")
 
     # Poco
-    set(POCO_PATH "" CACHE PATH "Path to Poco")
+    if(SYNFIG_WINDOWS_TARGET)
+        set(POCO_PATH ${SYNFIG_DEPENDENCY_PATH}/poco CACHE PATH "Path to Poco")
+    else()
+        set(POCO_PATH "" CACHE PATH "Path to Poco") 
+    endif()
     find_library(POCO_FOUNDATION_LIBRARY NAMES PocoFoundation
         HINTS ${POCO_PATH}/lib)
     if(POCO_FOUNDATION_LIBRARY)
@@ -334,7 +353,6 @@ if(ENABLE_SYNFIG_STUDIO)
     set(SYNFIG_STUDIO_INCLUDE_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/synfig-core/src)
     list(APPEND SYNFIG_STUDIO_INCLUDE_PATHS ${LibXML++_INCLUDE_DIRS})
     # gtkmm
-    # no prayer of a non-pkg-config solution
     find_package(GTKmm REQUIRED)
     # link with GTKmm_LIBRARIES
     # include GTKmm_INCLUDE_DIRS
