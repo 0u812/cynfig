@@ -166,7 +166,8 @@ public:
 	**	\return \c true on success, \c false on error
 	**	\see ProgressCallback, Surface
 	*/
-	virtual bool get_frame(Surface &surface, const RendDesc &renddesc, Time time, ProgressCallback *callback=NULL)=0;
+	virtual bool get_frame(Surface &surface, const RendDesc &renddesc, Time time, ProgressCallback *callback = NULL) = 0;
+#ifndef _MSC_VER
 	virtual bool get_frame(Surface &surface, const RendDesc &renddesc,Time time,
 						   bool &trimmed SYNFIG_ATTR_UNUSED,
 						   unsigned int &width SYNFIG_ATTR_UNUSED,
@@ -174,6 +175,15 @@ public:
 						   unsigned int &top SYNFIG_ATTR_UNUSED,
 						   unsigned int &left SYNFIG_ATTR_UNUSED,
 						   ProgressCallback *callback=NULL)
+#else
+	virtual bool get_frame(Surface &surface, const RendDesc &renddesc, Time time,
+		bool &trimmed,
+		unsigned int &width,
+		unsigned int &height,
+		unsigned int &top,
+		unsigned int &left,
+		ProgressCallback *callback = NULL)
+#endif
 	{
 		return get_frame(surface,renddesc,time,callback);
 	}

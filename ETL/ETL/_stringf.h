@@ -36,13 +36,18 @@
 
 #include "config.h"
 
+#if(SYNFIG_WINDOWS_TARGET)
+//#error "direct"
+#include <direct.h>
+#endif
+
 #ifdef HAVE_UNISTD_H
 #if HAVE_UNISTD_H
-#error "UNISTD"
+#if(!SYNFIG_WINDOWS_TARGET)
+//#error "UNISTD"
 #include <unistd.h>
 #endif
-#else
-#include <direct.h>
+#endif
 #endif
 
 #include <string>

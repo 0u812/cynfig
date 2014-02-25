@@ -1898,7 +1898,8 @@ Svg_parser::hextodec(String hex){
 	int result=0;
 	if(!hex.empty()){
 		int top=hex.size();
-		int ihex[top];
+		//int ihex[top];
+		int ihex[128]; // should be enough
 		int i=0;
 		while(i<top){
 			if(hex.at(i)=='0')
@@ -2031,6 +2032,8 @@ Svg_parser::new_guid(){
 
 int
 Svg_parser::getColor(String name, int position){
+#ifndef _MSC_VER
+	// blocks are nested too deeply for MSVS compiler
 	if (position<1 || position>3) return 0;
 	COLOR_NAME("aliceblue",240, 248, 255)
 	COLOR_NAME("antiquewhite",250, 235, 215)
@@ -2180,5 +2183,8 @@ Svg_parser::getColor(String name, int position){
 	COLOR_NAME("yellow",255, 255, 0)
 	COLOR_NAME("yellowgreen",154, 205, 50)
 	return 0;
+#else
+	return 0;
+#endif
 }
 #undef COLOR_NAME

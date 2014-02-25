@@ -35,8 +35,10 @@
 
 #include <libxml++/libxml++.h>
 
+#if(!SYNFIG_WINDOWS_TARGET)
 #include <dirent.h>
 #include <sys/stat.h>
+#endif
 
 #include <synfig/general.h>
 #include <synfig/savecanvas.h>

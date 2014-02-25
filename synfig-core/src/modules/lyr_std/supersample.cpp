@@ -293,18 +293,30 @@ SuperSample::accelerated_cairorender(Context context, cairo_t *cr, int quality, 
 		case 4:
 		case 5:	// Best
 			filter=CAIRO_FILTER_BEST;
+#if(!SYNFIG_CAIRO_FALLBACK)
 			anti=CAIRO_ANTIALIAS_BEST;
+#else
+			anti = CAIRO_ANTIALIAS_DEFAULT;
+#endif
 			break;
 		case 6:
 		case 7:
 		case 8:	// Good
-			filter=CAIRO_FILTER_GOOD;
-			anti=CAIRO_ANTIALIAS_GOOD;
+			filter = CAIRO_FILTER_GOOD;
+#if(!SYNFIG_CAIRO_FALLBACK)
+			anti = CAIRO_ANTIALIAS_GOOD;
+#else
+			anti = CAIRO_ANTIALIAS_DEFAULT;
+#endif
 			break;
 		case 9:	// Fast
 		default:
 			filter=CAIRO_FILTER_FAST;
-			anti=CAIRO_ANTIALIAS_FAST;
+#if(!SYNFIG_CAIRO_FALLBACK)
+			anti = CAIRO_ANTIALIAS_FAST;
+#else
+anti = CAIRO_ANTIALIAS_DEFAULT;
+#endif
 			break;
 	}
 	cairo_save(cr);

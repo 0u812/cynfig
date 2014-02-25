@@ -310,6 +310,7 @@ ConicalGradient::accelerated_cairorender(Context context,cairo_t *cr,int quality
 	const Point tr(Point(tl[1], br[0]));
 	const Point bl(Point(tl[0], br[1]));
 		
+#if(!SYNFIG_CAIRO_FALLBACK)
 	cairo_pattern_t* pattern=cairo_pattern_create_mesh();
 	// Calculate the outer radius of the mesh pattern. It has to
 	// cover the whole render desc
@@ -343,6 +344,7 @@ ConicalGradient::accelerated_cairorender(Context context,cairo_t *cr,int quality
 	
 	cairo_pattern_destroy(pattern); // Not needed more
 	cairo_restore(cr);
+#endif
 	return true;
 	
 }
@@ -351,6 +353,7 @@ ConicalGradient::accelerated_cairorender(Context context,cairo_t *cr,int quality
 bool
 ConicalGradient::compile_mesh(cairo_pattern_t* pattern, Gradient mygradient, Real radius)const
 {
+#if(!SYNFIG_CAIRO_FALLBACK)
 	Angle angle=param_angle.get(Angle());
 	bool symmetric=param_symmetric.get(bool());
 
@@ -478,4 +481,7 @@ ConicalGradient::compile_mesh(cairo_pattern_t* pattern, Gradient mygradient, Rea
 		if(a1!=1.0 && a2!=0.0) cpoints_all_opaque=false;
 	}
 	return cpoints_all_opaque;
+#else
+	return true;
+#endif
 }

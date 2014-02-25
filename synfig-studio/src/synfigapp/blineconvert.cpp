@@ -23,6 +23,8 @@
 
 /* === H E A D E R S ======================================================= */
 
+#define NOMINMAX
+
 #ifdef USING_PCH
 #	include "pch.h"
 #else
@@ -43,6 +45,8 @@
 #include "general.h"
 
 #endif
+
+#undef NOMINMAX
 
 /* === U S I N G =========================================================== */
 
