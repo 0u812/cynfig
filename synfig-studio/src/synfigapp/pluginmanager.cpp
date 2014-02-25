@@ -38,6 +38,14 @@
 #if(!SYNFIG_WINDOWS_TARGET)
 #include <dirent.h>
 #include <sys/stat.h>
+#else
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <stdio.h>
+#define NOMINMAX
+#include <Windows.h> // FindFirstFile
+// http://stackoverflow.com/questions/720337/searching-files-in-c-on-windows
+#define S_ISDIR(B) ((B)&_S_IFDIR)
 #endif
 
 #include <synfig/general.h>
@@ -97,7 +105,7 @@ PluginLauncher::PluginLauncher(synfig::Canvas::Handle canvas)
 	do {
 		synfig::GUID guid;
 		filename_backup = filename_base+"."+guid.get_string().substr(0,8);
-	} while (stat(filename_backup.c_str(), &buf) != -1);
+	} while (_stat(filename_backup.c_str(), &buf) != -1);
 	
 	save_canvas(canvas->get_identifier().file_system->get_identifier(filename_processed),canvas);
 	save_canvas(canvas->get_identifier().file_system->get_identifier(filename_backup),canvas);
@@ -193,7 +201,11 @@ PluginLauncher::execute( std::string script_path, const std::string& /* synfig_r
 	command = "\"" + command + "\"";
 #endif
 	
+#if(!SYNFIG_WINDOWS_TARGET)
 	FILE* pipe = popen(command.c_str(), "r");
+#else
+	FILE* pipe = _popen(command.c_str(), "r");
+#endif
 	if (!pipe) {
 		output = "ERROR: pipe failed!";
 		return false;
@@ -207,8 +219,12 @@ PluginLauncher::execute( std::string script_path, const std::string& /* synfig_r
 	if (output != "" ){
 		synfig::info(output);
 	}
-	
-	exitcode=pclose(pipe);
+
+#if(!SYNFIG_WINDOWS_TARGET)
+	exitcode = pclose(pipe);
+#else
+	exitcode = _pclose(pipe);
+#endif
 
 	if (0==exitcode){
 		return true;
@@ -287,19 +303,39 @@ PluginManager::load_dir( const std::string &pluginsprefix )
 	}
 
 #else
-	// http://msdn.microsoft.com/en-us/library/aa365200%28VS.85%29.aspx
-	TCHAR szDir[MAX_PATH];
-	HANDLE hFind = INVALID_HANDLE_VALUE;
-	size_t length_of_arg;
+	// http://msdn.microsoft.com/en-us/library/aa364418%28VS.85%29.aspx
+	HANDLE hFind;
+	WIN32_FIND_DATA FindFileData;
 
-	StringCchLength(argv[1], MAX_PATH, &length_of_arg);
+	hFind = FindFirstFile(pluginsprefix.c_str(), &FindFileData);
 
-	if (length_of_arg > (MAX_PATH - 3)) {
-		synfig::info("Directory path is too long");
+	if (hFind == INVALID_HANDLE_VALUE) {
+		synfig::info("FindFirstFile failed (PluginManager::load_dir)");
 		return;
 	}
 
-	StringCchCopy(szDir, MAX_PATH, pluginsprefix.c_str());
+	do {
+		std::string filename = FindFileData.cFileName;
+		if (filename != std::string(".") && filename != std::string("..")) {
+			std::string pluginpath;
+			pluginpath = pluginsprefix + ETL_DIRECTORY_SEPARATOR + filename;
+			struct _stat sb;
+			_stat(pluginpath.c_str(), &sb);
+			// error handling if stat failed
+			// http://msdn.microsoft.com/en-us/library/windows/desktop/aa365200%28v=vs.85%29.aspx
+			if (S_ISDIR(sb.st_mode)) { // use ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY instead
+				// checking if directory contains a plugin...
+
+				std::string pluginfilepath;
+				pluginfilepath = pluginpath + ETL_DIRECTORY_SEPARATOR + std::string("plugin.xml");
+
+				load_plugin(pluginfilepath);
+
+			}
+		}
+	} while (FindNextFile(hFind, &FindFileData));
+
+	FindClose(hFind);
 #endif
 } // END of synfigapp::PluginManager::load_dir()
 
