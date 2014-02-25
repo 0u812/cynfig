@@ -34,11 +34,14 @@
 #define _GNU_SOURCE
 #endif
 
+#ifdef HAVE_UNISTD_H
+#error "Have unistd1"
+#endif
+
 #include "config.h"
 
-#if(SYNFIG_WINDOWS_TARGET)
-//#error "direct"
-#include <direct.h>
+#ifdef HAVE_UNISTD_H
+#error "Have unistd2"
 #endif
 
 #ifdef HAVE_UNISTD_H
@@ -48,6 +51,11 @@
 #include <unistd.h>
 //#endif
 #endif
+#endif
+
+#if(SYNFIG_WINDOWS_TARGET)
+//#error "direct"
+#include <direct.h>
 #endif
 
 #include <string>

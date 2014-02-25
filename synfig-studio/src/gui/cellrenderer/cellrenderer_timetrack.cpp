@@ -30,12 +30,12 @@
 #	include <config.h>
 #endif
 
+#include <ETL/stringf>
 #include <gtkmm/label.h>
 #include "cellrenderer_timetrack.h"
 #include <gtk/gtk.h>
 #include <gtkmm/spinbutton.h>
 #include <gtkmm/combo.h>
-#include <ETL/stringf>
 #include "widgets/widget_value.h"
 #include "app.h"
 #include <gtkmm/menu.h>

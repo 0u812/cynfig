@@ -31,6 +31,7 @@
 #	include <config.h>
 #endif
 
+#include <ETL/stringf>
 #include "dialogs/dialog_setup.h"
 #include "app.h"
 #include <gtkmm/scale.h>
@@ -40,7 +41,6 @@
 #include "widgets/widget_enum.h"
 #include "autorecover.h"
 
-#include <ETL/stringf>
 #include <ETL/misc>
 #include "general.h"
 

@@ -29,9 +29,9 @@
 #	include <config.h>
 #endif
 
+#include <ETL/stringf>
 #include <gtkmm/label.h>
 #include "widgets/widget_value.h"
-#include <ETL/stringf>
 #include <gtkmm/celleditable.h>
 #include <gtkmm/editable.h>
 #include <gtkmm/entry.h>

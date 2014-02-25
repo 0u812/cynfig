@@ -22,7 +22,7 @@ if(SYNFIG_WINDOWS_TARGET)
     endif()
     set(SYNFIG_ATTR_UNUSED "")
     set(SYNFIG_HAVE_UNISTD_H 0)
-    set(SYNFIG_CAIRO_FALLBACK 1) # Don't have new enough Cairo binaries
+    set(SYNFIG_CAIRO_FALLBACK 1) # Cairo binaries outdated
     set(SYNFIG_GNU_EXTENSIONS 0)
 else()
     set(SYNFIG_HAVE_VASPRINTF 1)

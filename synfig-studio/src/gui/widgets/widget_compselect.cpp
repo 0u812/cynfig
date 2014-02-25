@@ -29,9 +29,9 @@
 #	include <config.h>
 #endif
 
+#include <ETL/stringf>
 #include <gtkmm/menu.h>
 #include "widgets/widget_compselect.h"
-#include <ETL/stringf>
 #include <synfig/valuenode.h>
 #include "instance.h"
 

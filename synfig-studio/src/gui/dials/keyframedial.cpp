@@ -62,8 +62,8 @@ KeyFrameDial::create_icon(Gtk::IconSize iconsize, const char * stockid,
 		const char * tooltip)
 {
 	iconsize = Gtk::IconSize::from_name("synfig-small_icon_16x16");
-	Gtk::Image *icon = manage(new Gtk::Image(Gtk::StockID(stockid), iconsize));
-	Gtk::ToggleButton *button = manage(new class Gtk::ToggleButton());
+	Gtk::Image *icon = Gtk::manage(new Gtk::Image(Gtk::StockID(stockid), iconsize));
+	Gtk::ToggleButton *button = Gtk::manage(new class Gtk::ToggleButton());
 	button->add(*icon);
 	button->set_tooltip_text(tooltip);
 	icon->set_padding(0, 0);

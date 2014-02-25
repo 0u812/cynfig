@@ -30,6 +30,7 @@
 #	include <config.h>
 #endif
 
+#include <ETL/stringf>
 #include "render.h"
 #include "app.h"
 #include <gtkmm/frame.h>
@@ -41,7 +42,6 @@
 
 #include "general.h"
 
-#include <ETL/stringf>
 #include <errno.h>
 
 #endif

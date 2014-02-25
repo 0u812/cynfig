@@ -77,8 +77,8 @@ Gtk::Button *
 FrameDial::create_icon(Gtk::IconSize iconsize, const char * stockid, const char * tooltip)
 {
 	iconsize = Gtk::IconSize::from_name("synfig-small_icon_16x16");
-	Gtk::Image *icon = manage(new Gtk::Image(Gtk::StockID(stockid), iconsize));
-	Gtk::Button *button = manage(new class Gtk::Button());
+	Gtk::Image *icon = Gtk::manage(new Gtk::Image(Gtk::StockID(stockid), iconsize));
+	Gtk::Button *button = Gtk::manage(new class Gtk::Button());
 	button->add(*icon);
 	button->set_tooltip_text(tooltip);
 	icon->set_padding(0, 0);

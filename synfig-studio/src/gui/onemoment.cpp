@@ -32,10 +32,10 @@
 #	include <config.h>
 #endif
 
+#include <ETL/stringf>
+
 #include <iostream>
 #include <string>
-
-#include <ETL/stringf>
 
 #include <gtkmm/image.h>
 #include <gdkmm/pixbufloader.h>

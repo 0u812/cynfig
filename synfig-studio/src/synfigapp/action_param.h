@@ -28,11 +28,11 @@
 
 /* === H E A D E R S ======================================================= */
 
-#include <synfig/string.h>
-#include <synfig/canvas.h>
 #include <ETL/handle>
 #include <ETL/stringf>
 #include <ETL/trivial>
+#include <synfig/string.h>
+#include <synfig/canvas.h>
 
 #include <map>
 #include <list>

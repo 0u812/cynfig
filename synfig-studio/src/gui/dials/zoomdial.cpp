@@ -67,8 +67,8 @@ Gtk::Button *
 ZoomDial::create_icon(Gtk::IconSize size, const Gtk::BuiltinStockID & stockid,
 		const char * tooltip)
 {
-	Gtk::Button *button = manage(new class Gtk::Button());
-	Gtk::Image *icon = manage(new Gtk::Image(stockid, size));
+	Gtk::Button *button = Gtk::manage(new class Gtk::Button());
+	Gtk::Image *icon = Gtk::manage(new Gtk::Image(stockid, size));
 	button->add(*icon);
 	button->set_tooltip_text(tooltip);
 	icon->set_padding(0, 0);

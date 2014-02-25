@@ -29,8 +29,8 @@
 #	include <config.h>
 #endif
 
-#include "cvs.h"
 #include <ETL/stringf>
+#include "cvs.h"
 #include <fstream>
 #include <iostream>
 #include <synfig/general.h>

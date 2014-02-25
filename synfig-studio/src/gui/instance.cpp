@@ -33,6 +33,7 @@
 #	include <config.h>
 #endif
 
+#include <ETL/stringf>
 #include "instance.h"
 #include <cassert>
 #include <gtkmm/stock.h>
@@ -59,7 +60,6 @@
 #include "workarea.h"
 #include <sys/stat.h>
 #include <errno.h>
-#include <ETL/stringf>
 
 #include "general.h"
 

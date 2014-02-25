@@ -38,6 +38,10 @@
 
 #include "general.h"
 
+#if(SYNFIG_WINDOWS_TARGET)
+#include <io.h> // mktemp
+#endif
+
 #endif
 
 /* === U S I N G =========================================================== */
@@ -209,7 +213,7 @@ Settings::save_to_file(const synfig::String& filename)const
 
 #ifdef _WIN32
 	char old_file[80]="sif.XXXXXXXX";
-	mktemp(old_file);
+	_mktemp(old_file);
 	rename(filename.c_str(),old_file);
 	if(rename(tmp_filename.c_str(),filename.c_str())!=0)
 	{

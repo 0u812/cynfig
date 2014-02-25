@@ -29,13 +29,13 @@
 #	include <config.h>
 #endif
 
+#include <ETL/stringf>
+
 #include <vector>
 
 #include <gtk/gtk.h>
 
 #include <gtkmm/aboutdialog.h>
-
-#include <ETL/stringf>
 
 #include <synfig/general.h>
 

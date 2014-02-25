@@ -27,10 +27,10 @@
 
 /* === H E A D E R S ======================================================= */
 
+#include <ETL/stringf>
 #include <synfig/string.h>
 #include <map>
 #include <list>
-#include <ETL/stringf>
 #include <string.h>
 
 /* === M A C R O S ========================================================= */

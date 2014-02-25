@@ -93,11 +93,11 @@ Dialog_TargetParam::Dialog_TargetParam(Gtk::Window &parent, synfig::TargetParam 
 {
 	set_tparam(tparam);
 	// Custom Video Codec Entry
-	Gtk::Label* custom_label(manage(new Gtk::Label(std::string(CUSTOM_VCODEC_DESCRIPTION)+":")));
+	Gtk::Label* custom_label(Gtk::manage(new Gtk::Label(std::string(CUSTOM_VCODEC_DESCRIPTION)+":")));
 	custom_label->set_alignment(Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER);
 	customvcodec=Gtk::manage(new Gtk::Entry());
 	// Available Video Codecs Combo Box Text.
-	Gtk::Label* label(manage(new Gtk::Label(_("Available Video Codecs:"))));
+	Gtk::Label* label(Gtk::manage(new Gtk::Label(_("Available Video Codecs:"))));
 	label->set_alignment(Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER);
 	vcodec = Gtk::manage(new Gtk::ComboBoxText());
 	// Appends the codec descriptions to the Combo Box
@@ -125,21 +125,21 @@ Dialog_TargetParam::Dialog_TargetParam(Gtk::Window &parent, synfig::TargetParam 
 		}
 
 	//Bitrate Spin Button
-	Gtk::Adjustment* bradj(manage(new class Gtk::Adjustment(double(tparam.bitrate), 10.0,100000.0)));
+	Gtk::Adjustment* bradj(Gtk::manage(new class Gtk::Adjustment(double(tparam.bitrate), 10.0, 100000.0)));
 	bitrate = Gtk::manage(new class Gtk::SpinButton(*bradj));
-	Gtk::Label* label2(manage(new Gtk::Label(_("Video Bit Rate:"))));
+	Gtk::Label* label2(Gtk::manage(new Gtk::Label(_("Video Bit Rate:"))));
 	label2->set_alignment(Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER);
 	get_vbox()->pack_start(*label2, true, true, 0);
 	get_vbox()->pack_start(*bitrate,true, true, 0);
 
 	get_vbox()->show_all();
 
-	ok_button = manage(new class Gtk::Button(Gtk::StockID("gtk-ok")));
+	ok_button = Gtk::manage(new class Gtk::Button(Gtk::StockID("gtk-ok")));
 	ok_button->show();
 	add_action_widget(*ok_button,Gtk::RESPONSE_OK);
 	ok_button->signal_clicked().connect(sigc::mem_fun(*this,&Dialog_TargetParam::on_ok));
 
-	cancel_button = manage(new class Gtk::Button(Gtk::StockID("gtk-cancel")));
+	cancel_button = Gtk::manage(new class Gtk::Button(Gtk::StockID("gtk-cancel")));
 	cancel_button->show();
 	add_action_widget(*cancel_button,Gtk::RESPONSE_CANCEL);
 	cancel_button->signal_clicked().connect(sigc::mem_fun(*this,&Dialog_TargetParam::on_cancel));

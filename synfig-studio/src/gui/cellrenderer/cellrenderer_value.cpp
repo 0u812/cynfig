@@ -31,8 +31,8 @@
 #	include <config.h>
 #endif
 
-#include <gtkmm/label.h>
 #include <ETL/stringf>
+#include <gtkmm/label.h>
 #include <gtkmm/celleditable.h>
 #include <gtkmm/editable.h>
 #include <gtkmm/entry.h>
@@ -540,12 +540,22 @@ CellRenderer_ValueBase::color_edited(synfig::Color color, Glib::ustring path)
 
 Gtk::CellEditable*
 CellRenderer_ValueBase::start_editing_vfunc(
+#if(!SYNFIG_WINDOWS_TARGET)
 	GdkEvent* event SYNFIG_ATTR_UNUSED,
+#else
+	GdkEvent* event,
+#endif
 	Gtk::Widget& widget,
 	const Glib::ustring& path,
+#if(!SYNFIG_WINDOWS_TARGET)
 	const Gdk::Rectangle& background_area SYNFIG_ATTR_UNUSED,
 	const Gdk::Rectangle& cell_area SYNFIG_ATTR_UNUSED,
 	Gtk::CellRendererState flags SYNFIG_ATTR_UNUSED)
+#else
+	const Gdk::Rectangle& background_area,
+	const Gdk::Rectangle& cell_area,
+	Gtk::CellRendererState flags)
+#endif
 {
 	edit_value_done_called = false;
 	// If we aren't editable, then there is nothing to do
@@ -568,7 +578,7 @@ CellRenderer_ValueBase::start_editing_vfunc(
 		App::dialog_gradient->set_gradient(data.get(Gradient()));
 		App::dialog_gradient->signal_edited().connect(
 			sigc::bind(
-				sigc::mem_fun(*this,&studio::CellRenderer_ValueBase::gradient_edited),
+				sigc::mem_fun2(*this,&studio::CellRenderer_ValueBase::gradient_edited), // JKM: used to be mem_fun, but only mem_fun0 accepts objects & methods: http://libsigc.sourceforge.net/libsigc2/docs/reference/html/group__mem__fun.html#g7d9ea809173f48bf5c76cf1989591602
 				path
 			)
 		);
@@ -582,7 +592,7 @@ CellRenderer_ValueBase::start_editing_vfunc(
 		App::dialog_color->set_color(data.get(Color()));
 		App::dialog_color->signal_edited().connect(
 			sigc::bind(
-				sigc::mem_fun(*this,&studio::CellRenderer_ValueBase::color_edited),
+				sigc::mem_fun2(*this,&studio::CellRenderer_ValueBase::color_edited),
 				path
 			)
 		);
