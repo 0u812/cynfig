@@ -74,13 +74,21 @@ PluginLauncher::PluginLauncher(synfig::Canvas::Handle canvas)
 	}
 	
 	// Make random filename and ensure there's no file with such name exist
+#if(!SYNFIG_WINDOWS_TARGET)
 	struct stat buf;
+#else
+	struct _stat buf;
+#endif
 
 	// Filename to save the file for processing
 	do {
 		synfig::GUID guid;
 		filename_processed = filename_base+"."+guid.get_string().substr(0,8);
+#if(!SYNFIG_WINDOWS_TARGET)
 	} while (stat(filename_processed.c_str(), &buf) != -1);
+#else
+	} while (_stat(filename_processed.c_str(), &buf) != -1);
+#endif
 	
 	// We need a copy (filename_backup) in case of plugin execution will fail.
 	// The tmp_filename_orig will store original unmodified version of file
@@ -102,6 +110,7 @@ PluginLauncher::PluginLauncher(synfig::Canvas::Handle canvas)
 bool
 PluginLauncher::check_python_version(String path)
 {
+#if(!SYNFIG_WINDOWS_TARGET)
 	String command;
 	String result;
 	command = path + " --version 2>&1";
@@ -120,6 +129,10 @@ PluginLauncher::check_python_version(String path)
 		return false;
 	}
 	return true;
+#else
+	// TODO: Windows implementation
+	return false;
+#endif
 }
 
 bool
@@ -231,6 +244,8 @@ PluginManager::load_dir( const std::string &pluginsprefix )
 	
 	synfig::info("Loading plugins from %s", pluginsprefix.c_str());
 	
+#if(!SYNFIG_WINDOWS_TARGET)
+
 	DIR *dir;
 	struct dirent *entry;
 	
@@ -270,6 +285,22 @@ PluginManager::load_dir( const std::string &pluginsprefix )
 		
 		closedir(dir);
 	}
+
+#else
+	// http://msdn.microsoft.com/en-us/library/aa365200%28VS.85%29.aspx
+	TCHAR szDir[MAX_PATH];
+	HANDLE hFind = INVALID_HANDLE_VALUE;
+	size_t length_of_arg;
+
+	StringCchLength(argv[1], MAX_PATH, &length_of_arg);
+
+	if (length_of_arg > (MAX_PATH - 3)) {
+		synfig::info("Directory path is too long");
+		return;
+	}
+
+	StringCchCopy(szDir, MAX_PATH, pluginsprefix.c_str());
+#endif
 } // END of synfigapp::PluginManager::load_dir()
 
 void

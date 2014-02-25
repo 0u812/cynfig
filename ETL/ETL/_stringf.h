@@ -43,10 +43,10 @@
 
 #ifdef HAVE_UNISTD_H
 #if HAVE_UNISTD_H
-#if(!SYNFIG_WINDOWS_TARGET)
+//#if(!SYNFIG_WINDOWS_TARGET)
 //#error "UNISTD"
 #include <unistd.h>
-#endif
+//#endif
 #endif
 #endif
 

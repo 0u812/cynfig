@@ -29,6 +29,8 @@
 
 /* === H E A D E R S ======================================================= */
 
+#define NOMINMAX
+
 #include <functional>
 #include <algorithm>
 
@@ -80,6 +82,14 @@ public: //interface
 		minx = maxx = x1;
 		miny = maxy = y1;
 	}
+
+	// getting real tired of these things being defined somehow
+//#ifdef min
+//#undef min
+//#endif
+//#ifdef max
+//#undef max
+//#endif
 
 	void expand(const value_type &x1,const value_type &y1)
 	{

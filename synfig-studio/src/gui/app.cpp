@@ -35,6 +35,7 @@
 #endif
 
 #ifdef WIN32
+#define NOMINMAX
 #define WINVER 0x0500
 #include <windows.h>
 #endif

@@ -40,6 +40,7 @@
 #endif
 
 #ifdef HAVE_CREATETHREAD
+#define NOMINMAX
 # include <windows.h>
 #endif
 

@@ -29,6 +29,7 @@
 
 /* === H E A D E R S ======================================================= */
 
+#define NOMINMAX
 #include <windows.h>
 // extern HANDLE CreateMutex(NULL, FALSE, NULL);
 // extern CloseHandle(handle);

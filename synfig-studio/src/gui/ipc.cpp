@@ -56,6 +56,7 @@
 #endif
 
 #ifdef _WIN32
+#define NOMINMAX
 #include <windows.h>
 #define BUFSIZE   128
 #define read	_read
