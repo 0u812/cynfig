@@ -71,6 +71,9 @@ using namespace synfig;
 		# ifdef __GNUG__
 			#  include <time.h>
 			#  define __sys_clock	::clock
+		# elif _MSC_VER
+			#  include <time.h>
+			#  define __sys_clock	::clock
 		# else
 			typedef int clock_t;
 			extern clock_t _clock();
