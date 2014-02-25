@@ -173,7 +173,7 @@ ValueNode_Integer::get_local_name()const
 }
 
 bool
-ValueNode_Integer::check_type(ValueBase::Type type __attribute__ ((unused)))
+ValueNode_Integer::check_type(ValueBase::Type type SYNFIG_ATTR_UNUSED)
 {
 	return
 		type==ValueBase::TYPE_ANGLE ||

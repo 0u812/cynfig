@@ -268,7 +268,7 @@ public:
 	// === GET MEMBERS ========================================================
 	//! Template to get the ValueBase class data by casting the type
 	template <typename T>
-	const T &get(const T& x __attribute__ ((unused)))const
+	const T &get(const T& x SYNFIG_ATTR_UNUSED)const
 	{
 #ifdef _DEBUG
 		if (!is_valid())

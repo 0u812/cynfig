@@ -50,6 +50,12 @@ using namespace std;
 
 /* === G L O B A L S ======================================================= */
 
+#ifdef _MSC_VER
+const Color::value_type Color::ceil = 1;
+const Color::value_type Color::floor = 0;
+const float CairoColor::range = ceil - floor;
+#endif
+
 /* === P R O C E D U R E S ================================================= */
 
 /* === M E T H O D S ======================================================= */

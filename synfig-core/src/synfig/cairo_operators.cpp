@@ -424,6 +424,8 @@ void cairo_copy_surface(cairo_surface_t* source, cairo_surface_t* dest, float al
 	cairo_destroy(cr);
 }
 
+#if !SYNFIG_WINDOWS_TARGET
+// cairo_surface_map_to_image is not in the pre-build gtkmm binaries yet
 cairo_surface_t* cairo_copy_target_image(cairo_surface_t* target, float alpha)
 {
 	cairo_surface_t* targetimage=cairo_surface_map_to_image(target, NULL);
@@ -436,6 +438,7 @@ cairo_surface_t* cairo_copy_target_image(cairo_surface_t* target, float alpha)
 	cairo_surface_unmap_image(target, targetimage);
 	return image;
 }
+#endif
 
 void cairo_surface_mask_alpha(cairo_surface_t* image, float alpha)
 {

@@ -36,7 +36,9 @@
 /* === C L A S S E S & S T R U C T S ======================================= */
 void cairo_paint_with_alpha_operator(cairo_t* cr, float alpha, synfig::Color::BlendMethod method);
 void cairo_copy_surface(cairo_surface_t* source, cairo_surface_t* dest, float alpha=1.0);
+#if !SYNFIG_WINDOWS_TARGET
 cairo_surface_t* cairo_copy_target_image(cairo_surface_t* target, float alpha=1.0);
+#endif
 void cairo_surface_mask_alpha(cairo_surface_t* image, float alpha);
 
 

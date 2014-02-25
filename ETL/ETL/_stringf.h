@@ -95,7 +95,11 @@ _ETL_BEGIN_CDECLS
 #endif
 #endif
 
-#include <unistd.h>
+#ifndef _MSC_VER
+	#include <unistd.h>
+#else
+#include <direct.h>
+#endif
 
 _ETL_END_CDECLS
 
@@ -127,7 +131,9 @@ vstrprintf(const char *format, va_list args)
 	vsnprintf(buffer,sizeof(buffer),format,args);
 	return buffer;
 #else					// This is the worst method (UNSAFE, but "works")
+#ifndef _MSC_VER
 #warning Potential for Buffer-overflow bug using vsprintf
+#endif
 #define ETL_UNSAFE_STRPRINTF	(true)
 // Here, we are doubling the size of the buffer to make this case
 // slightly more safe.
@@ -288,7 +294,11 @@ inline std::string
 current_working_directory()
 {
 	char dir[256];
+#ifndef _MSC_VER
 	std::string ret(getcwd(dir,sizeof(dir)));
+#else
+	std::string ret(_getcwd(dir, sizeof(dir)));
+#endif
 	return ret;
 }
 

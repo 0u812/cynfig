@@ -154,7 +154,7 @@ ValueNode_Duplicate::count_steps(Time t)const
 }
 
 ValueBase
-ValueNode_Duplicate::operator()(Time t __attribute__ ((unused)))const
+ValueNode_Duplicate::operator()(Time t SYNFIG_ATTR_UNUSED)const
 {
 	if (getenv("SYNFIG_DEBUG_VALUENODE_OPERATORS"))
 		printf("%s:%d operator()\n", __FILE__, __LINE__);
@@ -175,7 +175,7 @@ ValueNode_Duplicate::get_local_name()const
 }
 
 bool
-ValueNode_Duplicate::check_type(ValueBase::Type type __attribute__ ((unused)))
+ValueNode_Duplicate::check_type(ValueBase::Type type SYNFIG_ATTR_UNUSED)
 {
 	// never offer this as a choice.  it's used automatically by the 'Duplicate' layer.
 	return false;
