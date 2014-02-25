@@ -687,7 +687,11 @@ Layer_PasteCanvas::accelerated_cairorender(Context context,cairo_t *cr, int qual
 
 
 	// render the canvas to be pasted onto pastesurface
+#if !(SYNFIG_CAIRO_FALLBACK)
 	cairo_surface_t* pastesurface=cairo_surface_create_similar_image(cairo_get_target(cr), CAIRO_FORMAT_ARGB32, workdesc.get_w(), workdesc.get_h());
+#else
+	cairo_surface_t* pastesurface=cairo_image_surface_create(CAIRO_FORMAT_ARGB32, workdesc.get_w(), workdesc.get_h());
+#endif
 	cairo_t* subcr=cairo_create(pastesurface);
 	// apply the transformations form the current context
 	cairo_matrix_t matrix;

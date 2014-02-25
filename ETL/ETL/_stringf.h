@@ -95,8 +95,10 @@ _ETL_BEGIN_CDECLS
 #endif
 #endif
 
-#ifndef _MSC_VER
+#ifdef HAVE_UNISTD_H
+#if HAVE_UNISTD_H
 	#include <unistd.h>
+#endif
 #else
 #include <direct.h>
 #endif

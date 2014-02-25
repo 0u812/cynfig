@@ -339,7 +339,7 @@ public:
 	void
 	on_waypoint_clicked_timetrackview(const etl::handle<synfig::Node>& node,
 									  const synfig::Time& time,
-									  const synfig::Time& time_offset __attribute__ ((unused)),
+									  const synfig::Time& time_offset SYNFIG_ATTR_UNUSED,
 									  int button)
 	{
 		std::set<synfig::Waypoint, std::less<UniqueID> > waypoint_set;

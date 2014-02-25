@@ -1033,7 +1033,7 @@ synfig::save_canvas(const FileSystem::Identifier &identifier, Canvas::ConstHandl
 #ifdef _WIN32
 			// On Win32 platforms, rename() has bad behavior. work around it.
 			char old_file[80]="sif.XXXXXXXX";
-			mktemp(old_file);
+			GetTempFileName(".", "syf", 0, old_file);
 			identifier.file_system->file_rename(identifier.filename,old_file);
 			if(!identifier.file_system->file_rename(tmp_filename,identifier.filename))
 			{

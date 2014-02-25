@@ -42,6 +42,10 @@
 
 #include "simplecircle.h"
 
+#if SYNFIG_WINDOWS_TARGET
+#include <math.h>
+#endif
+
 #endif
 
 /* === U S I N G =========================================================== */

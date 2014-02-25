@@ -660,7 +660,7 @@ Layer_Freetype::sync()
 }
 
 inline Color
-Layer_Freetype::color_func(const Point &point_ __attribute__ ((unused)), int quality __attribute__ ((unused)), float supersample __attribute__ ((unused)))const
+Layer_Freetype::color_func(const Point &point_ SYNFIG_ATTR_UNUSED, int quality SYNFIG_ATTR_UNUSED, float supersample SYNFIG_ATTR_UNUSED)const
 {
 	bool invert=param_invert.get(bool());
 	if (invert)

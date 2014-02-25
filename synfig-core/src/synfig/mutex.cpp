@@ -284,6 +284,7 @@ RWLock::reader_unlock()
 bool
 RWLock::reader_trylock()
 {
+	return 0;
 }
 
 void
@@ -299,6 +300,7 @@ RWLock::writer_unlock()
 bool
 RWLock::writer_trylock()
 {
+	return 0;
 }
 
 #endif

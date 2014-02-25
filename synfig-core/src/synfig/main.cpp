@@ -36,13 +36,14 @@
 #include "general.h"
 #include "module.h"
 #include <cstdlib>
-#include <ltdl.h>
+//#include <ltdl.h>
 #include <glibmm.h>
 #include <stdexcept>
+#include <process.h>
 
 // Includes used by get_binary_path():
 #ifdef WIN32
-#include <windows.h>
+#include <Windows.h>
 #elif defined(__APPLE__)
 #include <mach-o/dyld.h>
 #include <sys/param.h>
@@ -197,7 +198,7 @@ synfig::Main::Main(const synfig::String& basepath,ProgressCallback *cb):
 	String prefix=etl::dirname(basepath);
 
 	unsigned int i;
-#ifdef _DEBUG
+#if defined(_DEBUG) && SYNFIG_GNU_EXTENSIONS
 	std::set_terminate(__gnu_cxx::__verbose_terminate_handler);
 #endif
 
@@ -385,7 +386,7 @@ void
 synfig::error(const String &str)
 {
 	static Mutex mutex; Mutex::Lock lock(mutex);
-	cerr<<"synfig("<<getpid()<<")"<<current_time().c_str()<<_("error")<<": "<<str.c_str()<<endl;
+	cerr<<"synfig("<<_getpid()<<")"<<current_time().c_str()<<_("error")<<": "<<str.c_str()<<endl;
 }
 
 void
@@ -400,7 +401,7 @@ void
 synfig::warning(const String &str)
 {
 	static Mutex mutex; Mutex::Lock lock(mutex);
-	cerr<<"synfig("<<getpid()<<")"<<current_time().c_str()<<_("warning")<<": "<<str.c_str()<<endl;
+	cerr<<"synfig("<<_getpid()<<")"<<current_time().c_str()<<_("warning")<<": "<<str.c_str()<<endl;
 }
 
 void
@@ -415,7 +416,7 @@ void
 synfig::info(const String &str)
 {
 	static Mutex mutex; Mutex::Lock lock(mutex);
-	cerr<<"synfig("<<getpid()<<")"<<current_time().c_str()<<_("info")<<": "<<str.c_str()<<endl;
+	cerr<<"synfig("<<_getpid()<<")"<<current_time().c_str()<<_("info")<<": "<<str.c_str()<<endl;
 }
 
 // synfig::get_binary_path()

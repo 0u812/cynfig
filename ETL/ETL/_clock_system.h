@@ -33,6 +33,10 @@
 # include <time.h>
 # define __sys_clock	::clock
 # define __sys_time	::time
+#elif defined(_MSC_VER)
+# include <time.h>
+# define __sys_clock	::clock
+# define __sys_time	::time
 #else
 # ifdef __GNUG__
 #  include <time.h>

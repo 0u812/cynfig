@@ -162,7 +162,7 @@ ValueNode_Real::get_local_name()const
 }
 
 bool
-ValueNode_Real::check_type(ValueBase::Type type __attribute__ ((unused)))
+ValueNode_Real::check_type(ValueBase::Type type SYNFIG_ATTR_UNUSED)
 {
 	return
 		type==ValueBase::TYPE_ANGLE ||

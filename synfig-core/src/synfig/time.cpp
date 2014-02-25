@@ -46,10 +46,6 @@
 
 #ifdef WIN32
 #include <float.h>
-#ifndef isnan
-extern "C" { __declspec(dllimport) int _isnan(double x); }
-#define isnan _isnan
-#endif
 #endif
 
 // For some reason isnan() isn't working on macosx any more.
@@ -327,5 +323,9 @@ Time::c_str()const
 bool
 Time::is_valid()const
 {
+#ifndef _MSC_VER
 	return !std::isnan(value_);
+#else
+	return !_isnan(value_);
+#endif
 }
