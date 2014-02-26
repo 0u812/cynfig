@@ -41,7 +41,7 @@
 #include "valuenode_scale.h"
 #include "loadcanvas.h"
 #include "filesystemnative.h"
-#include <sigc++/bind.h>
+#include <sigc++/sigc++.h>
 
 #endif
 
@@ -774,14 +774,16 @@ Canvas::insert(iterator iter,etl::handle<Layer> x)
 	//while(correct_canvas->is_inline())correct_canvas=correct_canvas->parent();
 	Layer::LooseHandle loose_layer(x);
 
+	// problems in VS12 w/ VS10-compiled sigc
 	add_connection(loose_layer,
 				   sigc::connection(
 					   x->signal_added_to_group().connect(
-						   sigc::bind(
+						   sigc::bind<1>(
 							   sigc::mem_fun(
 								   *correct_canvas,
 								   &Canvas::add_group_pair),
 							   loose_layer))));
+	// problems in VS12 w/ VS10-compiled sigc
 	add_connection(loose_layer,
 				   sigc::connection(
 					   x->signal_removed_from_group().connect(

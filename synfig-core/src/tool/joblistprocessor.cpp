@@ -143,6 +143,7 @@ bool setup_job(Job& job, const TargetParam& target_parameters)
 	VERBOSE_OUT(4) << "Outfilename = " << job.outfilename.c_str() << endl;
 
 	// Check permissions
+#if !SYNFIG_WINDOWS_TARGET
 	if (access(dirname(job.outfilename).c_str(), W_OK) == -1)
 	{
 		VERBOSE_OUT(1) << _("Unable to create ouput for \"") << job.filename.c_str()
@@ -150,6 +151,7 @@ bool setup_job(Job& job, const TargetParam& target_parameters)
 					   << _("Throwing out job...") << endl;
 		return false;
 	}
+#endif
 
 	VERBOSE_OUT(4) << _("Creating the target...") << endl;
 	job.target =

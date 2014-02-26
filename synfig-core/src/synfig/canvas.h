@@ -653,6 +653,7 @@ private:
 	//! Adds a \layer to a group given by its \group string to the group
 	//! database
 	void add_group_pair(String group, etl::handle<Layer> layer);
+	void add_group_pairx(String group) {}
 	//! Removes a \layer from a group given by its \group string to the group
 	//! database
 	void remove_group_pair(String group, etl::handle<Layer> layer);

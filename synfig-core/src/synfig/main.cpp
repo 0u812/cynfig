@@ -280,7 +280,9 @@ synfig::Main::Main(const synfig::String& basepath,ProgressCallback *cb):
 		if(getenv("HOME"))
 			locations.push_back(strprintf("%s/.synfig/%s", getenv("HOME"), MODULE_LIST_FILENAME));
 	#ifdef SYNFIG_MODULES_DIR
-		locations.push_back(SYNFIG_MODULES_DIR+std::to_string(ETL_DIRECTORY_SEPARATOR)+MODULE_LIST_FILENAME);
+		std::stringstream ss;
+		ss << (char)ETL_DIRECTORY_SEPARATOR;
+		locations.push_back(SYNFIG_MODULES_DIR+ss.str()+MODULE_LIST_FILENAME);
 	#endif
 		locations.push_back(prefix+ETL_DIRECTORY_SEPARATOR+"etc"+ETL_DIRECTORY_SEPARATOR+MODULE_LIST_FILENAME);
 		locations.push_back("/usr/local/etc/" MODULE_LIST_FILENAME);

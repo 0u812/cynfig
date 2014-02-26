@@ -312,7 +312,11 @@ FileContainerZip::HistoryRecord FileContainerZip::decode_history(const std::stri
 					for(xmlpp::Element::NodeList::iterator j = list.begin(); j != list.end(); j++)
 						if (dynamic_cast<xmlpp::TextNode*>(*j))
 							s += dynamic_cast<xmlpp::TextNode*>(*j)->get_content();
+#if !defined(_MSC_VER) || _MSC_VER >= 1800
 					history_record.prev_storage_size = strtoll(s.c_str(), NULL, 10);
+#else
+					history_record.prev_storage_size = _strtoi64(s.c_str(), NULL, 10); // 
+#endif
 					if (history_record.prev_storage_size < 0)
 						history_record.prev_storage_size = 0;
 				}

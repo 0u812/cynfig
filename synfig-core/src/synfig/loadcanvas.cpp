@@ -2857,8 +2857,8 @@ void
 CanvasParser::register_canvas_in_map(Canvas::Handle canvas, String as)
 {
 	get_open_canvas_map()[etl::absolute_path(as)]=canvas;
-	canvas->signal_deleted().connect(sigc::bind(sigc::ptr_fun(_remove_from_open_canvas_map),canvas.get()));
-	canvas->signal_file_name_changed().connect(sigc::bind(sigc::ptr_fun(_canvas_file_name_changed),canvas.get()));
+	canvas->signal_deleted().connect(sigc::bind(sigc::ptr_fun(_remove_from_open_canvas_map),canvas.get())); // problems in VS12 w/ VS10-compiled sigc
+	canvas->signal_file_name_changed().connect(sigc::bind(sigc::ptr_fun(_canvas_file_name_changed),canvas.get())); // problems in VS12 w/ VS10-compiled sigc
 }
 
 #ifdef _DEBUG

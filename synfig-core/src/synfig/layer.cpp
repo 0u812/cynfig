@@ -184,6 +184,7 @@ synfig::Layer::set_canvas(etl::loose_handle<Canvas> x)
 		canvas_=x;
 		if(x)
 		{
+			// problems in VS12 w/ VS10-compiled sigc
 			parent_death_connect_=x->signal_deleted().connect(
 				sigc::bind(
 					sigc::mem_fun(

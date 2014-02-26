@@ -99,7 +99,7 @@ ValueNode_Bone::show_bone_map(Canvas::LooseHandle canvas, const char *file, int 
 
 	printf("\n  %s:%d (canvas %lx) %s we now have %d bones (%d unreachable):\n", file, line, uintptr_t(canvas.get()), text.c_str(), int(bone_map.size()), int(bone_map.size() - bone_set.size()));
 
-	for (set<ValueNode_Bone::LooseHandle>::iterator iter = bone_set.begin(); iter != bone_set.end(); iter++)
+	for (set<ValueNode_Bone::LooseHandle, compare_bones>::iterator iter = bone_set.begin(); iter != bone_set.end(); iter++)
 	{
 		ValueNode_Bone::LooseHandle bone(*iter);
 		GUID guid(bone->get_guid());

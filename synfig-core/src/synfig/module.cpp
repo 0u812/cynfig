@@ -85,7 +85,8 @@ Module::subsys_stop()
 {
 	delete book_;
 
-    for(Poco::SharedLibrary* module : modules_) {
+    for(std::vector<Poco::SharedLibrary*>::iterator i = modules_.begin(); i!= modules_.end(); ++i) {
+		Poco::SharedLibrary* module = *i;
         module->unload();
         delete module;
     }
@@ -121,7 +122,8 @@ synfig::Module::loadModule(const std::string& module_name, ProgressCallback *cal
     ModulePaths paths = generatePaths(module_name);
     Poco::SharedLibrary* module = new Poco::SharedLibrary();
     
-    for(const ModulePath& p : paths) {
+    for(ModulePaths::const_iterator i = paths.begin(); i!= paths.end(); ++i) {
+		const ModulePath& p = *i;
         try {
 //             std::cerr << "Trying " << p << "\n";
             module->load(p);
@@ -140,7 +142,8 @@ synfig::Module::loadModule(const std::string& module_name, ProgressCallback *cal
 synfig::Module::ModulePaths
 synfig::Module::generatePaths(const std::string& module_name) {
     ModulePaths paths;
-    for(const ModulePath& p : modpaths_) {
+    for(ModulePaths::const_iterator i = modpaths_.begin(); i!= modpaths_.end(); ++i) {
+		const ModulePath& p = *i;
         paths.emplace_back(p+ETL_DIRECTORY_SEPARATOR+module_name+".so");
         paths.emplace_back(p+ETL_DIRECTORY_SEPARATOR+"lib"+module_name+".so");
     }
