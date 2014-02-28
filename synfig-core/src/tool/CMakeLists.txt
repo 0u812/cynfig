@@ -15,6 +15,11 @@ set(SYF_TOOL_SOURCES
     joblistprocessor.cpp
     main.cpp)
 
+if(SYNFIG_MSVS_TARGET)
+    # Boost pulls in additional libraries in the same directory
+    link_directories(${SYNFIG_BOOST_LIB_PATH})
+endif()
+    
 add_executable(siftool ${SYF_TOOL_SOURCES})
 set_target_properties(siftool PROPERTIES OUTPUT_NAME synfig)
 target_link_libraries(siftool synfig ${SYNFIG_CORE_REQUIRED_LIBRARIES})

@@ -313,6 +313,11 @@ set(SYNFIG_CORE_SOURCES
     ${IMPORTERHEADERS}
     ${IMPORTERSOURCES})
 
+if(SYNFIG_MSVS_TARGET)
+    # Boost pulls in additional libraries in the same directory
+    link_directories(${SYNFIG_BOOST_LIB_PATH})
+endif()
+
 add_library(synfig SHARED ${SYNFIG_CORE_SOURCES})
 
 set_target_properties(synfig
