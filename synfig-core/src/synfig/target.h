@@ -29,6 +29,7 @@
 
 /* === H E A D E R S ======================================================= */
 
+#include "synfig_api.h"
 #include <sigc++/signal.h>
 #include "string_decl.h"
 #include <utility>
@@ -90,7 +91,7 @@ struct TargetParam;
 *	to import. Also it creates a virtual member render() that must be declared in
 *	the inherited classes.
 */
-class Target : public etl::shared_object
+class SYNFIG_API Target : public etl::shared_object
 {
 public:
 	typedef etl::handle<Target> Handle;

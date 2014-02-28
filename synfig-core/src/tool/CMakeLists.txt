@@ -22,7 +22,11 @@ endif()
     
 add_executable(siftool ${SYF_TOOL_SOURCES})
 set_target_properties(siftool PROPERTIES OUTPUT_NAME synfig)
-target_link_libraries(siftool synfig ${SYNFIG_CORE_REQUIRED_LIBRARIES})
+if(SYNFIG_MSVS_TARGET)
+    target_link_libraries(siftool synfig)
+else()
+    target_link_libraries(siftool synfig ${SYNFIG_CORE_REQUIRED_LIBRARIES})
+endif()
 install(TARGETS siftool DESTINATION bin)
 
 # -- IMAGES --------------------------------------------------------

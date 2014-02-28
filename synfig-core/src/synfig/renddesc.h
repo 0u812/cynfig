@@ -29,6 +29,7 @@
 
 /* === H E A D E R S ======================================================= */
 
+#include "synfig_api.h"
 #include "vector.h"
 #include "color.h"
 #include "types.h"
@@ -51,7 +52,7 @@ namespace synfig {
 /*!	\class RendDesc
 **	\todo writeme
 */
-class RendDesc
+class SYNFIG_API RendDesc
 {
 public:
 	enum Lock

@@ -1,0 +1,13 @@
+02/21/2014:
+
+- Changed order if includes in synfigstudio so that ETL/stringf is included before anything
+has a chance to define HAVE_UNISTD_H (HAVE_UNISTD_H messes up _stringf.h on MSVC for 
+obvious reasons)
+
+- cellrenderer_value.cpp: changed sigc::mem_fun to sigc::mem_fun2 to explicitly specify two
+parameters for member function type
+
+- had to add intl.lib (in gtkmm) to list of libs to avoid unresolved external symbol _libintl_printf
+(went from 168 errors to 11, 8 unresolved externals) (C:\Users\user\Documents\develop\sfdeps\gtkmm\lib\intl.lib)
+
+- added C:\Users\user\Documents\develop\sfdeps\zlib\lib\zdll.lib to input libs. Got it down to 2 unresolved externals.

@@ -27,6 +27,8 @@
 
 /* === H E A D E R S ======================================================= */
 
+#include "synfig_api.h"
+
 /* === M A C R O S ========================================================= */
 
 /*! \def SYNFIG_VERSION
@@ -62,7 +64,7 @@ namespace synfig {
 **	was compiled against.
 **	\see SYNFIG_CHECK_VERSION()
 */
-extern bool check_version_(int v,int vec_size, int color_size,int node_size,int canvas_size,int layer_size);
+SYNFIG_API extern bool check_version_(int v,int vec_size, int color_size,int node_size,int canvas_size,int layer_size);
 
 extern const char *get_version();
 
