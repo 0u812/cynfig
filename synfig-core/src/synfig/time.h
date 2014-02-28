@@ -28,6 +28,7 @@
 
 /* === H E A D E R S ======================================================= */
 
+#include "synfig_api.h"
 #include "string_decl.h"
 
 /* === M A C R O S ========================================================= */
@@ -42,7 +43,7 @@ namespace synfig {
 **	\todo writeme
 **	\see TimeFormat, time_to_string(), string_to_time()
 */
-class Time
+class SYNFIG_API Time
 {
 public:
 	typedef double value_type;
