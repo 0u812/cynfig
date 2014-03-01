@@ -28,6 +28,7 @@
 
 /* === H E A D E R S ======================================================= */
 
+#include "synfig_api.h"
 #include <ETL/stringf>
 #include "string.h"
 #include "version.h"
@@ -155,7 +156,7 @@ extern void info(const char *format,...);
 extern void info(const String &str);
 
 //! Returns absolute path to the binary
-extern String get_binary_path(const String &fallback_path);
+extern SYNFIG_API String get_binary_path(const String &fallback_path);
 
 }; // END of namespace synfig
 

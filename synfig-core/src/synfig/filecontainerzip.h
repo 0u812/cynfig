@@ -27,6 +27,7 @@
 
 /* === H E A D E R S ======================================================= */
 
+#include "synfig_api.h"
 #include <map>
 #include <ctime>
 #include "filecontainer.h"
@@ -40,7 +41,7 @@
 namespace synfig
 {
 
-	class FileContainerZip: public FileContainer
+	class SYNFIG_API FileContainerZip: public FileContainer
 	{
 	public:
 		class WholeZipReadStream : public FileSystem::ReadStream

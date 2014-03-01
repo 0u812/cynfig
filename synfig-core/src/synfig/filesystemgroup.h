@@ -27,6 +27,7 @@
 
 /* === H E A D E R S ======================================================= */
 
+#include "synfig_api.h"
 #include <list>
 #include "filesystem.h"
 
@@ -39,7 +40,7 @@
 namespace synfig
 {
 
-	class FileSystemGroup : public FileSystem
+	class SYNFIG_API FileSystemGroup : public FileSystem
 	{
 	public:
 		struct Entry

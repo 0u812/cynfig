@@ -29,6 +29,7 @@
 
 /* === H E A D E R S ======================================================= */
 
+#include "synfig_api.h"
 #include "string.h"
 #include "canvas.h"
 #include "valuenode.h"
@@ -233,7 +234,7 @@ private:
 extern Canvas::Handle open_canvas(xmlpp::Element* node,String &errors,String &warnings);
 //!	Loads a canvas from \a filename and its absolute path
 /*!	\return	The Canvas's handle on success, an empty handle on failure */
-extern Canvas::Handle open_canvas_as(const FileSystem::Identifier &identifier,const String &as,String &errors,String &warnings);
+extern SYNFIG_API Canvas::Handle open_canvas_as(const FileSystem::Identifier &identifier,const String &as,String &errors,String &warnings);
 
 //! Returns the Open Canvases Map.
 //! \see open_canvas_map_

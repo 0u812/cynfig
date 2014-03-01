@@ -27,6 +27,7 @@
 
 /* === H E A D E R S ======================================================= */
 
+#include "synfig_api.h"
 #include <ETL/ref_count>
 #include "general.h"
 
@@ -43,7 +44,7 @@ namespace synfig {
 **
 **	\writeme
 */
-class Main
+class SYNFIG_API Main
 {
 	etl::reference_counter ref_count_;
 public:
