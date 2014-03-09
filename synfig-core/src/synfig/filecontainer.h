@@ -27,6 +27,7 @@
 
 /* === H E A D E R S ======================================================= */
 
+#include "synfig_api.h"
 #include <list>
 #include "filesystem.h"
 
@@ -39,7 +40,7 @@
 namespace synfig
 {
 
-	class FileContainer : public FileSystem
+	class SYNFIG_API FileContainer : public FileSystem
 	{
 	public:
 		class ReadStream : public FileSystem::ReadStream

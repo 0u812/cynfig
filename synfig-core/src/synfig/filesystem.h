@@ -27,6 +27,7 @@
 
 /* === H E A D E R S ======================================================= */
 
+#include "synfig_api.h"
 #include <cstdio>
 #include <string>
 #include <streambuf>
@@ -43,7 +44,7 @@
 namespace synfig
 {
 
-	class FileSystem : public etl::rshared_object
+	class SYNFIG_API FileSystem : public etl::rshared_object
 	{
 	public:
 		typedef etl::handle< FileSystem > Handle;

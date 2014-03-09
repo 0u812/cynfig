@@ -188,7 +188,7 @@ class GUID;
 **	\todo writeme
 **	\see Canvas
 */
-class Layer : public Node
+class SYNFIG_API Layer : public Node
 {
 	friend class ValueNode;
 	friend class IndependentContext;

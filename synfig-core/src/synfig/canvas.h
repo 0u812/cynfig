@@ -28,6 +28,7 @@
 
 /* === H E A D E R S ======================================================= */
 
+#include "synfig_api.h"
 #include <map>
 #include <list>
 #include <ETL/handle>
@@ -530,7 +531,7 @@ public:
 	/*!	\return If found, returns a handle to the child Canvas.
 	**		Otherwise, returns an empty handle.
 	*/
-	Handle find_canvas(const String &id, String &warnings);
+	SYNFIG_API Handle find_canvas(const String &id, String &warnings);
 
 	//! Finds a child Canvas in the Canvas with the given \a id
 	/*!	\return If found, returns a handle to the child Canvas.
