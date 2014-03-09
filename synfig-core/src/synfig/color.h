@@ -29,7 +29,7 @@
 
 /* === H E A D E R S ======================================================= */
 
-
+#include "synfig_api.h"
 #include <cmath>
 #include <cassert>
 #include <stdint.h>
@@ -128,7 +128,7 @@ public:
 	static const value_type floor;
 #endif
 	
-	const String get_string(void)const;
+	SYNFIG_API const String get_string(void)const;
 
 	Color &
 	operator+=(const Color &rhs)

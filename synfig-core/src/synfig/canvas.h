@@ -425,10 +425,10 @@ public:
 	void set_id(const String &x);
 
 	//!	Returns the data string for the given meta data key
-	String get_meta_data(const String& key)const;
+	SYNFIG_API String get_meta_data(const String& key)const;
 
 	//!	Returns a list of meta data keys
-	std::list<String> get_meta_data_keys()const;
+	SYNFIG_API std::list<String> get_meta_data_keys()const;
 
 	//! Sets a meta data key to a specific string
 	void set_meta_data(const String& key, const String& data);
@@ -597,7 +597,7 @@ public:
 	//! Returns the last Canvas layer queue reverse iterator. Notice that it
 	/*! overrides the std::rbegin() member that would return an interator
 	 * just past the last element of the queue.*/
-	reverse_iterator rbegin();
+	SYNFIG_API reverse_iterator rbegin();
 	//! Returns the last Canvas layer queue reverse const iterator. Notice that it
 	/*! overrides the std::rbegin() member that would return an interator
 	 * just past the last element of the queue.*/
