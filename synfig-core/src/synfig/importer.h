@@ -128,7 +128,7 @@ public:
 	typedef std::map<std::string,BookEntry> Book;
 	static Book* book_;
 
-	static Book& book();
+	static SYNFIG_API Book& book();
 
 	//! Initializes the Import module by creating a book of importers names
 	//! and its creators and the list of open importers

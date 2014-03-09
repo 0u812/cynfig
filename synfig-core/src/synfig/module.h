@@ -28,6 +28,7 @@
 
 /* === H E A D E R S ======================================================= */
 
+#include "synfig_api.h"
 #include "general.h"
 #include <ETL/handle>
 #include <map>
@@ -218,7 +219,7 @@ private:
     //! Generates all possible paths for the module: (modpath)/[lib]module_name
     static ModulePaths generatePaths(const std::string& module_name);
 public:
-	static Book& book();
+	static SYNFIG_API Book& book();
 
     /** Add a directory to search paths
      * @details Poco does not search for loadable binaries - 
