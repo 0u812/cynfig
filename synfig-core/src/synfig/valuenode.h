@@ -314,7 +314,7 @@ protected:
 * 	evaluation of the linked Value Nodes. It is commonly known as
 * 	Converted Value Nodes. The derived clases defines the behavior.
 */
-class LinkableValueNode : public ValueNode
+class SYNFIG_API LinkableValueNode : public ValueNode
 {
 	friend class ValueNode;
 public:
