@@ -464,7 +464,7 @@ public:
 	//Color get_color(const Point &pos)const;
 
 	//! Sets the time for all the layers in the canvas
-	void set_time(Time t)const;
+	SYNFIG_API void set_time(Time t)const;
 
 	//! Returns the current time of the Canvas
 	Time get_time()const { return cur_time_; }
@@ -610,7 +610,7 @@ public:
 	//! \see end(), insert(iterator iter,etl::handle<Layer> x)
 	void push_back(etl::handle<Layer> x);
 	//! Inserts a layer just at the beggining of the Canvas layer dqueue
-	void push_front(etl::handle<Layer> x);
+	SYNFIG_API void push_front(etl::handle<Layer> x);
 	//! Inserts a layer in the last position of the Canvas layer dqueue
 	//! Uses the standard methods and doesn't perform any parentship
 	//! or signal update

@@ -27,6 +27,7 @@
 
 /* === H E A D E R S ======================================================= */
 
+#include "synfig_api.h"
 #include "string.h"
 #include <stdint.h>
 #include <cassert>
@@ -82,7 +83,7 @@ public:
 	uint64_t get_lo_hi()const { return data.u_32.c; }
 	uint64_t get_lo_lo()const { return data.u_32.d; }
 
-	void make_unique();
+	SYNFIG_API void make_unique();
 	String get_string()const;
 
 	bool operator==(const GUID& rhs)const

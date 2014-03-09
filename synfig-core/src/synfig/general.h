@@ -142,18 +142,18 @@ extern void shutdown();
 
 //! Reports an error
 /*! Call this when an error occurs, describing what happened */
-extern void error(const char *format,...);
-extern void error(const String &str);
+extern SYNFIG_API void error(const char *format,...);
+extern SYNFIG_API void error(const String &str);
 
 //! Reports a warning
 /*! Call this when something questionable occurs, describing what happened */
-extern void warning(const char *format,...);
-extern void warning(const String &str);
+extern SYNFIG_API void warning(const char *format,...);
+extern SYNFIG_API void warning(const String &str);
 
 //! Reports some information
 /*! Call this to report various information. Please be sparse... */
-extern void info(const char *format,...);
-extern void info(const String &str);
+extern SYNFIG_API void info(const char *format,...);
+extern SYNFIG_API void info(const String &str);
 
 //! Returns absolute path to the binary
 extern SYNFIG_API String get_binary_path(const String &fallback_path);
