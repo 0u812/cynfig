@@ -93,9 +93,7 @@ ValueBase BooleanCurve::get_param(const String & param)const
 		ValueBase ret(regions);
 		return ret;
 	}
-	//EXPORT_NAME();
-	if (param=="Name" || param=="name" || param=="name__")								\
-		return ValueBase((const char(&)[])name__, false, false);
+	EXPORT_NAME();
 	EXPORT_VERSION();
 
 	return Layer_Shape::get_param(param);

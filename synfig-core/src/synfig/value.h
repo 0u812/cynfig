@@ -29,6 +29,7 @@
 
 /* === H E A D E R S ======================================================= */
 
+#include "synfig_api.h"
 #include "angle.h"
 #include "segment.h"
 #include "string.h"
@@ -165,7 +166,7 @@ public:
 	ValueBase(Type x);
 
 	//! Default destructor
-	~ValueBase();
+	SYNFIG_API ~ValueBase();
 
 	/*
  --	** -- O P E R A T O R S ---------------------------------------------------

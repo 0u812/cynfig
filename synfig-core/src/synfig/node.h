@@ -223,7 +223,7 @@ public:
 	const GUID& get_guid()const;
 
 	//! Sets the GUID for this Node
-	virtual void set_guid(const GUID& x);
+	SYNFIG_API virtual void set_guid(const GUID& x);
 
 	//! Gets the time when the Node was changed
 	int get_time_last_changed()const;

@@ -117,8 +117,8 @@
 //! Exports the name or the local name of the layer
 #define EXPORT_NAME()																	\
 	if (param=="Name" || param=="name" || param=="name__")								\
-		/*return name__; JKM: you cannot do this if name__ has type const char[] (which it does)*/ \
-		/* the inferred array type is length dependent; you can get it to compile if you cast */ \
+		/*return name__; JKM: you cannot do this if name__ has type const char[] (which it does). */ \
+		/* The inferred array type is length dependent; you can get it to compile if you cast */ \
 		/* it as (const char(&)[4]), but the length is not known a priori */		\
 		return (const char*)name__; /* so pass as const char ptr instead of array ref*/	\
 	else if (param=="local_name__")														\

@@ -251,8 +251,8 @@ Layer_TimeLoop::set_time(IndependentContext context, Time t)const
 		if (duration == 0)
 			t = link_time;
 		else {
-			float t_frames = round(t*document_fps);
-			float duration_frames = round(duration*document_fps);
+			float t_frames = std::floor(t*document_fps+0.5); // JKM: std::round not implemented in VS 10
+			float duration_frames = std::floor(duration*document_fps+0.5); // JKM: std::round not implemented in VS 10
 			if (duration > 0)
 			{
 				t -= local_time;
