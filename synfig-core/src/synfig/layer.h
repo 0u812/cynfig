@@ -117,14 +117,17 @@
 //! Exports the name or the local name of the layer
 #define EXPORT_NAME()																	\
 	if (param=="Name" || param=="name" || param=="name__")								\
-		return name__;																	\
+		/*return name__; JKM: you cannot do this if name__ has type const char[] (which it does)*/ \
+		/* the only way to pass a array ref to ValueBase's template constructor is to cast*/ \
+		/* it as (const char(&)[]), but some compilers (MSVC) will still complain*/		\
+		return (const char*)name__; /* so pass as const char ptr instead of array ref*/	\
 	else if (param=="local_name__")														\
 		return dgettext("synfig",local_name__);
 
 //! Exports the version of the layer
 #define EXPORT_VERSION()																\
 	if (param=="Version" || param=="version" || param=="version__")						\
-		return version__;
+		return (const char*)version__;
 
 //! This is used as the category for layer book entries which represent aliases of layers.
 //! It prevents these layers showing up in the menu.
