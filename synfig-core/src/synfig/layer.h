@@ -118,8 +118,8 @@
 #define EXPORT_NAME()																	\
 	if (param=="Name" || param=="name" || param=="name__")								\
 		/*return name__; JKM: you cannot do this if name__ has type const char[] (which it does)*/ \
-		/* the only way to pass a array ref to ValueBase's template constructor is to cast*/ \
-		/* it as (const char(&)[]), but some compilers (MSVC) will still complain*/		\
+		/* the inferred array type is length dependent; you can get it to compile if you cast */ \
+		/* it as (const char(&)[4]), but the length is not known a priori */		\
 		return (const char*)name__; /* so pass as const char ptr instead of array ref*/	\
 	else if (param=="local_name__")														\
 		return dgettext("synfig",local_name__);
