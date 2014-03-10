@@ -153,7 +153,7 @@ protected:
 public:
 
 	//! Default constructor
-	ValueBase();
+	SYNFIG_API ValueBase();
 
 	//! Template constructor for any type
 	template <typename T>
@@ -180,7 +180,7 @@ public:
 		{ set(x); return *this; }
 
 	//!Operator asignation for ValueBase classes. Does a exact copy of \x
-	ValueBase& operator=(const ValueBase& x);
+	SYNFIG_API ValueBase& operator=(const ValueBase& x);
 
 	//! Eqaul than operator. Segment, Gradient and Bline Points cannot be compared.
 	bool operator==(const ValueBase& rhs)const;
@@ -199,7 +199,7 @@ public:
 public:
 
 	//! Deletes the data only if the ref count is zero
-	void clear();
+	SYNFIG_API void clear();
 
 	//! Gets the loop option.
 	bool get_loop()const { return loop_; }
@@ -220,7 +220,7 @@ public:
 	void set_interpolation(Interpolation x) { interpolation_=x; }
 	
 	//! Create independent copy from existing ValueBase object
-	void copy(const ValueBase& x);
+	SYNFIG_API void copy(const ValueBase& x);
 
 	//! Copies properties (static, interpolation, etc) from other ValueBase object.
 	void copy_properties_of(const ValueBase& x);

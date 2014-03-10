@@ -261,7 +261,7 @@ protected:
 	//! Used when the node's GUID has changed.
 	//! To be overloaded by the derivative classes. Emits a signal where the
 	//! the GUI can be connected to.
-	virtual void on_guid_changed(GUID guid);
+	SYNFIG_API virtual void on_guid_changed(GUID guid);
 
 	//!	Function to be overloaded that fills the Time Point Set with
 	//! all the children Time Points.

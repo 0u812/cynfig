@@ -597,7 +597,7 @@ public:
 #ifndef _MSC_VER
 	constexpr static const float range=ceil-floor;
 #else
-	static const float range;
+	SYNFIG_API static const float range;
 #endif
 	static const value_type amask=0xFF<<24;
 	static const value_type rmask=0xFF<<16;

@@ -27,6 +27,7 @@
 
 /* === H E A D E R S ======================================================= */
 
+#include "synfig_api.h"
 #include <ETL/handle>
 #include "vector.h"
 #include <list>
@@ -41,7 +42,7 @@
 
 namespace synfig {
 
-class Transform : public etl::shared_object
+class SYNFIG_API Transform : public etl::shared_object
 {
 	GUID guid_;
 
