@@ -70,6 +70,7 @@
 #include <glibmm/thread.h>
 
 #include "general.h"
+#include <stdio.h>
 
 #endif
 
@@ -334,7 +335,7 @@ IPC::make_connection()
 	if(!S_ISFIFO(file_stat.st_mode))
 		return ret;
 
-	int fd=open(fifo_path().c_str(),O_WRONLY|O_NONBLOCK);
+    int fd=open(fifo_path().c_str(),O_WRONLY|O_NONBLOCK);
 #endif
 
 	if(fd>=0)

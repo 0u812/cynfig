@@ -1282,6 +1282,7 @@ App::App(const synfig::String& basepath, int *argc, char ***argv):
 
 	distance_system=Distance::SYSTEM_UNITS;
 
+    cerr << "Pre-create directory\n";
 	if(mkdir(synfigapp::Main::get_user_app_directory().c_str(),ACCESSPERMS)<0)
 	{
 		if(errno!=EEXIST)
@@ -1293,8 +1294,10 @@ App::App(const synfig::String& basepath, int *argc, char ***argv):
 	}
 
 
+    cerr << "IPC\n";
 	ipc=new IPC();
 
+    cerr << "Check version\n";
 	if(!SYNFIG_CHECK_VERSION())
 	{
         cerr<< "sigc::signal<void>: " << sizeof(sigc::signal<void>) << "\n";
@@ -1319,6 +1322,8 @@ App::App(const synfig::String& basepath, int *argc, char ***argv):
 	SuperCallback synfig_init_cb(splash_screen.get_callback(),0,9000,10000);
 	SuperCallback studio_init_cb(splash_screen.get_callback(),9000,10000,10000);
 
+    cerr << "Try to initialize library\n";
+    
 	// Initialize the Synfig library
 	try { synfigapp_main=etl::smart_ptr<synfigapp::Main>(new synfigapp::Main(basepath,&synfig_init_cb)); }
 	catch(std::runtime_error x)
@@ -1332,6 +1337,7 @@ App::App(const synfig::String& basepath, int *argc, char ***argv):
 		throw;
 	}
 
+    cerr << "Add prefs to settings\n";
 	// add the preferences to the settings
 	synfigapp::Main::settings().add_domain(&_preferences,"pref");
 
@@ -1340,6 +1346,7 @@ App::App(const synfig::String& basepath, int *argc, char ***argv):
 		
 		
 		
+        cerr << "Try to load basic settings\n";
 		// Try to load settings early to get access to some important
 		// values, like "enable_experimental_features".
 		studio_init_cb.task(_("Loading Basic Settings..."));
@@ -1364,6 +1371,7 @@ App::App(const synfig::String& basepath, int *argc, char ***argv):
 		}
 		plugin_manager.load_dir(pluginsprefix);
 		
+        cerr << "user plugins path\n";
 		// user plugins path
 		pluginsprefix=Glib::build_filename(synfigapp::Main::get_user_app_directory(),"plugins");
 		plugin_manager.load_dir(pluginsprefix);
@@ -1385,6 +1393,7 @@ App::App(const synfig::String& basepath, int *argc, char ***argv):
 		main_window->add_accel_group(App::ui_manager_->get_accel_group());
 
 
+        cerr << "Init Toolbox\n";
 		studio_init_cb.task(_("Init Toolbox..."));
 		dock_toolbox=new studio::Dock_Toolbox();
 		dock_manager->register_dockable(*dock_toolbox);
@@ -1445,6 +1454,7 @@ App::App(const synfig::String& basepath, int *argc, char ***argv):
 		dock_manager->register_dockable(*dock_layer_groups);
 
 
+        cerr << "Init Color Dialog\n";
 		studio_init_cb.task(_("Init Color Dialog..."));
 		dialog_color=new studio::Dialog_Color();
 
@@ -1467,6 +1477,7 @@ App::App(const synfig::String& basepath, int *argc, char ***argv):
 		dialog_input->get_close_button()->signal_clicked().connect( sigc::mem_fun( *dialog_input, &Gtk::InputDialog::hide ) );
 		dialog_input->get_save_button()->signal_clicked().connect( sigc::mem_fun( *device_tracker, &DeviceTracker::save_preferences) );
 		
+        cerr << "Init auto recovery\n";
 		studio_init_cb.task(_("Init auto recovery..."));
 		auto_recover=new AutoRecover();
 

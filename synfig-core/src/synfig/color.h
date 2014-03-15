@@ -120,7 +120,7 @@ private:
 
 public:
 	
-#ifndef _MSC_VER
+#if !defined(_MSC_VER) && !SYNFIG_CYGWIN_TARGET
 	constexpr static const value_type ceil=1;	
 	constexpr static const value_type floor=0;
 #else
@@ -594,7 +594,7 @@ private:
 public:
 	static const unsigned char ceil=255;	
 	static const unsigned char floor=0;
-#ifndef _MSC_VER
+#if !defined(_MSC_VER) && !SYNFIG_CYGWIN_TARGET
 	constexpr static const float range=ceil-floor;
 #else
 	SYNFIG_API static const float range;
