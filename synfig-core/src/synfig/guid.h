@@ -61,7 +61,7 @@ public:
 		{ make_unique(); }
 	GUID(const GUID& x):data(x.data)
 		{ }
-#ifndef _MSC_VER
+#if !SYNFIG_MSVS_TARGET
 	GUID(const int i SYNFIG_ATTR_UNUSED){assert(!i); data.u_64.a=0;data.u_64.b=0;}
 #else
 	GUID(const int i){ assert(!i); data.u_64.a = 0; data.u_64.b = 0; }

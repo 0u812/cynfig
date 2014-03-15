@@ -10,8 +10,8 @@
 
 include(LibFindMacros)
 
-# pkg_check_modules(PC_FREETYPE2 REQUIRED freetype2)
-# pkg_check_modules(PC_FREETYPE2 REQUIRED xft)
+pkg_check_modules(PC_FREETYPE2 freetype2)
+pkg_check_modules(PC_FREETYPE2 xft)
 
 find_library(FreeType2_LIBRARY NAMES freetype libfreetype
     HINTS ${PC_FREETYPE2_LIBDIR} ${PC_FREETYPE2_LIBRARY_DIRS} ${FREETYPE2_PATH}/lib)

@@ -29,10 +29,18 @@
 
 /* === M A C R O S ========================================================= */
 
+#if SYNFIG_MSVS_TARGET
+
 #ifdef synfig_EXPORTS
 #define SYNFIG_API __declspec(dllexport)
 #else
 #define SYNFIG_API __declspec(dllimport)
+#endif
+
+#else
+
+#define SYNFIG_API
+
 #endif
 
 /* === E N D =============================================================== */

@@ -44,17 +44,20 @@
 //#include <ltdl.h>
 #include <glibmm.h>
 #include <stdexcept>
-#include <process.h>
 
 // Includes used by get_binary_path():
 #if SYNFIG_WINDOWS_TARGET
+    #define GETPID_SYM _getpid
+    #include <process.h>
 //#include <windows.h>
 #elif defined(__APPLE__)
-#include <mach-o/dyld.h>
-#include <sys/param.h>
+    #define GETPID_SYM getpid
+    #include <mach-o/dyld.h>
+    #include <sys/param.h>
 #else
-#include <sys/stat.h>
-#include <unistd.h>
+    #define GETPID_SYM getpid
+    #include <sys/stat.h>
+    #include <unistd.h>
 #endif
 
 #include "target.h"
@@ -393,7 +396,7 @@ void
 synfig::error(const String &str)
 {
 	static Mutex mutex; Mutex::Lock lock(mutex);
-	cerr<<"synfig("<<_getpid()<<")"<<current_time().c_str()<<_("error")<<": "<<str.c_str()<<endl;
+	cerr<<"synfig("<<GETPID_SYM()<<")"<<current_time().c_str()<<_("error")<<": "<<str.c_str()<<endl;
 }
 
 void
@@ -408,7 +411,7 @@ void
 synfig::warning(const String &str)
 {
 	static Mutex mutex; Mutex::Lock lock(mutex);
-	cerr<<"synfig("<<_getpid()<<")"<<current_time().c_str()<<_("warning")<<": "<<str.c_str()<<endl;
+	cerr<<"synfig("<<GETPID_SYM()<<")"<<current_time().c_str()<<_("warning")<<": "<<str.c_str()<<endl;
 }
 
 void
@@ -423,7 +426,7 @@ void
 synfig::info(const String &str)
 {
 	static Mutex mutex; Mutex::Lock lock(mutex);
-	cerr<<"synfig("<<_getpid()<<")"<<current_time().c_str()<<_("info")<<": "<<str.c_str()<<endl;
+	cerr<<"synfig("<<GETPID_SYM()<<")"<<current_time().c_str()<<_("info")<<": "<<str.c_str()<<endl;
 }
 
 // synfig::get_binary_path()

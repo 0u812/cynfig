@@ -35,13 +35,13 @@
 #endif
 
 #ifdef HAVE_UNISTD_H
-#error "Have unistd1"
+// #error "Have unistd1"
 #endif
 
 #include "config.h"
 
 #ifdef HAVE_UNISTD_H
-#error "Have unistd2"
+// #error "Have unistd2"
 #endif
 
 #ifdef HAVE_UNISTD_H
@@ -53,7 +53,7 @@
 #endif
 #endif
 
-#if(SYNFIG_WINDOWS_TARGET)
+#if SYNFIG_WINDOWS_TARGET
 //#error "direct"
 #include <direct.h>
 #endif

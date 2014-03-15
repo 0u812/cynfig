@@ -35,17 +35,19 @@
 
 #include <libxml++/libxml++.h>
 
-#if(!SYNFIG_WINDOWS_TARGET)
-#include <dirent.h>
-#include <sys/stat.h>
+#if !SYNFIG_WINDOWS_TARGET
+    #define STAT_SYM stat
+    #include <dirent.h>
+    #include <sys/stat.h>
 #else
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <stdio.h>
-#define NOMINMAX
-#include <Windows.h> // FindFirstFile
-// http://stackoverflow.com/questions/720337/searching-files-in-c-on-windows
-#define S_ISDIR(B) ((B)&_S_IFDIR)
+    #define STAT_SYM _stat
+    #include <sys/types.h>
+    #include <sys/stat.h>
+    #include <stdio.h>
+    #define NOMINMAX
+    #include <Windows.h> // FindFirstFile
+    // http://stackoverflow.com/questions/720337/searching-files-in-c-on-windows
+    #define S_ISDIR(B) ((B)&_S_IFDIR)
 #endif
 
 #include <synfig/general.h>
@@ -82,21 +84,13 @@ PluginLauncher::PluginLauncher(synfig::Canvas::Handle canvas)
 	}
 	
 	// Make random filename and ensure there's no file with such name exist
-#if(!SYNFIG_WINDOWS_TARGET)
-	struct stat buf;
-#else
-	struct _stat buf;
-#endif
+	struct STAT_SYM buf;
 
 	// Filename to save the file for processing
 	do {
 		synfig::GUID guid;
 		filename_processed = filename_base+"."+guid.get_string().substr(0,8);
-#if(!SYNFIG_WINDOWS_TARGET)
-	} while (stat(filename_processed.c_str(), &buf) != -1);
-#else
-	} while (_stat(filename_processed.c_str(), &buf) != -1);
-#endif
+	} while (STAT_SYM(filename_processed.c_str(), &buf) != -1);
 	
 	// We need a copy (filename_backup) in case of plugin execution will fail.
 	// The tmp_filename_orig will store original unmodified version of file
@@ -105,7 +99,7 @@ PluginLauncher::PluginLauncher(synfig::Canvas::Handle canvas)
 	do {
 		synfig::GUID guid;
 		filename_backup = filename_base+"."+guid.get_string().substr(0,8);
-	} while (_stat(filename_backup.c_str(), &buf) != -1);
+	} while (STAT_SYM(filename_backup.c_str(), &buf) != -1);
 	
 	save_canvas(canvas->get_identifier().file_system->get_identifier(filename_processed),canvas);
 	save_canvas(canvas->get_identifier().file_system->get_identifier(filename_backup),canvas);
@@ -319,8 +313,8 @@ PluginManager::load_dir( const std::string &pluginsprefix )
 		if (filename != std::string(".") && filename != std::string("..")) {
 			std::string pluginpath;
 			pluginpath = pluginsprefix + ETL_DIRECTORY_SEPARATOR + filename;
-			struct _stat sb;
-			_stat(pluginpath.c_str(), &sb);
+			struct STAT_SYM sb;
+			STAT_SYM(pluginpath.c_str(), &sb);
 			// error handling if stat failed
 			// http://msdn.microsoft.com/en-us/library/windows/desktop/aa365200%28v=vs.85%29.aspx
 			if (S_ISDIR(sb.st_mode)) { // use ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY instead
