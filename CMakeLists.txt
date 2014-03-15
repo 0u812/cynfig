@@ -50,6 +50,12 @@ else()
     set(SYNFIG_MSVS_TARGET 0)
 endif()
 
+if(CYGWIN)
+    set(SYNFIG_CYGWIN_TARGET 1)
+else()
+    set(SYNFIG_CYGWIN_TARGET 0)
+endif()
+
 if(NOT SYNFIG_WINDOWS_TARGET)
     find_package(PkgConfig)
 endif()
@@ -61,6 +67,8 @@ set(ENABLE_OPENEXR_HALF 0 CACHE BOOL "Use OpenEXR's \"half\" type for color")
 set(SYNFIG_DATA_PATH ${CMAKE_INSTALL_PREFIX}/share)
 
 set(SYNFIG_MODULES_DIR ${CMAKE_INSTALL_PREFIX}/etc)
+
+set(GENERATE_IMAGES 1 CACHE BOOL "Generate images used by synfigstudio as part of build")
 
 # TODO: GetText
 

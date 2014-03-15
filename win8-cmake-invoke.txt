@@ -6,4 +6,4 @@ cmake -DCMAKE_INSTALL_PREFIX=~/devel/synfig-install -DCMAKE_BUILD_TYPE=Release -
 
 cmake -DCMAKE_INSTALL_PREFIX=~/devel/synfig-install -DCMAKE_BUILD_TYPE=Release -DSKIP_PLATFORM_TESTS=1 -DCMAKE_CXX_FLAGS="-std=c++11" /cygdrive/z/synfig-12072013
 
-cmake -DCMAKE_INSTALL_PREFIX=~/devel/synfig-install -DCMAKE_BUILD_TYPE=Release -DSKIP_PLATFORM_TESTS=1 -DCMAKE_CXX_FLAGS="-std=c++11" -DSYNFIG_SOURCE_IMAGES_DIR=/cygdrive/z/images-12072013/images /cygdrive/z/synfig-12072013
+cmake -DCMAKE_INSTALL_PREFIX=~/devel/synfig-install -DCMAKE_BUILD_TYPE=Release -DSKIP_PLATFORM_TESTS=1 -DCMAKE_CXX_FLAGS="-std=c++11" -DSYNFIG_SOURCE_IMAGES_DIR=/cygdrive/z/images-12072013/images -DGENERATE_IMAGES=0 /cygdrive/z/synfig-12072013

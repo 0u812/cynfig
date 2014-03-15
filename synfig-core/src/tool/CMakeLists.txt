@@ -206,44 +206,46 @@ set(IMAGES
     parameters_icon
     time_track_icon)
 
-foreach(image ${IMAGES})
-    add_image(${image} 0 ${image})
-endforeach()
+if(GENERATE_IMAGES)
+    foreach(image ${IMAGES})
+        add_image(${image} 0 ${image})
+    endforeach()
 
-# keyframe lock
-add_image(keyframe_lock_icons 0 keyframe_lock_past_on_icon)
-add_image(keyframe_lock_icons 1 keyframe_lock_past_off_icon)
-add_image(keyframe_lock_icons 2 keyframe_lock_future_on_icon)
-add_image(keyframe_lock_icons 3 keyframe_lock_future_off_icon)
+    # keyframe lock
+    add_image(keyframe_lock_icons 0 keyframe_lock_past_on_icon)
+    add_image(keyframe_lock_icons 1 keyframe_lock_past_off_icon)
+    add_image(keyframe_lock_icons 2 keyframe_lock_future_on_icon)
+    add_image(keyframe_lock_icons 3 keyframe_lock_future_off_icon)
 
-# framedial icons
-add_image(framedial_icons 0 animate_seek_next_keyframe_icon)
-add_image(framedial_icons 1 animate_seek_prev_keyframe_icon)
-add_image(framedial_icons 2 animate_seek_next_frame_icon)
-add_image(framedial_icons 3 animate_seek_prev_frame_icon)
-add_image(framedial_icons 4 animate_seek_begin_icon)
-add_image(framedial_icons 5 animate_seek_end_icon)
-add_image(framedial_icons 6 animate_play_icon)
-add_image(framedial_icons 7 animate_stop_icon)
-add_image(framedial_icons 8 animate_pause_icon)
-add_image(framedial_icons 9 animate_loop_icon)
+    # framedial icons
+    add_image(framedial_icons 0 animate_seek_next_keyframe_icon)
+    add_image(framedial_icons 1 animate_seek_prev_keyframe_icon)
+    add_image(framedial_icons 2 animate_seek_next_frame_icon)
+    add_image(framedial_icons 3 animate_seek_prev_frame_icon)
+    add_image(framedial_icons 4 animate_seek_begin_icon)
+    add_image(framedial_icons 5 animate_seek_end_icon)
+    add_image(framedial_icons 6 animate_play_icon)
+    add_image(framedial_icons 7 animate_stop_icon)
+    add_image(framedial_icons 8 animate_pause_icon)
+    add_image(framedial_icons 9 animate_loop_icon)
 
-# animate mode icons
-add_image(animate_mode_icons 0 animate_mode_off_icon)
-add_image(animate_mode_icons 1 animate_mode_on_icon)
+    # animate mode icons
+    add_image(animate_mode_icons 0 animate_mode_off_icon)
+    add_image(animate_mode_icons 1 animate_mode_on_icon)
 
-# interpolation type
-add_image(interpolation_type_icons 1 interpolation_type_tcb_icon)
-add_image(interpolation_type_icons 2 interpolation_type_linear_icon)
-add_image(interpolation_type_icons 3 interpolation_type_ease_icon)
-add_image(interpolation_type_icons 4 interpolation_type_const_icon)
-add_image(interpolation_type_icons 5 interpolation_type_clamped_icon)
-add_image(interpolation_type_icons 7 valuenode_forbidanimation_icon)
+    # interpolation type
+    add_image(interpolation_type_icons 1 interpolation_type_tcb_icon)
+    add_image(interpolation_type_icons 2 interpolation_type_linear_icon)
+    add_image(interpolation_type_icons 3 interpolation_type_ease_icon)
+    add_image(interpolation_type_icons 4 interpolation_type_const_icon)
+    add_image(interpolation_type_icons 5 interpolation_type_clamped_icon)
+    add_image(interpolation_type_icons 7 valuenode_forbidanimation_icon)
 
-# canvas & import image
-add_image(canvas_and_importimage_icons 2 canvas_icon)
-add_image(canvas_and_importimage_icons 1 layer_other_importimage_icon)
+    # canvas & import image
+    add_image(canvas_and_importimage_icons 2 canvas_icon)
+    add_image(canvas_and_importimage_icons 1 layer_other_importimage_icon)
 
 
 
-add_custom_target(images ALL DEPENDS ${SYNFIG_IMAGES})
+    add_custom_target(images ALL DEPENDS ${SYNFIG_IMAGES})
+endif()

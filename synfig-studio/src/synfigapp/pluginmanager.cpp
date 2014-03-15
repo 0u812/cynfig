@@ -39,6 +39,7 @@
     #define STAT_SYM stat
     #include <dirent.h>
     #include <sys/stat.h>
+    #include <stdio.h>
 #else
     #define STAT_SYM _stat
     #include <sys/types.h>
@@ -112,7 +113,7 @@ PluginLauncher::PluginLauncher(synfig::Canvas::Handle canvas)
 bool
 PluginLauncher::check_python_version(String path)
 {
-#if(!SYNFIG_WINDOWS_TARGET)
+#if !SYNFIG_WINDOWS_TARGET && !SYNFIG_CYGWIN_TARGET
 	String command;
 	String result;
 	command = path + " --version 2>&1";
@@ -144,6 +145,7 @@ PluginLauncher::execute( std::string script_path, const std::string& synfig_root
 PluginLauncher::execute( std::string script_path, const std::string& /* synfig_root */ )
 #endif
 {
+#if !SYNFIG_CYGWIN_TARGET // popen, _popen not declared
 	String command = "";
 	
 	// Path to python binary can be overriden
@@ -195,7 +197,7 @@ PluginLauncher::execute( std::string script_path, const std::string& /* synfig_r
 	command = "\"" + command + "\"";
 #endif
 	
-#if(!SYNFIG_WINDOWS_TARGET)
+#if !SYNFIG_WINDOWS_TARGET
 	FILE* pipe = popen(command.c_str(), "r");
 #else
 	FILE* pipe = _popen(command.c_str(), "r");
@@ -214,7 +216,7 @@ PluginLauncher::execute( std::string script_path, const std::string& /* synfig_r
 		synfig::info(output);
 	}
 
-#if(!SYNFIG_WINDOWS_TARGET)
+#if !SYNFIG_WINDOWS_TARGET && !SYNFIG_CYGWIN_TARGET
 	exitcode = pclose(pipe);
 #else
 	exitcode = _pclose(pipe);
@@ -225,8 +227,11 @@ PluginLauncher::execute( std::string script_path, const std::string& /* synfig_r
 	} else {
 		return false;
 	}
+#else
+    // cygwin
+    return false;
+#endif
 }
-
 std::string
 PluginLauncher::get_result_path()
 {

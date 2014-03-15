@@ -25,29 +25,29 @@
 #ifdef USING_PCH
 #	include "pch.h"
 #else
-#ifdef HAVE_CONFIG_H
-#	include <config.h>
-#endif
+    #ifdef HAVE_CONFIG_H
+    #	include <config.h>
+    #endif
 
-#include <ETL/stringf>
-#include "cvs.h"
-#include <fstream>
-#include <iostream>
-#include <synfig/general.h>
-#include <cstdlib>
+    #include <ETL/stringf>
+    #include "cvs.h"
+    #include <fstream>
+    #include <iostream>
+    #include <synfig/general.h>
+    #include <cstdlib>
 
 
-#include <sys/types.h>
-#include <sys/stat.h>
+    #include <sys/types.h>
+    #include <sys/stat.h>
 
-#ifndef WIN32
-    #include <unistd.h>
-    #include <time.h>
-#endif
+    #ifndef WIN32
+        #include <unistd.h>
+        #include <time.h>
+    #endif
 
-#include <cassert>
+    #include <cassert>
 
-#include "general.h"
+    #include "general.h"
 
 #endif
 
@@ -62,12 +62,17 @@ using namespace synfigapp;
 
 #define cvs_command		synfig::String("cvs -z4")
 
-#ifndef WIN32
-#define HAVE_STRPTIME
+#if !defined(WIN32) && !SYNFIG_CYGWIN_TARGET
+#define HAVE_STRPTIME // Still isn't defined in cygwin64, despite including time.h
 #endif
 
-#ifdef __APPLE__
+#if defined(__APPLE__)
 time_t _daylight_() { time_t t(time(0)); return localtime(&t)->tm_gmtoff; }
+#define daylight _daylight_()
+#endif
+
+#if SYNFIG_CYGWIN_TARGET
+time_t _daylight_() { time_t t(time(0)); return localtime(&t)->tm_hour; } // doesn't really work (replace with C++11 stdlib functionality)
 #define daylight _daylight_()
 #endif
 
