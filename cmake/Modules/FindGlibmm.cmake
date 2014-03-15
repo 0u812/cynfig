@@ -34,7 +34,7 @@ find_library(Glibmm_LIBRARY
   PATHS ${Glibmm_PKGCONF_LIBRARY_DIRS}
 )
 
-if(SYNFIG_MSVS_TARGET)
+if(SYNFIG_MSVS_TARGET OR CYGWIN)
     # add libintl for MSVS
     find_library(Libintl_LIBRARY
       NAMES intl

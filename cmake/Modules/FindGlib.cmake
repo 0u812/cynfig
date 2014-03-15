@@ -24,7 +24,7 @@ find_path(GlibConfig_INCLUDE_DIR
   PATH_SUFFIXES lib/glib-2.0/include ../lib/glib-2.0/include
 )
 
-message(STATUS "Looking for Glib in ${Glib_PKGCONF_LIBRARY_DIRS}")
+# message(STATUS "Looking for Glib in ${Glib_PKGCONF_LIBRARY_DIRS}")
 
 # Finally the library itself
 find_library(Glib_LIBRARY

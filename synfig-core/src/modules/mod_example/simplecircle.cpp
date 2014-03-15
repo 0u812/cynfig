@@ -48,6 +48,10 @@
 
 #endif
 
+#ifndef M_PI
+    #define M_PI 3.14159265358979323846
+#endif
+
 /* === U S I N G =========================================================== */
 
 using namespace etl;
