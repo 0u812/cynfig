@@ -1,3 +1,0 @@
-mkdir -p /tmp/synfig/cmake/build && cd /tmp/synfig/cmake/build
-CLANGP=/home/nine/Downloads/source/clang/install-release/bin && export CC=$CLANGP/clang && export CXX=$CLANGP/clang++ && cmake -DCMAKE_INSTALL_PREFIX=/tmp/synfig/cmake/install -DCMAKE_BUILD_TYPE=Release -DBOOST_ROOT=/home/nine/Downloads/source/boost/09132013/install -DCMAKE_CXX_FLAGS="-std=c++11" -DSYNFIG_SOURCE_IMAGES_DIR=/home/nine/life/stuff/downloads/source/synfig/images-12072013/images /home/nine/life/stuff/downloads/source/synfig/synfig-12072013/
-make -j8 && make install
