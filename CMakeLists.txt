@@ -1,3 +1,21 @@
+# === S Y N F I G =========================================================
+# **
+# **  \legal
+# **  Copyright (c) 2013-2014 J Kyle Medley
+# **
+# **  This package is free software; you can redistribute it and/or
+# **  modify it under the terms of the GNU General Public License as
+# **  published by the Free Software Foundation; either version 2 of
+# **  the License, or (at your option) any later version.
+# **
+# **  This package is distributed in the hope that it will be useful,
+# **  but WITHOUT ANY WARRANTY; without even the implied warranty of
+# **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# **  General Public License for more details.
+# **  \endlegal
+# =========================================================================
+
+
 cmake_minimum_required (VERSION 2.8.9)
 project(Synfig)
 
@@ -19,10 +37,10 @@ if(SYNFIG_WINDOWS_TARGET)
     set(SYNFIG_MSVS_STAMP "-vc100")
     set(SYNFIG_HAVE_VASPRINTF 0)
     if(NOT SYNFIG_DEPENDENCY_PATH AND NOT BOOST_ROOT)
-        message( FATAL_ERROR "Set SYNFIG_WINDOWS_TARGET to point to the dependencies and BOOST_ROOT to point to the location where Boost is installed resp.")
+        message( FATAL_ERROR "Set SYNFIG_DEPENDENCY_PATH to point to the dependencies and BOOST_ROOT to point to the location where Boost is installed resp.")
     endif()
     if(NOT SYNFIG_DEPENDENCY_PATH)
-        message( FATAL_ERROR "Set SYNFIG_WINDOWS_TARGET to point to the dependencies")
+        message( FATAL_ERROR "Set SYNFIG_DEPENDENCY_PATH to point to the dependencies")
     endif()
     if(NOT BOOST_ROOT)
         message( FATAL_ERROR "Set BOOST_ROOT to point to the location where Boost is installed")

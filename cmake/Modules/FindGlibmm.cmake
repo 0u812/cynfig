@@ -1,3 +1,5 @@
+# **  Portions copyright (c) 2013-2014 J Kyle Medley
+
 # - Try to find Glibmm-2.4
 # Once done, this will define
 #

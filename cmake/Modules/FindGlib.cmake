@@ -1,3 +1,5 @@
+# **  Portions copyright (c) 2013-2014 J Kyle Medley
+
 # - Try to find Glib-2.0
 # Once done, this will define
 #

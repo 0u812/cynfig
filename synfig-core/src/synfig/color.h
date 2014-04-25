@@ -8,6 +8,7 @@
 **	Copyright (c) 2002-2005 Robert B. Quattlebaum Jr., Adrian Bentley
 **	Copyright (c) 2007, 2008 Chris Moore
 **	Copyright (c) 2012-2013 Carlos López
+**  Copyright (c) 2014 J Kyle Medley
 **
 **	This package is free software; you can redistribute it and/or
 **	modify it under the terms of the GNU General Public License as
@@ -120,7 +121,7 @@ private:
 
 public:
 	
-#if !defined(_MSC_VER) && !SYNFIG_CYGWIN_TARGET
+#if !defined(_MSC_VER)
 	constexpr static const value_type ceil=1;	
 	constexpr static const value_type floor=0;
 #else
@@ -594,7 +595,7 @@ private:
 public:
 	static const unsigned char ceil=255;	
 	static const unsigned char floor=0;
-#if !defined(_MSC_VER) && !SYNFIG_CYGWIN_TARGET
+#if !defined(_MSC_VER)
 	constexpr static const float range=ceil-floor;
 #else
 	SYNFIG_API static const float range;

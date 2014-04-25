@@ -8,6 +8,7 @@
 **	Copyright (c) 2002-2005 Robert B. Quattlebaum Jr., Adrian Bentley
 **	Copyright (c) 2007, 2008 Chris Moore
 **	Copyright (c) 2012-2013 Carlos López
+**  Copyright (c) 2014 J Kyle Medley
 **
 **	This package is free software; you can redistribute it and/or
 **	modify it under the terms of the GNU General Public License as
@@ -50,11 +51,11 @@ using namespace std;
 
 /* === G L O B A L S ======================================================= */
 
-// #if !defined(_MSC_VER) && !SYNFIG_CYGWIN_TARGET
+#if defined(_MSC_VER)
 const Color::value_type Color::ceil = 1;
 const Color::value_type Color::floor = 0;
 const float CairoColor::range = ceil - floor;
-// #endif
+#endif
 
 /* === P R O C E D U R E S ================================================= */
 
