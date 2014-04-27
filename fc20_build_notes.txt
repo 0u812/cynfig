@@ -1,0 +1,1 @@
+* need to add etl_profile.h, *.pc.in, synfig_modules.cfg, and config.h.in by modifying .gitignore (will this pose a problem for generated files in master?)

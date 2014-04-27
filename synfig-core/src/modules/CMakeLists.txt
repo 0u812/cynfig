@@ -16,6 +16,7 @@
 # =========================================================================
 
 set(SYNFIG_MODULES_REMOVE_PREFIX 0 CACHE BOOL "Remove lib prefix from loadable modules where applicable")
+set(SYNFIG_MODULES_COLLATE 1) # Collect in top-level dir (so can generate images)
 
 add_subdirectory(mod_particle)
 add_subdirectory(mod_filter)
