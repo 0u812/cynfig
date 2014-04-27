@@ -1,0 +1,11 @@
+prefix=@ETL_PREFIX@
+exec_prefix=@ETL_BIN_PATH@
+libdir=@ETL_LIB_PATH@
+includedir=@ETL_INCLUDE_PATH@
+
+Name: ETL
+Description: Extended Template Library
+Requires:
+Version: @ETL_VER@
+Libs: 
+Cflags: -I${includedir}

@@ -27,7 +27,6 @@ Rules-quot
 aclocal.m4
 autom4te.cache
 boldquot.sed
-config.*
 configure
 depcomp
 en@boldquot.header
@@ -48,7 +47,6 @@ compile
 
 # ------------------------------------------------------------------------
 
-ETL/ETL.pc.in
 ETL/ETL/etl_profile.h
 ETL/ETL/etl_profile_.h
 ETL/ETL/etl_profile_.h.in
@@ -57,10 +55,8 @@ synfig-core/libltdl
 synfig-core/pkg-info/macosx/synfig-core.info
 synfig-core/po/*.gmo
 synfig-core/po/synfig.pot
-synfig-core/src/modules/synfig_modules.cfg
 synfig-core/src/synfig/proto/nodebase.h
 synfig-core/src/tool/synfig
-synfig-core/synfig.pc.in
 
 synfig-core/autorevision.h
 synfig-core/m4/codeset.m4

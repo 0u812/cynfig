@@ -1,0 +1,11 @@
+prefix=@SYNFIG_CORE_PREFIX@
+exec_prefix=@SYNFIG_CORE_BIN_PATH@
+libdir=@SYNFIG_CORE_LIB_PATH@
+includedir=@SYNFIG_CORE_INCLUDE_PATH@
+
+Name: synfig
+Description: Synfig Core
+Requires: ETL glibmm-2.4 giomm-2.4 libxml++-2.6 sigc++-2.0 cairo pango pangocairo PocoFoundation
+Version: @SYNFIG_CORE_VER@
+Libs: -L${libdir} -lsynfig
+Cflags: -I${includedir}
