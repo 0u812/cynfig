@@ -11,11 +11,20 @@ include(LibFindMacros)
 libfind_pkg_check_modules(Freetype_PKGCONF freetype2)
 
 # Include dir
+# RPM
 find_path(Freetype_INCLUDE_DIR
   NAMES freetype/freetype.h
   PATHS ${Freetype_PKGCONF_INCLUDE_DIRS}
   PATH_SUFFIXES freetype2
 )
+
+# APT
+if(NOT Freetype_INCLUDE_DIR)   
+    find_path(Freetype_INCLUDE_DIR
+    NAMES freetype.h
+    PATHS ${Freetype_PKGCONF_INCLUDE_DIRS}
+    )
+endif()
 
 if(SYNFIG_WINDOWS_TARGET)
     # Need ft2build.h

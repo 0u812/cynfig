@@ -23,6 +23,7 @@ find_path(FreeType2_INCLUDE_DIR freetype/freetype.h
     HINTS ${PC_FREETYPE2_INCLUDEDIR} ${PC_FREETYPE2_INCLUDE_DIRS} ${FREETYPE2_PATH}/include/freetype2
     PATH_SUFFIXES freetype)
 
+# APT
 if(NOT FreeType2_INCLUDE_DIR)   
     find_path(FreeType2_INCLUDE_DIR freetype.h
         HINTS ${PC_FREETYPE2_INCLUDEDIR} ${PC_FREETYPE2_INCLUDE_DIRS} ${FREETYPE2_PATH}/include/freetype2)
