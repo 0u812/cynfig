@@ -57,7 +57,7 @@ macro (add_image sif time output)
     DEPENDS siftool ${PROJECT_BINARY_DIR}/synfig_modules.cfg ${SYNFIG_MODULES}
     WORKING_DIRECTORY ${PROJECT_BINARY_DIR})
     list(APPEND SYNFIG_IMAGES ${output}.png)
-    install( FILES ${CMAKE_CURRENT_BINARY_DIR}/${output}.png DESTINATION ${SYNFIG_DATA_PATH}/pixmaps/synfigstudio)
+    install( FILES ${PROJECT_BINARY_DIR}/${output}.png DESTINATION ${SYNFIG_DATA_PATH}/pixmaps/synfigstudio)
 endmacro (add_image)
 
 set(IMAGES
