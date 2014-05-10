@@ -50,9 +50,9 @@ install(TARGETS siftool DESTINATION bin)
 # -- IMAGES --------------------------------------------------------
 
 set(SYNFIG_IMAGES "")
-
+message(STATUS "SYNFIG_MODULES = ${SYNFIG_MODULES}")
 macro (add_image sif time output)
-    add_custom_command(OUTPUT ${output}.png COMMAND ${PROJECT_BINARY_DIR}/synfig -q ${SYNFIG_SOURCE_IMAGES_DIR}/${sif}.sif -o ${output}.png --time ${time} DEPENDS siftool)
+    add_custom_command(OUTPUT ${output}.png COMMAND ${PROJECT_BINARY_DIR}/synfig -q ${SYNFIG_SOURCE_IMAGES_DIR}/${sif}.sif -o ${output}.png --time ${time} DEPENDS siftool ${PROJECT_BINARY_DIR}/synfig_modules.cfg ${SYNFIG_MODULES})
     list(APPEND SYNFIG_IMAGES ${output}.png)
     install( FILES ${CMAKE_CURRENT_BINARY_DIR}/${output}.png DESTINATION ${SYNFIG_DATA_PATH}/pixmaps/synfigstudio)
 endmacro (add_image)

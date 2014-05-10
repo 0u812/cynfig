@@ -34,8 +34,9 @@ else()
 endif()
 
 if(SYNFIG_WINDOWS_TARGET)
-    set(SYNFIG_MSVS_STAMP "-vc100")
-    set(SYNFIG_HAVE_VASPRINTF 0)
+    set(SYNFIG_MSVS_STAMP "-vc100") # label attached to some libraries (VS 2010 specific)
+    
+    # Need to locate dependencies before proceeding
     if(NOT SYNFIG_DEPENDENCY_PATH AND NOT BOOST_ROOT)
         message( FATAL_ERROR "Set SYNFIG_DEPENDENCY_PATH to point to the dependencies and BOOST_ROOT to point to the location where Boost is installed resp.")
     endif()
@@ -46,26 +47,32 @@ if(SYNFIG_WINDOWS_TARGET)
         message( FATAL_ERROR "Set BOOST_ROOT to point to the location where Boost is installed")
     endif()
     if(MSVC)
+        # Visual Studio specific settings
         set(SYNFIG_MSVS_TARGET 1)
         set(SYNFIG_CAIRO_FALLBACK 1) # Cairo binaries outdated
         set(SYNFIG_GNU_EXTENSIONS 0)
         set(SYNFIG_HAVE_UNISTD_H 0)
         set(SYNFIG_ATTR_UNUSED "")
+        set(SYNFIG_HAVE_VASPRINTF 0)
     else()
         set(SYNFIG_MSVS_TARGET 0)
-        set(SYNFIG_CAIRO_FALLBACK 0) # Cairo binaries outdated
+        set(SYNFIG_CAIRO_FALLBACK 0) # Cairo binaries ok
         set(SYNFIG_GNU_EXTENSIONS 1)
         set(SYNFIG_HAVE_UNISTD_H 1)
         set(SYNFIG_ATTR_UNUSED "\"SYNFIG_ATTR_UNUSED\"")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x") # required for GNU extensions on Cygwin
+        set(SYNFIG_HAVE_VASPRINTF 1)
     endif()
 else()
     set(SYNFIG_HAVE_VASPRINTF 1)
     set(SYNFIG_ATTR_UNUSED "\"__attribute__ ((unused))\"")
     add_definitions("-DSYNFIG_ATTR_UNUSED=__attribute__ ((unused))")
     set(SYNFIG_HAVE_UNISTD_H 1)
-    set(SYNFIG_CAIRO_FALLBACK 0)
+    set(SYNFIG_CAIRO_FALLBACK 0) # Cairo binaries ok
     set(SYNFIG_GNU_EXTENSIONS 1)
     set(SYNFIG_MSVS_TARGET 0)
+    
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 endif()
 
 if(CYGWIN)

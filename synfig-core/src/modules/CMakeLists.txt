@@ -18,6 +18,9 @@
 set(SYNFIG_MODULES_REMOVE_PREFIX 0 CACHE BOOL "Remove lib prefix from loadable modules where applicable")
 set(SYNFIG_MODULES_COLLATE 1) # Collect in top-level dir (so can generate images)
 
+
+set(SYNFIG_MODULES  "mod_particle;mod_filter;mod_yuv420p;mod_gif;mod_gradient;mod_geometry;mod_noise;mod_bmp;mod_ppm;lyr_std;mod_svg;mod_example")
+
 add_subdirectory(mod_particle)
 add_subdirectory(mod_filter)
 add_subdirectory(mod_yuv420p)
@@ -31,41 +34,51 @@ add_subdirectory(mod_noise)
 # add_subdirectory(mod_jpeg)
 if(WITH_OPENEXR)
     add_subdirectory(mod_openexr)
+    list(APPEND SYNFIG_MODULES mod_openexr)
 endif()
 add_subdirectory(mod_bmp)
 add_subdirectory(mod_ppm)
 if(WITH_PNG)
     add_subdirectory(mod_png)
+    list(APPEND SYNFIG_MODULES mod_png)
 endif()
 if(WITH_LIBDV)
     add_subdirectory(mod_dv)
+    list(APPEND SYNFIG_MODULES mod_dv)
 endif()
 
 if(MAGICK_CONVERT)
     add_subdirectory(mod_imagemagick)
+    list(APPEND SYNFIG_MODULES mod_imagemagick)
 endif()
 
 if(WITH_FFMPEG)
     add_subdirectory(mod_ffmpeg)
+    list(APPEND SYNFIG_MODULES mod_ffmpeg)
 endif()
 
 if(WITH_FREETYPE2)
     add_subdirectory(lyr_freetype)
+    list(APPEND SYNFIG_MODULES lyr_freetype)
 endif()
 
 add_subdirectory(lyr_std)
 
 if(WITH_MNG)
     add_subdirectory(mod_mng)
+    list(APPEND SYNFIG_MODULES mod_mng)
 endif()
 
 add_subdirectory(mod_svg)
 
 if(WITH_MAGICKPP)
     add_subdirectory(mod_magickpp)
+    list(APPEND SYNFIG_MODULES mod_magickpp)
 endif()
 
 add_subdirectory(mod_example)
+
+set(SYNFIG_MODULES "${SYNFIG_MODULES}" PARENT_SCOPE)
 
 # So the tool can generate the images/icons online
 configure_file(synfig_modules.cfg ${PROJECT_BINARY_DIR}/synfig_modules.cfg COPYONLY)
