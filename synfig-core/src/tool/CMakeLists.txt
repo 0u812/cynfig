@@ -54,6 +54,7 @@ message(STATUS "SYNFIG_MODULES = ${SYNFIG_MODULES}")
 macro (add_image sif time output)
     add_custom_command(OUTPUT ${output}.png 
     COMMAND ${PROJECT_BINARY_DIR}/synfig -q ${SYNFIG_SOURCE_IMAGES_DIR}/${sif}.sif -o ${output}.png --time ${time} 
+    MAIN_DEPENDENCY ${SYNFIG_SOURCE_IMAGES_DIR}/${sif}.sif
     DEPENDS siftool ${PROJECT_BINARY_DIR}/synfig_modules.cfg ${SYNFIG_MODULES}
     WORKING_DIRECTORY ${PROJECT_BINARY_DIR})
     list(APPEND SYNFIG_IMAGES ${output}.png)
