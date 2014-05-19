@@ -338,7 +338,8 @@ endif()
 add_library(synfig SHARED ${SYNFIG_CORE_SOURCES})
 
 set_target_properties(synfig
-    PROPERTIES VERSION ${SYNFIG_CORE_VER} SOVERSION ${SYNFIG_CORE_MAJOR})
+    PROPERTIES VERSION ${SYNFIG_CORE_VER} SOVERSION ${SYNFIG_CORE_MAJOR}
+    LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR} RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
 
 if(WITH_ZLIB)
     target_link_libraries(synfig ${LIBZ_LIBRARY})
@@ -348,15 +349,6 @@ if(WITH_MAGICKPP)
 endif()
 
 target_link_libraries(synfig ${SYNFIG_CORE_REQUIRED_LIBRARIES})
-# target_link_libraries(synfig ${GOBJECT_LIBRARY})
-# target_link_libraries(synfig ${SIGC_LIBRARY})
-# target_link_libraries(synfig ${GLIB_LIBRARY})
-# target_link_libraries(synfig ${GIOMM_LIBRARY})
-# target_link_libraries(synfig ${LIBXMLPP_LIBRARY})
-# target_link_libraries(synfig ${CAIRO_LIBRARY})
-# target_link_libraries(synfig ${CAIROMM_LIBRARY})
-# target_link_libraries(synfig ${PANGO_LIBRARY})
-# target_link_libraries(synfig ${PANGOCAIRO_LIBRARY})
 
 install(TARGETS synfig DESTINATION lib)
 
