@@ -396,7 +396,12 @@ add_definitions(-DIMAGE_DIR="${SYNFIG_STUDIO_IMAGE_PATH}")
 add_definitions(-DIMAGE_EXT="${SYNFIG_STUDIO_IMAGE_EXT}")
 add_definitions(-DPLUGIN_DIR="${SYNFIG_STUDIO_PLUGIN_PATH}")
 add_definitions(-DLOCALEDIR="${SYNFIG_STUDIO_LOCALE_PATH}")
-    
+
+if(SYNFIG_CYGWIN_TARGET)
+    # Known problem: http://stackoverflow.com/questions/5580921/how-can-i-make-c0x-and-strict-ansi-get-along
+    set_source_files_properties(ipc.cpp PROPERTIES COMPILE_FLAGS -U__STRICT_ANSI__)
+endif()
+
 add_executable(synfigstudio ${SYNFIG_STUDIO_SOURCES})
 target_link_libraries(synfigstudio synfigapp)
 
